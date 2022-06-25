@@ -1,26 +1,26 @@
 # generated configs
-config/Xresources/my/Xresources
-config/conky/line/conky-lemonbar.conf
-config/conky/line/conky-lemonbar.sh
-config/conky/line/conky.conf
-config/conky/simple/conky.conf
-config/dunst/my/dunstrc
-config/fontconfig/my/fonts.conf
-config/foot/my/foot.ini
-config/gtk/gtk.css
-config/gtk/settings.ini
-config/nvim/my/init.vim
-config/openbox/my/rc.xml
-config/vim/vimrc
-config/xmobar/my/xmobarrc
-config/gtk/gtkrc-2.0
-config/alacritty/my/alacritty.yml
+Xresources/my/Xresources
+conky/line/conky-lemonbar.conf
+conky/line/conky-lemonbar.sh
+conky/line/conky.conf
+conky/simple/conky.conf
+dunst/my/dunstrc
+fontconfig/my/fonts.conf
+foot/my/foot.ini
+gtk/gtk.css
+gtk/settings.ini
+nvim/my/init.vim
+openbox/my/rc.xml
+vim/vimrc
+xmobar/my/xmobarrc
+gtk/gtkrc-2.0
+alacritty/my/alacritty.yml
 
 # others
-config/emacs.d/elpa/
-config/emacs.d/private/
-config/emacs.d/.custom.el
-config/emacs.d/smex-items
+emacs.d/elpa/
+emacs.d/private/
+emacs.d/.custom.el
+emacs.d/smex-items
 
 xmonad-x86_64-linux
 xmonad.errors
