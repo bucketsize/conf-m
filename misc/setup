@@ -1,0 +1,51 @@
+#!/usr/bin/env lua
+require "luarocks.loader"
+
+local Sh= require('minilib.shell')
+local Ut= require('minilib.util')
+
+local dirs = {
+	["~/.cache"] = {},
+	["~/.theme"] = {},
+	["~/.wlprs"] = {},
+	["~/.local/bin"] = {},
+}
+
+function setup_bell()
+	Ut:exec([[
+		pcnobell=$(grep -Po "^set bell-style none" /etc/inputrc)
+		if [ "$pcnobell" = "" ]; then
+			echo "disabling pc bell"
+			echo "set bell-style none" | sudo tee /etc/inputrc
+		else
+			echo "not disabling pc bell"
+		fi
+	]])
+end
+
+function setup_path()
+	Ut:exec([[
+		if [ "" = "$(grep '\.local\/bin' ~/.bashrc | tr -d '\n')" ]; then
+			echo "export PATH=\$HOME/.local/bin:\$PATH" >> ~/.bashrc
+		fi
+	]])
+end
+
+function setup_dirs()
+	for k, v in pairs(dirs) do
+		Sh.mkdir (k)
+	end
+end
+
+-- TODO
+function setup_bins()
+	for k, v in pairs(bins) do
+		Sh.ln (
+			string.format("~/scripts/%s", k),
+			string.format("~/.local/bin/%s", k))
+	end
+end
+
+setup_path()
+setup_dirs()
+setup_bell()

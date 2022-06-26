@@ -14,36 +14,22 @@ local _HOME = os.getenv("HOME")
 local _CFG_DIR = _HOME .. "/cfg"
 
 local config_group = {
-    dirs = {
-        ["~/.cache"] = {},
-        ["~/.theme"] = {},
-        ["~/.wlprs"] = {},
-        ["~/.local/bin"] = {},
-    },
-    bins = {
-        ["bgfpid"] = {},
-        ["ctrl_backlight.sh"] = {},
-        ["ctrl_monitor.sh"] = {},
-    },
-    bspwm = {
-        Xresources = {},
-        autostart = {},
-        bspwm = {},
-        sxhkd = {},
-    },
     openbox = {
         Xresources = {},
+		xinit = {},
         autostart = {},
         openbox = {},
         triggerhappy = {}
     },
     xmonad = {
         Xresources = {},
+		xinit = {},
         xmonad = {state="noi"},
         xmobar = {},
         triggerhappy = {}
     },
     common = {
+		misc = {},
         fontconfig = {},
         gtk = {},
 		qt5ct = {},
@@ -73,36 +59,6 @@ local config_group = {
     }
 }
 
-function setup_pcbell()
-    Ut:exec([[
-        pcnobell=$(grep -Po "^set bell-style none" /etc/inputrc)
-        if [ "$pcnobell" = "" ]; then
-            echo "set bell-style none" | sudo tee /etc/inputrc
-        fi
-    ]])
-end
-
-function setup_path()
-    Ut:exec([[
-        if [ "" = "$(grep '\.local\/bin' ~/.bashrc | tr -d '\n')" ]; then
-            echo "export PATH=\$HOME/.local/bin:\$PATH" >> ~/.bashrc
-        fi
-    ]])
-end
-
-function setup_dirs()
-    for k, v in pairs(config_group.dirs) do
-        Sh.mkdir (k)
-    end
-end
-
-function setup_bins()
-    for k, v in pairs(config_group.bins) do
-        Sh.ln (
-            string.format("~/scripts/%s", k),
-            string.format("~/.local/bin/%s", k))
-    end
-end
 function seek_and_destory(path, subhbs)
     Pr.pipe()
         .add(Sh.find(path, "%.t$"))
@@ -175,10 +131,6 @@ end
 if arg[1] == nil then
 	print("> *")
 	-- common
-	setup_dirs()
-	setup_bins()
-	setup_path()
-	setup_pcbell()
 	prepare_configs()
 	-- groups
 	setup_configs("openbox")
@@ -187,10 +139,6 @@ if arg[1] == nil then
 else
 	print("> " .. arg[1])
 	-- common
-	setup_dirs()
-	setup_bins()
-	setup_path()
-	setup_pcbell()
 	prepare_config(arg[1])
 	setup_config(arg[1])
 end
