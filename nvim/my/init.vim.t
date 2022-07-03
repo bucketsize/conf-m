@@ -85,8 +85,8 @@ Plug 'JuliaEditorSupport/julia-vim'
 Plug 'ocaml/vim-ocaml'
 
 " lua
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-lua-ftplugin'
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-lua-ftplugin'
 
 " language pack syntax, indent
 Plug 'sheerun/vim-polyglot'

@@ -11,7 +11,6 @@ local Pr = require('minilib.process')
 local Ut = require('minilib.util')
 
 local _HOME = os.getenv("HOME")
-local _CFG_DIR = _HOME .. "/cfg"
 
 local config_group = {
     openbox = {
@@ -59,13 +58,13 @@ local config_group = {
     }
 }
 
-function seek_and_destory(path, subhbs)
+function update_configs(path, subhbs)
     Pr.pipe()
         .add(Sh.find(path, "%.t$"))
 		.add(function(f)
 			if f then
 				local cwd = require("lfs").currentdir()
-				print ("sad>", cwd, f)
+				print ("update_configs>", cwd, f)
 			end
 			return f
 		end)
@@ -100,7 +99,7 @@ function prepare_config(name)
 	for i,v in pairs(subcfg) do
 		subhbs["{"..i.."}"] = v
 	end
-	seek_and_destory(string.format("%s/", name), subhbs)
+	update_configs(string.format("%s/", name), subhbs)
 end
 function prepare_configs()
     local subcfg = require("config")
@@ -108,36 +107,36 @@ function prepare_configs()
 	for i,v in pairs(subcfg) do
 		subhbs["{"..i.."}"] = v
 	end
-	seek_and_destory("./", subhbs)
+	update_configs("./", subhbs)
 end
 function setup_config(name)
-	print("deploying config", name)
-	Sh.sh(string.format([[%s/setup]], name))
-    return 0
+	print("setup_config>", name)
+	-- Sh.sh(string.format([[%s/setup]], name))
+    local e = dofile(string.format([[%s/setup]], name))
+	if e.dependsOn then e.dependsOn() end
+	if e.configure then e.configure() end
+	if e.installer then e.installer() end
+	return 0
 end
 function setup_configs(name)
-    print("deploying config_group", name)
+    print("setup_config group>", name)
     for k, v in pairs(config_group[name]) do
-        if v.state == "noi" then
-            print("> " .. k .. " :noi")
-        else
-            print("> " .. k)
-            Sh.sh(string.format([[%s/setup]], k))
-        end
+        if not (v.state == "noi") then
+        	setup_config(k)
+		end
     end
     return 0
 end
 
 if arg[1] == nil then
-	print("> *")
+	print("setup> *")
 	-- common
 	prepare_configs()
 	-- groups
 	setup_configs("openbox")
-	setup_configs("xmonad")
 	setup_configs("common")
 else
-	print("> " .. arg[1])
+	print("setup> " .. arg[1])
 	-- common
 	prepare_config(arg[1])
 	setup_config(arg[1])
