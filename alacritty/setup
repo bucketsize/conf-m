@@ -25,7 +25,6 @@ function build_pack()
 end
 
 function setup_prebuilt()
-	Shell.assert_file_exists("alacritty")
 	Shell.wget("https://github.com/bucketsize/alacritty/releases/download/20220211/alacritty."..Shell.arch()..".tar.gz"
 		, "/tmp/alacritty.tgz")
         
@@ -44,6 +43,15 @@ EOF
         ]])
 end
 
-Shell.ln ("$(pwd)/alacritty/my", "~/.config/alacritty")
-setup_prebuilt()
+return {
+	configure = function()
+		Shell.ln ("$(pwd)/alacritty/my", "~/.config/alacritty")
+	end,
+	dependsOn = function()
+		Shell.assert_file_exists("alacritty")
+	end,
+	installer = function()
+		setup_prebuilt()
+	end
+}
 

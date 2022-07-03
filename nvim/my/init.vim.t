@@ -41,6 +41,7 @@ Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 " Visual
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'joshdick/onedark.vim'
 Plug 'frazrepo/vim-rainbow'
 Plug 'godlygeek/csapprox'
 
@@ -175,7 +176,7 @@ let g:indentLine_faster = 1
 
 " set termguicolors
 set background=dark
-colorscheme delek 
+colorscheme onedark
 
 "" Disable the blinking cursor.
 set gcr=a:blinkon0

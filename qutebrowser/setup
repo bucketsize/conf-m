@@ -5,5 +5,13 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-Shell.file_exists ("qutebrowser")
-Shell.ln ("$(pwd)/qutebrowser/my","~/.config/qutebrowser")
+return {
+	configure = function()
+		Shell.ln ("$(pwd)/qutebrowser/my","~/.config/qutebrowser")
+	end,
+	dependsOn = function()
+		Shell.file_exists ("qutebrowser")
+	end,
+	installer = function()
+	end
+}

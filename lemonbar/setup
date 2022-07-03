@@ -36,8 +36,12 @@ function setup_xft_prebuilt()
     Shell.sh(cmd, "failed")
 end
 
-function setup()
-    Shell.assert_file_exists("lemonbar")
-end
-
-setup()
+return {
+	configure = function()
+	end,
+	dependsOn = function()
+    	Shell.file_exists("lemonbar")
+	end,
+	installer = function()
+	end
+}

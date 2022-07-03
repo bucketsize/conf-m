@@ -8,3 +8,11 @@ Shell.file_exists("xmobar")
 
 Shell.ln("$(pwd)/xmobar/my", "~/.config/xmobar")
 
+return {
+	configure = function()
+	end,
+	dependsOn = function()
+	end,
+	installer = function()
+	end
+}

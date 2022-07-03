@@ -4,9 +4,16 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-Shell.file_exists ("sxhkd")
-Shell.sh([[
-    sudo cp -vf sysctl.d/my/112-fs.conf /etc/sysctl.d/
-    sudo cp -vf sysctl.d/my/117-net.conf /etc/sysctl.d/
-    sudo sysctl -p
-]])
+return {
+	configure = function()
+		Shell.sh([[
+			sudo cp -vf sysctl.d/my/112-fs.conf /etc/sysctl.d/
+			sudo cp -vf sysctl.d/my/117-net.conf /etc/sysctl.d/
+			sudo sysctl -p
+		]])
+	end,
+	dependsOn = function()
+	end,
+	installer = function()
+	end
+}

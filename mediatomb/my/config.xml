@@ -6,10 +6,10 @@
   <server>
     <ui enabled="yes" show-tooltips="yes">
       <accounts enabled="no" session-timeout="30">
-        <account user="mediatomb" password="mediatomb"/>
+		  <account user="mediatomb" password="{mediatomb_password}"/>
       </accounts>
     </ui>
-    <name>MediaTomb[jb]</name>
+    <name>ClownGames</name>
     <udn>uuid:7e4179a9-fcb4-4799-9525-e029f1b21b07</udn>
     <home>/var/lib/mediatomb</home>
     <webroot>/usr/share/mediatomb/web</webroot>

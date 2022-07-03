@@ -41,9 +41,9 @@ Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 " Visual
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'joshdick/onedark.vim'
 Plug 'frazrepo/vim-rainbow'
 Plug 'godlygeek/csapprox'
-Plug 'joshdick/onedark.vim'
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'

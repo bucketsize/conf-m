@@ -4,5 +4,13 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-Shell.file_exists("vim")
-Shell.ln("$(pwd)/vim/vimrc", "~/.vimrc")
+return {
+	configure = function()
+		Shell.ln("$(pwd)/vim/vimrc", "~/.vimrc")
+	end,
+	dependsOn = function()
+		Shell.file_exists("vim")
+	end,
+	installer = function()
+	end
+}

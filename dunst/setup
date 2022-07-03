@@ -4,5 +4,13 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-Shell.file_exists("dunst")
-Shell.ln("$(pwd)/dunst/my", "~/.config/dunst")
+return {
+	configure = function()
+		Shell.ln("$(pwd)/dunst/my", "~/.config/dunst")
+	end,
+	dependsOn = function()
+		Shell.file_exists("dunst")
+	end,
+	installer = function()
+	end
+}

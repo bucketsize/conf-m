@@ -46,6 +46,14 @@ function setup_bins()
 	end
 end
 
-setup_path()
-setup_dirs()
-setup_bell()
+return {
+	configure = function()
+		setup_path()
+		setup_dirs()
+		setup_bell()
+	end,
+	dependsOn = function()
+	end,
+	installer = function()
+	end
+}

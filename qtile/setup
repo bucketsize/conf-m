@@ -4,5 +4,13 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-Shell.file_exists ("qtile")
-Shell.ln ("$(pwd)/qtile/my","~/.config/qtile")
+return {
+	configure = function()
+		Shell.ln ("$(pwd)/qtile/my","~/.config/qtile")
+	end,
+	dependsOn = function()
+		Shell.file_exists ("qtile")
+	end,
+	installer = function()
+	end
+}

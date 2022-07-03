@@ -46,5 +46,14 @@ function setup_prebuilt()
     Shell.sh(cmd, "fseer prebuilt")
 end
 
-setup_sourcebuild()
 
+return {
+	configure = function()
+	end,
+	dependsOn = function()
+		Shell.file_exists({"ocaml", "opam", "wget", "tar", "git"})
+	end,
+	installer = function()
+		setup_sourcebuild()
+	end
+}

@@ -6,10 +6,10 @@ local Util = require('minilib.util')
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/tint2/dashy","~/.config/tint2")
+		Shell.file_exists("dunst")
+		Shell.ln("$(pwd)/dunst/my", "~/.config/dunst")
 	end,
 	dependsOn = function()
-		Shell.file_exists ("tint2")
 	end,
 	installer = function()
 	end

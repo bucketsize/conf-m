@@ -10,3 +10,11 @@ Shell.sh([[
 	sudo ln -sfv $(pwd)/xinit/my/30-touchpad.conf /etc/X11/xorg.conf.d/
 	]])
 
+return {
+	configure = function()
+	end,
+	dependsOn = function()
+	end,
+	installer = function()
+	end
+}

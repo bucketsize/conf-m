@@ -8,3 +8,11 @@ Shell.file_exists("xrdb")
 Shell.ln("$(pwd)/Xresources/my","~/.config/xresources.d")
 Shell.ln("$(pwd)/Xresources/my/Xresources","~/.Xresources")
 Shell.ln("$(pwd)/Xresources/my/xinitrc","~/.xinitrc")
+return {
+	configure = function()
+	end,
+	dependsOn = function()
+	end,
+	installer = function()
+	end
+}

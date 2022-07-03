@@ -16,3 +16,11 @@ else
     createdir ~/.config/frmad
     cp ~/frmad/config/config0.lua ~/.config/frmad/config
 fi
+return {
+	configure = function()
+	end,
+	dependsOn = function()
+	end,
+	installer = function()
+	end
+}

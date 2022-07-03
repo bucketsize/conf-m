@@ -4,5 +4,13 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-Shell.file_exists("picom")
-Shell.ln ("~/scripts/config/picom/my", "~/.config/picom")
+return {
+	configure = function()
+		Shell.ln ("$(pwd)/picom/my", "~/.config/picom")
+	end,
+	dependsOn = function()
+		Shell.file_exists("picom")
+	end,
+	installer = function()
+	end
+}

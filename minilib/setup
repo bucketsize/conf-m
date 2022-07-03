@@ -1,13 +1,29 @@
-#!/usr/bin/env sh
+#!/usr/bin/env lua
+require "luarocks.loader"
 
-#one of (arm64 x86_64 aarch64 armf)
-ARCH=aarch64 
+local Sh = require('minilib.shell')
+local Ut = require('minilib.util')
 
-if [ -d ~/minilib ]; then
-	cd ~/minilib && git pull
-else
-	git clone https://github.com/bucketsize/minilib.git ~/minilib
-fi
+return {
+	configure = function()
+	end,
+	dependsOn = function()
+		Sh.file_exists({"lua", "luarocks"})
+	end,
+	installer = function()
+		local arch = Sh.arch()
 
-LIBDIR=/usr/lib/$ARCH-linux-gnu
-cd ~/minilib && luarocks make --local CRYPTO_LIBDIR=$LIBDIR OPENSSL_LIBDIR=$LIBDIR
+		Sh.exec([[
+			if [ -d ~/minilib ]; then
+				cd ~/minilib && git pull
+			else
+				git clone https://github.com/bucketsize/minilib.git ~/minilib
+			fi
+		]])
+
+		Sh.exec(string.format([[
+		LIBDIR=/usr/lib/%s-linux-gnu
+		cd ~/minilib && luarocks make --local CRYPTO_LIBDIR=$LIBDIR OPENSSL_LIBDIR=$LIBDIR
+		]], arch))
+	end
+}

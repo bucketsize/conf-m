@@ -21,3 +21,11 @@ if not Shell.file_exists("~/.local/bin/ympd") then
     ]], Shell.arch())
     Shell.exec(cmd)
 end
+return {
+	configure = function()
+	end,
+	dependsOn = function()
+	end,
+	installer = function()
+	end
+}

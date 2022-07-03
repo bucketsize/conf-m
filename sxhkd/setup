@@ -4,5 +4,13 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-Shell.file_exists ("sxhkd")
-Shell.ln ("~/scripts/config/sxhkd/my","~/.config/sxhkd")
+return {
+	configure = function()
+		Shell.ln ("$(pwd)/sxhkd/my","~/.config/sxhkd")
+	end,
+	dependsOn = function()
+		Shell.file_exists ("sxhkd")
+	end,
+	installer = function()
+	end
+}
