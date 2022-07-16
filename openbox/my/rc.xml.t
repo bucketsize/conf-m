@@ -277,7 +277,7 @@
         <to>4</to>
       </action>
     </keybind>
-    <keybind key="W-A-d">
+    <keybind key="W-d">
       <action name="ToggleShowDesktop"/>
     </keybind>
     <!-- Keybindings for windows -->
@@ -326,28 +326,29 @@
           <action name="Unshade"/>
         </finalactions>
       </action>
-    </keybind>
+	</keybind>
+	
     <!-- Keybindings for window switching with the arrow keys -->
-    <keybind key="W-Right">
-      <action name="DirectionalCycleWindows">
-        <direction>right</direction>
-      </action>
-    </keybind>
-    <keybind key="W-Left">
-      <action name="DirectionalCycleWindows">
-        <direction>left</direction>
-      </action>
-    </keybind>
-    <keybind key="W-Up">
-      <action name="DirectionalCycleWindows">
-        <direction>up</direction>
-      </action>
-    </keybind>
-    <keybind key="W-Down">
-      <action name="DirectionalCycleWindows">
-        <direction>down</direction>
-      </action>
-    </keybind>
+    <!-- <keybind key="W-Right"> -->
+    <!--   <action name="DirectionalCycleWindows"> -->
+    <!--     <direction>right</direction> -->
+    <!--   </action> -->
+    <!-- </keybind> -->
+    <!-- <keybind key="W-Left"> -->
+    <!--   <action name="DirectionalCycleWindows"> -->
+    <!--     <direction>left</direction> -->
+    <!--   </action> -->
+    <!-- </keybind> -->
+    <!-- <keybind key="W-Up"> -->
+    <!--   <action name="DirectionalCycleWindows"> -->
+    <!--     <direction>up</direction> -->
+    <!--   </action> -->
+    <!-- </keybind> -->
+    <!-- <keybind key="W-Down"> -->
+    <!--   <action name="DirectionalCycleWindows"> -->
+    <!--     <direction>down</direction> -->
+    <!--   </action> -->
+    <!-- </keybind> -->
   </keyboard>
   <mouse>
     <dragThreshold>1</dragThreshold>
