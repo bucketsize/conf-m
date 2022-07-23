@@ -1,6 +1,6 @@
 // launcher
 super + d
-	~/.luarocks/bin/mxctl.control fun dmenu_run
+	~/.luarocks/bin/mxctl.control dmenu_run
 
 // lockscreen
 control + alt + l
@@ -14,7 +14,7 @@ control + Print
 	~/.luarocks/bin/mxctl.control cmd scr_cap_sel
 
 control + alt + Delete
-	~/.luarocks/bin/mxctl.control fun dmenu_exit
+	~/.luarocks/bin/mxctl.control dmenu_exit
 
 // volume
 control + bracketright
@@ -36,10 +36,10 @@ control + backslash
 	~/.luarocks/bin/mxctl.control cmd vol_mute
 
 control + alt + 2
-	~/.luarocks/bin/mxctl.control fun dmenu_setup_video
+	~/.luarocks/bin/mxctl.control dmenu_setup_video
 
 control + alt + 3
-	~/.luarocks/bin/mxctl.control fun dmenu_select_pa_sinks
+	~/.luarocks/bin/mxctl.control dmenu_select_pa_sinks
 
 control + alt + 4
 	~/.luarocks/bin/mxctl.control cmd kb_led_on

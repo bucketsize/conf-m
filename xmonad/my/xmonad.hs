@@ -63,7 +63,7 @@ import qualified Data.Map        as M
 import qualified XMonad.StackSet as W
 
 oTerminal      = "urxvt"
-oMxctl fu      = "~/.luarocks/bin/mxctl.control fun " ++ fu
+oMxctl fu      = "~/.luarocks/bin/mxctl.control " ++ fu
 orgAutostartTg = "~/.config/autostart/autostart"
 
 autostarts :: [(String, String)]

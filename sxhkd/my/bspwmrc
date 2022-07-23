@@ -8,7 +8,7 @@ super + Return
 
 # program launcher
 super + @space
-	~/.luarocks/bin/mxctl.control fun dmenu_run
+	~/.luarocks/bin/mxctl.control dmenu_run
 
 # make sxhkd reload its configuration files:
 super + Escape
