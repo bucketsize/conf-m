@@ -18,7 +18,8 @@ local config_group = {
 		xinit = {},
         autostart = {},
         openbox = {},
-        triggerhappy = {}
+        triggerhappy = {},
+		tint2 = {},
     },
     xmonad = {
         Xresources = {},
