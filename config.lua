@@ -10,7 +10,7 @@ return {
 	font_family_monospace = "Tamzen",
 	font_family_serif     = "DejaVu Serif",
     font_family_sans      = "DejaVu Sans",
-	openbox_theme 		  = "Nightmare",
+	openbox_theme 		  = "Ark-Dark", --"Nightmare",
 	gtk_theme			  = "Adwaita-Dark",
 	gtk_icon_theme		  = "Adwaita",
 	gtk_cursor_theme	  = "Adwaita",
