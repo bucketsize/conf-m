@@ -277,7 +277,7 @@
         <to>4</to>
       </action>
     </keybind>
-    <keybind key="W-d">
+    <keybind key="W-m">
       <action name="ToggleShowDesktop"/>
     </keybind>
     <!-- Keybindings for windows -->

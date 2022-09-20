@@ -45,3 +45,5 @@ session/
 *.obj
 
 __pycache__/
+
+wget-log
