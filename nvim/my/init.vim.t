@@ -29,50 +29,32 @@ endif
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
 
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'Raimondi/delimitMate'
-Plug 'majutsushi/tagbar'
-Plug 'editor-bootstrap/vim-bootstrap-updater'
-Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
-
 " Visual
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 Plug 'joshdick/onedark.vim'
-Plug 'frazrepo/vim-rainbow'
 Plug 'godlygeek/csapprox'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 's1n7ax/nvim-window-picker'
 
+Plug 'nvim-neo-tree/neo-tree.nvim'
+Plug 'TimUntersberger/neogit'
+
+" tools
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'dir': '~/.fzf' }
 Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
-Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
 
-let g:make = 'gmake'
-if exists('make')
-        let g:make = 'make'
-endif
-Plug 'Shougo/vimproc.vim', {'do': g:make}
-
-" align: gaip
-Plug 'junegunn/vim-easy-align'
-
-" autocomplete
-" \_ vim"
-" Plug 'prabirshrestha/asyncomplete.vim'
+" align
+Plug 'echasnovski/mini.nvim'
 
 " \_ nvim
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
-
-" lsp
-" \_ vim
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'prabirshrestha/asyncomplete-file.vim'
 
 " \_ nvim
 Plug 'neovim/nvim-lspconfig'
@@ -84,18 +66,8 @@ Plug 'JuliaEditorSupport/julia-vim'
 " ocaml support + lsp
 Plug 'ocaml/vim-ocaml'
 
-" lua
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-lua-ftplugin'
-
 " language pack syntax, indent
 Plug 'sheerun/vim-polyglot'
-
-" Snippets
-" Plug 'SirVer/ultisnips'
-" Plug 'thomasfaingnaert/vim-lsp-snippets'
-" Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-
 
 call plug#end()
 "*****************************************************************************
@@ -141,6 +113,10 @@ set incsearch
 set ignorecase
 set smartcase
 
+"" diff
+set diffopt-=internal
+set diffopt+=indent-heuristic
+set diffopt+=algorithm:patience
 set fileformats=unix,dos,mac
 
 if exists('$SHELL')
@@ -208,12 +184,6 @@ endif
 " rainbow paranthesis
 let g:rainbow_active = 1
 
-" vim-airline
-let g:airline_theme = 'base16'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline_skip_empty_sections = 1
 "*****************************************************************************
 "" Abbreviations
 "*****************************************************************************
@@ -229,18 +199,6 @@ cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
 
-"" NERDTree configuration
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 50
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-nnoremap <silent> <F2> :NERDTreeFind<CR>
-nnoremap <silent> <F3> :NERDTreeToggle<CR>
-
 " grep.vim
 nnoremap <silent> <leader>f :Rgrep<CR>
 let Grep_Default_Options = '-IR'
@@ -249,7 +207,6 @@ let Grep_Skip_Dirs = '.git node_modules build bin'
 
 " terminal emulation
 nnoremap <silent> <leader>sh :terminal<CR>
-
 
 "*****************************************************************************
 "" Commands
@@ -353,15 +310,10 @@ endif
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
-" \_ vim
-"nnoremap <silent> <leader>b :Buffers<CR>
-"nnoremap <silent> <leader>e :FZF -m<CR>
-
 " \_ nvim
 nnoremap <c-P> <cmd>lua require('fzf-lua').files()<CR>
 nnoremap <silent> <leader>b <cmd>lua require('fzf-lua').buffers()<CR>
 nnoremap <silent> <leader>e <cmd>lua require('fzf-lua').files()<CR>
-
 
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
@@ -430,54 +382,11 @@ nnoremap <Leader>o :.Gbrowse<CR>
 "" Custom configs
 "*****************************************************************************
 
-
-"*****************************************************************************
-"*****************************************************************************
-let g:airline#extensions#tabline#enabled = 1
-
-" vim-airline
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-if !exists('g:airline_powerline_fonts')
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '▶'
-  let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◀'
-  let g:airline_right_alt_sep     = '«'
-  let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
-  let g:airline#extensions#readonly#symbol   = '⊘'
-  let g:airline#extensions#linecolumn#prefix = '¶'
-  let g:airline#extensions#paste#symbol      = 'ρ'
-  let g:airline_symbols.linenr    = '␊'
-  let g:airline_symbols.branch    = '⎇'
-  let g:airline_symbols.paste     = 'ρ'
-  let g:airline_symbols.paste     = 'Þ'
-  let g:airline_symbols.paste     = '∥'
-  let g:airline_symbols.whitespace = 'Ξ'
-else
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
-
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-endif
-
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
 " Always draw sign column. Prevent buffer moving when adding/deleting sign.
 set signcolumn=yes
-
-let g:NERDTreeWinSize   = 32
 
 let g:lua_complete_omni = 1
 
@@ -487,70 +396,32 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-let g:asyncomplete_log_file = expand('/tmp/asyncomplete.log')
+" neo-tree 
+lua << END
+END
 
-" lsp
-" " debug autocomplete
-" let g:lsp_log_verbose = 1
-" let g:lsp_log_file = expand('/tmp/vim-lsp.log')
-" let g:lsp_diagnostics_echo_cursor  = 1
-" let g:lsp_diagnostics_float_cursor = 1
+" neovim git integration
+lua << END
+require('neogit').setup {}
+END
 
-" " ocaml
-" au User lsp_setup call lsp#register_server({
-"             \ 'name': 'ocamllsp',
-"             \ 'cmd': {server_info->[
-"                 \   &shell,
-"                 \   &shellcmdflag,
-"                 \   expand('lspd-ocaml')
-"                 \ })
+" nvim-lualine < faster than airline
+lua << END
+require('lualine').setup()
+END
 
-" " java
-" au User lsp_setup call lsp#register_server({
-"             \ 'name': 'eclipse.jdt.ls',
-"             \ 'cmd': {server_info->[
-"                 \   &shell,
-"                 \   &shellcmdflag,
-"                 \   expand('lspd-java')
-"                 \ ]},
-"                 \ 'whitelist': ['java'],
-"                 \ })
+" tabs
+lua << EOF
+require("bufferline").setup{}
+EOF
 
-" au User lsp_setup call lsp#register_server({
-"             \ 'name': 'jedi-language-server',
-"             \ 'cmd': {server_info->['jedi-language-server']},
-"             \ 'allowlist': ['python'],
-"             \ })
-
-" " vim-lsp
-" function! s:on_lsp_buffer_enabled() abort
-"     setlocal omnifunc=lsp#complete
-"     setlocal signcolumn=yes
-"     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-"     nmap <buffer> gd <plug>(lsp-definition)
-"     nmap <buffer> gs <plug>(lsp-document-symbol-search)
-"     nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-"     nmap <buffer> gr <plug>(lsp-references)
-"     nmap <buffer> gi <plug>(lsp-implementation)
-"     nmap <buffer> gt <plug>(lsp-type-definition)
-"     nmap <buffer> <leader>rn <plug>(lsp-rename)
-"     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-"     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-"     nmap <buffer> K <plug>(lsp-hover)
-"     inoremap <buffer> <expr><c-f> lsp#scroll(+4)
-"     inoremap <buffer> <expr><c-d> lsp#scroll(-4)
-
-"     let g:lsp_format_sync_timeout = 1000
-"     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-
-"     " refer to doc to add more commands
-" endfunction
-
-" augroup lsp_install
-"     au!
-"     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-"     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-" augroup END
+lua << EOF
+require("trouble").setup {
+  -- your configuration comes here
+  -- or leave it empty to use the default settings
+  -- refer to the configuration section below
+}
+EOF
 
 lua << EOF
 require('fzf-lua').setup({
