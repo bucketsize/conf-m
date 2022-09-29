@@ -212,8 +212,9 @@ nnoremap <silent> <leader>sh :terminal<CR>
 "" Commands
 "*****************************************************************************
 " remove trailing whitespaces
-command! HmFixWhitespace :%s/\s\+$//e
-command! HmShowInNerdtree :NERDTree %
+command! Trim :%s/\s\+$//e
+command! Reveal :NeoTreeReveal
+
 
 "*****************************************************************************
 "" Functions
@@ -318,16 +319,6 @@ nnoremap <silent> <leader>e <cmd>lua require('fzf-lua').files()<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
 
-" snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsEditSplit="vertical"
-
-" Tagbar
-nmap <silent> <F4> :TagbarToggle<CR>
-let g:tagbar_autofocus = 1
-
 " Disable visualbell
 set noerrorbells visualbell t_vb=
 if has('autocmd')
@@ -425,9 +416,6 @@ EOF
 
 lua << EOF
 require('fzf-lua').setup({
-  	winopts = {
-    	border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' }
-	}
 })
 EOF
 

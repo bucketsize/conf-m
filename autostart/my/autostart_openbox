@@ -37,6 +37,7 @@ function autostart()
 	Sh.forkonce("conky") -- xmobar or conky or lemonbar
     Sh.forkonce("lxqt-policykit-agent")
     Sh.forkonce("lxqt-powermanagement")
+	Sh.forkonce("qlipper")
     Sh.forkonce("VBoxClient --clipboard")
 end
 
