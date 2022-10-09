@@ -33,8 +33,12 @@ function autostart()
 	Sh.sh("~/.luarocks/bin/mxctl.control setup_video")
 	Ut.sleep(1)
 	Sh.sh("~/.luarocks/bin/mxctl.control applywallpaper")
-    Sh.forkonce("tint2")
-	Sh.forkonce("conky") -- xmobar or conky or lemonbar
+	
+	Sh.sh("~/.luarocks/bin/frmad.daemon")
+	Ut.sleep(1)
+	Sh.forkonce("tail -f /tmp/frmad.lemonbar.out | lemonbar") -- xmobar or conky or lemonbar
+    
+	Sh.forkonce("tint2")
     Sh.forkonce("lxqt-policykit-agent")
     Sh.forkonce("lxqt-powermanagement")
 	Sh.forkonce("qlipper")

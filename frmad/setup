@@ -1,26 +1,26 @@
-. ../common.sh
-checkpkgs "git libssl make pactl"
+#!/usr/bin/env lua
+require "luarocks.loader"
 
-githubfetch bucketsize/minilib
-githubfetch bucketsize/frmad
+local Shell = require('minilib.shell')
+local Util = require('minilib.util')
 
-ipwd=$(pwd)
-LIBDIR=/usr/lib/$(arch)-linux-gnu
-cd ~/minilib && luarocks make --local CRYPTO_LIBDIR=$LIBDIR OPENSSL_LIBDIR=$LIBDIR
-cd ~/frmad && luarocks make --local CRYPTO_LIBDIR=$LIBDIR OPENSSL_LIBDIR=$LIBDIR 
-cd $ipwd
-
-if [ -d ~/.config/frmad ]; then
-    echo "[~/.config/frmad] already present"
-else
-    createdir ~/.config/frmad
-    cp ~/frmad/config/config0.lua ~/.config/frmad/config
-fi
 return {
 	configure = function()
 	end,
 	dependsOn = function()
+		Shell.file_exists({"git", "make", "urxvt", "xrandr", "fzy", "wmctrl", "pactl", "feh"})
 	end,
 	installer = function()
+		Shell.github_fetch("bucketsize", "frmad")
+		Shell.sh(string.format([[
+			LIBDIR=/usr/lib/%s-linux-gnu
+			cd ~/frmad && luarocks make --local CRYPTO_LIBDIR=$LIBDIR OPENSSL_LIBDIR=$LIBDIR 
+			if [ -d ~/.config/frmad ]; then
+				echo "[~/.config/frmad] already present"
+			else
+				mkdir -p ~/.config/frmad
+				cp ~/scripts/config/frmad/my/config ~/.config/frmad/
+			fi
+		]], Shell.arch()))
 	end
 }
