@@ -45,5 +45,31 @@
         <prefer>
             <family>{font_family_sans}</family>
         </prefer>
-    </alias>
+	</alias>
+
+	<match target="pattern">
+        <test qual="any" name="family">
+            <string>monospace</string>
+        </test>
+        <edit name="pixelsize" mode="assign">
+			<double>{font_monospace_size}</double>
+        </edit>
+    </match>
+	<match target="pattern">
+        <test qual="any" name="family">
+            <string>serif</string>
+        </test>
+        <edit name="pixelsize" mode="assign">
+			<double>{font_size}</double>
+        </edit>
+    </match>
+	<match target="pattern">
+        <test qual="any" name="family">
+            <string>sans-serif</string>
+        </test>
+        <edit name="pixelsize" mode="assign">
+			<double>{font_size}</double>
+        </edit>
+    </match>
+
 </fontconfig>

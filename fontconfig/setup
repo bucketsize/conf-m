@@ -23,10 +23,6 @@ return {
 			Home.."/.fonts/cozette.otb" -- .bdf or .otb
 			)
 		Sh.wget(
-			"https://github.com/slavfox/Cozette/releases/download/v.1.13.0/CozetteVector.otf",
-			Home.."/.fonts/cozette_vector.otf"
-			)
-		Sh.wget(
 			"https://github.com/sunaku/tamzen-font/archive/refs/tags/Tamzen-1.11.5.tar.gz",
 			"/tmp/tamzen.tgz"
 			)

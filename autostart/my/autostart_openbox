@@ -32,10 +32,12 @@ function autostart()
 	Ut.sleep(1)
 	Sh.sh("~/.luarocks/bin/mxctl.control setup_video")
 	Ut.sleep(1)
+	
 	Sh.sh("~/.luarocks/bin/mxctl.control applywallpaper")
 	
-	Sh.sh("~/.luarocks/bin/frmad.daemon")
+	Sh.forkonce("~/.luarocks/bin/frmad.daemon")
 	Ut.sleep(1)
+
 	Sh.forkonce("tail -f /tmp/frmad.lemonbar.out | lemonbar") -- xmobar or conky or lemonbar
     
 	Sh.forkonce("tint2")
