@@ -47,6 +47,7 @@
         </prefer>
 	</alias>
 
+	<!--
 	<match target="pattern">
         <test qual="any" name="family">
             <string>monospace</string>
@@ -71,5 +72,6 @@
 			<double>{font_size}</double>
         </edit>
     </match>
+	-->
 
 </fontconfig>
