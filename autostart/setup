@@ -15,7 +15,7 @@ return {
 		--     ]])
 
 		Shell.ln("$(pwd)/autostart/my", "~/.config/autostart")
-		Shell.sh("chmod -v +x $(pwd)/autostart/my/autostart")
+		-- Shell.sh("chmod -v +x $(pwd)/autostart/my/autostart")
 	end
 }
 

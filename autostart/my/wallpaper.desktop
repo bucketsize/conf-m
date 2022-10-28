@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Wallpaper
+Comment=Wallpaper
+Exec=~/.luarocks/bin/mxctl.control applywallpaper
+Type=Application
