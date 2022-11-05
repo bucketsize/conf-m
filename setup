@@ -138,6 +138,7 @@ if arg[1] == nil then
 	prepare_configs()
 	-- groups
 	setup_configs("openbox")
+	setup_configs("wayland_weston")
 	setup_configs("common")
 else
 	print("setup> " .. arg[1])

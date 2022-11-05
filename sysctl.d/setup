@@ -8,6 +8,7 @@ return {
 	configure = function()
 		Shell.sh([[
 			sudo cp -vf sysctl.d/my/112-fs.conf /etc/sysctl.d/
+			sudo cp -vf sysctl.d/my/115-ps.conf /etc/sysctl.d/
 			sudo cp -vf sysctl.d/my/117-net.conf /etc/sysctl.d/
 			sudo sysctl -p
 		]])

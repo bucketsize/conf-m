@@ -1,8 +1,8 @@
 #!/usr/bin/env xdg-open
 [Desktop Entry]
-Name=chromium-accel
+Name=Accelerated Chromium
 Comment=Accelerated version of Chromium
-Exec=/usr/bin/chromium-browser $(grep -v "#" $HOME/.config/chromium-flags.conf) %u
+Exec=chromium $(grep -v "#" $HOME/.config/chromium-flags.conf | xargs) %u
 Terminal=false
 Type=Application
 Keywords=Navigator;

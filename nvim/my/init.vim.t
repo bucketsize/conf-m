@@ -34,13 +34,16 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 Plug 'joshdick/onedark.vim'
-Plug 'godlygeek/csapprox'
+"Plug 'godlygeek/csapprox'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 's1n7ax/nvim-window-picker'
 
-Plug 'nvim-neo-tree/neo-tree.nvim'
-Plug 'TimUntersberger/neogit'
+" \_ nvim
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
 
 " tools
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() }, 'dir': '~/.fzf' }
@@ -50,13 +53,16 @@ Plug 'folke/trouble.nvim'
 " align
 Plug 'echasnovski/mini.nvim'
 
-" \_ nvim
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
+" nav
+Plug 'nvim-neo-tree/neo-tree.nvim'
 
-" \_ nvim
+" git
+Plug 'TimUntersberger/neogit'
+
+" language pack syntax, indent
+Plug 'sheerun/vim-polyglot'
+
+" \_ lsp
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 
@@ -66,8 +72,6 @@ Plug 'JuliaEditorSupport/julia-vim'
 " ocaml support + lsp
 Plug 'ocaml/vim-ocaml'
 
-" language pack syntax, indent
-Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 "*****************************************************************************
@@ -177,10 +181,6 @@ set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-if exists("*fugitive#statusline")
-  set statusline+=%{fugitive#statusline()}
-endif
-
 " rainbow paranthesis
 let g:rainbow_active = 1
 
@@ -213,8 +213,9 @@ nnoremap <silent> <leader>sh :terminal<CR>
 "*****************************************************************************
 " remove trailing whitespaces
 command! Trim :%s/\s\+$//e
-command! Reveal :NeoTreeReveal
+command! Navi :NeoTreeReveal
 
+noremap <F3> :NeoTreeRevealToggle<CR>
 
 "*****************************************************************************
 "" Functions
@@ -267,15 +268,15 @@ noremap <leader>sv :source $MYVIMRC<CR>
 noremap <Leader>h :<C-u>split<CR>
 noremap <Leader>v :<C-u>vsplit<CR>
 
-"" Git
-noremap <Leader>ga :Gwrite<CR>
-noremap <Leader>gc :Git commit --verbose<CR>
-noremap <Leader>gsh :Gpush<CR>
-noremap <Leader>gll :Gpull<CR>
-noremap <Leader>gs :Gstatus<CR>
-noremap <Leader>gb :Gblame<CR>
-noremap <Leader>gd :Gvdiff<CR>
-noremap <Leader>gr :Gremove<CR>
+"" Git -- FIXME
+"noremap <Leader>ga :Gwrite<CR>
+"noremap <Leader>gc :Git commit --verbose<CR>
+"noremap <Leader>gsh :Gpush<CR>
+"noremap <Leader>gll :Gpull<CR>
+"noremap <Leader>gs :Gstatus<CR>
+"noremap <Leader>gb :Gblame<CR>
+"noremap <Leader>gd :Gvdiff<CR>
+"noremap <Leader>gr :Gremove<CR>
 
 "" Tabs
 nnoremap <Tab> gt
@@ -381,43 +382,15 @@ set signcolumn=yes
 
 let g:lua_complete_omni = 1
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-" neo-tree 
-lua << END
-END
-
-" neovim git integration
-lua << END
-require('neogit').setup {}
-END
-
-" nvim-lualine < faster than airline
 lua << END
 require('lualine').setup()
+require("trouble").setup()
+require("bufferline").setup()
+require('mini.comment').setup() -- gcc, gc
+require('mini.align').setup()	-- ga <dialog>
+require('fzf-lua').setup({})
+-- require('neogit').setup({}) -- FIXME: overrides comment commands gcc, gc
 END
-
-" tabs
-lua << EOF
-require("bufferline").setup{}
-EOF
-
-lua << EOF
-require("trouble").setup {
-  -- your configuration comes here
-  -- or leave it empty to use the default settings
-  -- refer to the configuration section below
-}
-EOF
-
-lua << EOF
-require('fzf-lua').setup({
-})
-EOF
 
 lua << EOF
 -- Mappings.
