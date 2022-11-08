@@ -154,9 +154,21 @@ let g:indentLine_concealcursor = 0
 let g:indentLine_char = '┆'
 let g:indentLine_faster = 1
 
-" set termguicolors
-set background=dark
+if &term =~ '256color'
+    " disable Background Color Erase (BCE) so that color schemes
+    " render properly when inside 256-color tmux and GNU screen.
+    " see also https://sunaku.github.io/vim-256color-bce.html
+    set t_ut=
+endif
+
+
+" set Vim-specific sequences for RGB colors
+set t_8f=^[[38;2;%lu;%lu;%lum        " set foreground color
+set t_8b=^[[48;2;%lu;%lu;%lum        " set background color
 colorscheme onedark
+set t_Co=256                         " Enable 256 colors
+set termguicolors                    " Enable GUI colors for the terminal to get truecolor
+
 
 "" Disable the blinking cursor.
 set gcr=a:blinkon0
