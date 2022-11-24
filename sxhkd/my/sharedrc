@@ -1,48 +1,32 @@
-// launcher
 super + d
-	~/.luarocks/bin/mxctl.control dmenu_run
-
-// lockscreen
+	mxctl.control dmenu_run
+super + w
+	mxctl.control dmenu_select_window
+super + q
+	mxctl.control dmenu_exit
 control + alt + l
-	~/.luarocks/bin/mxctl.control cmd scr_lock
-
-// screenshot
+	mxctl.control scr_lock
 Print
-	~/.luarocks/bin/mxctl.control cmd scr_cap
-
+	mxctl.control scr_cap
 control + Print
-	~/.luarocks/bin/mxctl.control cmd scr_cap_sel
-
+	mxctl.control scr_cap_sel
 control + alt + Delete
-	~/.luarocks/bin/mxctl.control dmenu_exit
-
-// volume
+	mxctl.control dmenu_exit
 control + bracketright
-	~/.luarocks/bin/mxctl.control cmd vol_up
-
+	mxctl.control vol_up
 control + bracketleft
-	~/.luarocks/bin/mxctl.control cmd vol_down
-
+	mxctl.control vol_down
 control + backslash
-	~/.luarocks/bin/mxctl.control cmd vol_mute
-
+	mxctl.control vol_mute
 @XF86AudioRaiseVolume
-	~/.luarocks/bin/mxctl.control cmd vol_up
-
+	mxctl.control vol_up
 @XF86AudioLowerVolume
-	~/.luarocks/bin/mxctl.control cmd vol_down
-
+	mxctl.control vol_down
 @XF86AudioMute
-	~/.luarocks/bin/mxctl.control cmd vol_mute
-
+	mxctl.control vol_mute
 control + alt + 2
-	~/.luarocks/bin/mxctl.control dmenu_setup_video
-
+	mxctl.control dmenu_setup_video
 control + alt + 3
-	~/.luarocks/bin/mxctl.control dmenu_select_pa_sinks
-
-control + alt + 4
-	~/.luarocks/bin/mxctl.control cmd kb_led_on
-
-control + alt + 5
-	~/.luarocks/bin/mxctl.control cmd kb_led_off
+	mxctl.control dmenu_select_pa_sinks
+control + alt + 9
+	mxctl.control dmen_misc

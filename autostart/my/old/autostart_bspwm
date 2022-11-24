@@ -1,0 +1,55 @@
+#!/usr/bin/env lua
+
+require "luarocks.loader"
+
+local Sh = require("minilib.shell")
+local Ut = require("minilib.util")
+local Tr = require("minilib.timer")
+
+function autostart()
+	Sh.sh([[
+		xrdb -merge ~/.Xresources
+		xhost +
+		xsetroot -cursor_name left_ptr
+		setxkbmap us
+    
+		# dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
+		dbus-launch --sh-syntax --exit-with-session
+		dbus-update-activation-environment --systemd --all
+	]])
+	Tr.sleep(1)
+    
+	-- needed on VBox for proper display scaling
+	Sh.forkonce("VBoxClient --vmsvga")
+
+    -- sys key binder
+	-- Sh.forkonce("thd --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
+	Sh.forkonce("sxhkd -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc")
+	Sh.forkonce("mpd")
+	Sh.forkonce("picom")
+    Sh.forkonce("dunst")
+	
+	-- Sh.forkonce("urxvtd", "-q -o -f")
+	-- Ut.sleep(1)
+	-- Sh.forkonce("urxvtc")  -- to be safe
+	Sh.forkonce("stterm")
+	Tr.sleep(1)
+	
+	Sh.sh("~/.luarocks/bin/mxctl.control setup_video")
+	Tr.sleep(1)
+	
+	Sh.sh("~/.luarocks/bin/mxctl.control applywallpaper")
+	
+	Sh.forkonce("~/.luarocks/bin/frmad.daemon")
+	Tr.sleep(1)
+
+	Sh.forkonce("tail -f /tmp/frmad.lemonbar.out | lemonbar") -- xmobar or conky or lemonbar
+    
+	-- Sh.forkonce("tint2")
+    Sh.forkonce("lxqt-policykit-agent")
+    Sh.forkonce("lxqt-powermanagement")
+	Sh.forkonce("qlipper")
+    Sh.forkonce("VBoxClient --clipboard")
+end
+
+return autostart
