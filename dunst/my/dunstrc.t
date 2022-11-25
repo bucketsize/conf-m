@@ -140,6 +140,9 @@
 
     # Browser for opening urls in context menu.
     # browser = ~/.local/bin/firefox
+	browser = x-www-browser
+
+	always_run_script = true
 
     # Align icons left/right/off
     icon_position = left

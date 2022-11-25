@@ -19,5 +19,11 @@ return {
 	gtk_cursor_theme	  = "Adwaita",
 	dock_position		  = "Top",
 	font_conky			  = "tamzen",
-	font_conky_size		  = "12"
+	font_conky_size		  = "12",
+	
+	-- window border colors
+	color_normal = "#644832",
+	color_active = "#ba4824",
+	color_active_pre = "#884824", 
+	color_urgent = "#2448aa"
 }
