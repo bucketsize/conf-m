@@ -40,7 +40,8 @@ bspc config focused_border_color	      "{color_active}"
 bspc config presel_feedback_color	      "{color_active_pre}"
 bspc config urgent_border_color 	      "{color_urgent}"
 
-# jvm apps
-wmname LG3D
-export _JAVA_AWT_WM_NONREPARENTING=1
+# jvm apps - deprecated, don't care about java apps, wm need to id itself correctly
+# uncomment this and get your tooth kicked in.
+# wmname LG3D
+# export _JAVA_AWT_WM_NONREPARENTING=1
 

@@ -1,32 +1,66 @@
-super + d
-	mxctl.control dmenu_run
-super + w
-	mxctl.control dmenu_select_window
-super + q
-	mxctl.control dmenu_exit
-control + alt + l
-	mxctl.control scr_lock
 Print
 	mxctl.control scr_cap
+
 control + Print
 	mxctl.control scr_cap_sel
-control + alt + Delete
-	mxctl.control dmenu_exit
+
+control + alt + bracketright
+	mxctl.control brightness_up
+
+control + alt + bracketleft
+	mxctl.control brightness_down
+
 control + bracketright
 	mxctl.control vol_up
+
 control + bracketleft
 	mxctl.control vol_down
+
 control + backslash
 	mxctl.control vol_mute
+
+#
+# multimedia keys
+#
 @XF86AudioRaiseVolume
 	mxctl.control vol_up
+
 @XF86AudioLowerVolume
 	mxctl.control vol_down
+
 @XF86AudioMute
 	mxctl.control vol_mute
+
+@XF86MonBrightnessUp
+	mxctl.control brightness_up
+
+@XF86MonBrightnessDown
+	mxctl.control brightness_down
+
+# 
+# menu shortcuts
+#
+super + d
+	mxctl.control dmenu_run
+
+super + w
+	mxctl.control dmenu_select_window
+
+super + q
+	mxctl.control dmenu_exit
+
 control + alt + 2
 	mxctl.control dmenu_setup_video
+
 control + alt + 3
 	mxctl.control dmenu_select_pa_sinks
+
 control + alt + 9
-	mxctl.control dmen_misc
+	mxctl.control dmenu_misc
+
+control + alt + Delete
+	mxctl.control dmenu_exit
+
+control + alt + l
+	mxctl.control scr_lock
+

@@ -32,7 +32,7 @@ function autostart()
 	-- Sh.forkonce("urxvtd", "-q -o -f")
 	-- Ut.sleep(1)
 	-- Sh.forkonce("urxvtc")  -- to be safe
-	Sh.forkonce("stterm")
+	-- Sh.forkonce("stterm")
 	Tr.sleep(1)
 	
 	Sh.sh("~/.luarocks/bin/mxctl.control setup_video")
