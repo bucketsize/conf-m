@@ -22,13 +22,14 @@ local config_group = {
 		tint2 = {},
 		lemonbar = {}
     },
-    xmonad = {
+    bspwm = {
         Xresources = {},
 		xinit = {},
-        xmonad = {state="noi"},
-        xmobar = {},
-		lemonbar = {},
-        triggerhappy = {}
+        autostart = {},
+        bspwm = {},
+        sxhkd = {},
+		tint2 = {},
+		lemonbar = {}
     },
     common = {
 		misc = {},
@@ -53,7 +54,7 @@ local config_group = {
         ["sysctl.d"] = {},
         pipewire = {},
 		["qterminal.org"] = {},
-        -- alacritty = {state="noi"},
+        alacritty = {},
     },
     wayland_weston = {
         weston = {},

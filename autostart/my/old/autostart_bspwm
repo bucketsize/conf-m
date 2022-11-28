@@ -20,14 +20,15 @@ function autostart()
 	Tr.sleep(1)
     
 	-- needed on VBox for proper display scaling
-	Sh.forkonce("VBoxClient --vmsvga")
+	Sh.forkonce("VBoxClient", "--vmsvga")
 
     -- sys key binder
-	-- Sh.forkonce("thd --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
-	Sh.forkonce("sxhkd -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc")
+	-- Sh.forkonce("thd", " --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
+	Sh.forkonce("sxhkd", " -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc")
 	Sh.forkonce("mpd")
 	Sh.forkonce("picom")
     Sh.forkonce("dunst")
+    Sh.forkonce("tint2")
 	
 	-- Sh.forkonce("urxvtd", "-q -o -f")
 	-- Ut.sleep(1)
@@ -35,21 +36,21 @@ function autostart()
 	-- Sh.forkonce("stterm")
 	Tr.sleep(1)
 	
-	Sh.sh("~/.luarocks/bin/mxctl.control setup_video")
+	Sh.sh("mxctl.control setup_video")
 	Tr.sleep(1)
 	
-	Sh.sh("~/.luarocks/bin/mxctl.control applywallpaper")
+	Sh.sh("mxctl.control applywallpaper")
 	
-	Sh.forkonce("~/.luarocks/bin/frmad.daemon")
+	Sh.forkonce("frmad.daemon")
 	Tr.sleep(1)
 
-	Sh.forkonce("tail -f /tmp/frmad.lemonbar.out | lemonbar") -- xmobar or conky or lemonbar
+	Sh.forkonce("name=lemonbar tail", "-f /tmp/frmad.lemonbar.out | lemonbar -B '#000000' -F '#ba8040' ") -- xmobar or conky or lemonbar
     
 	-- Sh.forkonce("tint2")
     Sh.forkonce("lxqt-policykit-agent")
     Sh.forkonce("lxqt-powermanagement")
 	Sh.forkonce("qlipper")
-    Sh.forkonce("VBoxClient --clipboard")
+    Sh.forkonce("VBoxClient", "--clipboard")
 end
 
 return autostart
