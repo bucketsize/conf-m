@@ -7,7 +7,7 @@ bspc monitor -d I II III IV
 bspc config border_width         2
 bspc config window_gap           4
 
-bspc config split_ratio          0.55
+bspc config split_ratio          0.5
 bspc config borderless_monocle   true
 bspc config gapless_monocle      false
 bspc config focus_follows_pointer false
@@ -16,7 +16,9 @@ bspc config focus_follows_pointer false
 bspc rule -a Chromium desktop=^2
 bspc rule -a Chromium-browser desktop=^2
 bspc rule -a Firefox  desktop=^2
-bspc rule -a Eclipse  desktop=^3
+
+# ide
+bspc rule -a Eclipse  desktop=^3 state=floating
 
 # image viewers/editors
 bspc rule -a Gimp desktop=^4 state=floating follow=on

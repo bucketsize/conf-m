@@ -10,12 +10,15 @@ foot/my/foot.ini
 gtk/gtk.css
 gtk/settings.ini
 nvim/my/init.vim
+nvim/my/init.lua
 openbox/my/rc.xml
 vim/vimrc
 xmobar/my/xmobarrc
 gtk/gtkrc-2.0
 alacritty/my/alacritty.yml
-bspwm/bspwmrc
+bspwm/my/bspwmrc
+mpv/my/playlists/
+
 
 # others
 emacs.d/elpa/
