@@ -2,12 +2,11 @@
 require "luarocks.loader"
 
 local Shell = require('minilib.shell')
-local Util = require('minilib.util')
 
 return {
 	configure = function()
 		Shell.mkdir ("~/.config/nvim")
-		Shell.ln ("$(pwd)/nvim/my/init.vim","~/.config/nvim/init.vim")
+		Shell.ln ("$(pwd)/nvim/my/init.lua","~/.config/nvim/init.lua")
 	end,
 	dependsOn = function()
 		Shell.file_exists ("nvim")

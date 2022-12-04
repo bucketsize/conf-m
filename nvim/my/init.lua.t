@@ -28,8 +28,6 @@ require('packer').startup(function(use)
 	})
 
 	-- Tools
-	-- use 'junegunn/fzf', { 'do': { -> fzf#install() }, 'dir': '~/.fzf' }
-	-- use 'ibhagwan/fzf-lua', {'branch': 'main'}
 	use 'folke/trouble.nvim'
 
 	-- Align
@@ -83,7 +81,14 @@ require('packer').startup(function(use)
 	-- Adds extra functionality over rust analyzer
 	use("simrat39/rust-tools.nvim")
 
-	-- Optional
+
+	-- Find stuff 
+	use { 'junegunn/fzf', run = './install --bin', dir = '~/.fzf'}
+	use { 'ibhagwan/fzf-lua',
+	  -- optional for icon support
+	  requires = { 'nvim-tree/nvim-web-devicons' }
+	}
+
 	use("nvim-lua/popup.nvim")
 	use("nvim-lua/plenary.nvim")
 	use("nvim-telescope/telescope.nvim")
@@ -117,7 +122,7 @@ require("trouble").setup()
 require("bufferline").setup()
 require('mini.comment').setup() -- gcc, gc
 require('mini.align').setup()	-- ga <dialog>
--- require('fzf-lua').setup({})
+require('fzf-lua').setup({})
 -- require('neogit').setup({}) -- FIXME: overrides comment commands gcc, gc
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -285,7 +290,7 @@ set shiftwidth=4
 set noexpandtab
 
 "" Map leader to ,
-let mapleader=','
+let mapleader='\'
 
 "" Searching
 set hlsearch
@@ -369,8 +374,64 @@ colorscheme nord
 
 nnoremap <F3> :Neotree toggle<cr>
 
+" remove trailing whitespaces
+command! Trim :%s/\s\+$//e
+command! Navi :NeoTreeReveal
+
+" \_ nvim
+nnoremap <c-P> <cmd>lua require('fzf-lua').files()<CR>
+nnoremap <silent> <leader>b <cmd>lua require('fzf-lua').buffers()<CR>
+nnoremap <silent> <leader>e <cmd>lua require('fzf-lua').files()<CR>
+
+"Recovery commands from history through FZF
+nmap <leader>y :History:<CR>
+
+" Disable visualbell
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
+
+"" Copy/Paste/Cut
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus
+endif
+
+noremap YY "+y<CR>
+noremap <leader>p "+gP<CR>
+noremap XX "+x<CR>
+
+"" Buffer nav
+noremap <leader>z :bp<CR>
+noremap <leader>q :bp<CR>
+noremap <leader>x :bn<CR>
+noremap <leader>w :bn<CR>
+
+"" Close buffer
+noremap <leader>c :bd<CR>
+
+"" Clean search (highlight)
+nnoremap <silent> <leader><space> :noh<cr>
+
+"" Switching windows
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+noremap <C-h> <C-w>h
+
+"" Vmap for maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
+"" Move visual block
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+"" Open current line on GitHub
+nnoremap <Leader>o :.Gbrowse<CR>
+
 if has("gui_running")
-	set guifont=Tamzen\ 14
+	set guifont=DroidSansMono\ Nerd\ Font\ 14
 else
 	let g:CSApprox_loaded = 1
 endif
