@@ -6,8 +6,12 @@ local Util = require('minilib.util')
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/openbox/my", "~/.config/openbox")
-
+		Shell.ln ("$(pwd)/openbox/my", "$HOME/.config/openbox")
+	end,
+	dependsOn = function()
+		Shell.file_exists ("openbox", "obconf")
+	end,
+	installer = function()
 		-- theme
 		Shell.mkdir ("~/.themes")
 
@@ -17,29 +21,10 @@ return {
 			if [ ! -d nord-openbox-theme ]; then 
 				git clone https://gitlab.com/the-zero885/nord-openbox-theme.git
 			fi
-			if [ ! -d OpenBox-Themes ]; then 
-				git clone https://github.com/mylesthaiss/OpenBox-Themes.git
-				cp -a OpenBox-Themes/Zukit* ./
-			fi
 			if [ ! -d arc-openbox ]; then 
 				git clone https://github.com/dglava/arc-openbox.git
 				cp -a arc-openbox/* ./
 			fi
 			]])
-	end,
-	dependsOn = function()
-		Shell.assert_file_exists ("openbox", "obconf")
-		Shell.file_exists (
-			"lxpolkit",
-			"lxqt-powermanagement",
-			"pcmanfm-qt",
-			"lximage-qt",
-			"cmst",
-			"qlipper",
-			"qpdfview",
-			"qterminal"
-			)
-	end,
-	installer = function()
 	end
 }

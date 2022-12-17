@@ -44,16 +44,6 @@ require('packer').startup(function(use)
 		}
 	}
 
-	-- Git
-	use 'TimUntersberger/neogit'
-
-	-- Collection of common configurations for the Nvim LSP client
-	use("neovim/nvim-lspconfig")
-
-	-- Manage lsp
-	use("williamboman/mason.nvim")
-	use("williamboman/mason-lspconfig.nvim")
-
 	-- Visualize lsp progress
 	use({
 		"j-hui/fidget.nvim",
@@ -65,10 +55,6 @@ require('packer').startup(function(use)
 	-- Autocompletion framework
 	use("hrsh7th/nvim-cmp")
 	use({
-		-- cmp LSP completion
-		"hrsh7th/cmp-nvim-lsp",
-		-- cmp Snippet completion
-		"hrsh7th/cmp-vsnip",
 		-- cmp Path completion
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-buffer",
@@ -78,9 +64,6 @@ require('packer').startup(function(use)
 	-- See hrsh7th other plugins for more great completion sources!
 	-- Snippet engine
 	use('hrsh7th/vim-vsnip')
-	-- Adds extra functionality over rust analyzer
-	use("simrat39/rust-tools.nvim")
-
 
 	-- Find stuff 
 	use { 'junegunn/fzf', run = './install --bin', dir = '~/.fzf'}
@@ -109,7 +92,7 @@ require('packer').startup(function(use)
 			})
 		end,
 	})
-	
+
 	use('nvim-treesitter/nvim-treesitter')
 end)
 
@@ -125,87 +108,9 @@ require("bufferline").setup()
 require('mini.comment').setup() -- gcc, gc
 require('mini.align').setup()	-- ga <dialog>
 require('fzf-lua').setup({})
--- require('neogit').setup({}) -- FIXME: overrides comment commands gcc, gc
-require("mason").setup()
-require("mason-lspconfig").setup()
--- Set completeopt to have a better completion experience
--- :help completeopt
--- menuone: popup even when there's only one match
--- noinsert: Do not insert text until a selection is made
--- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
-vim.o.completeopt = "menuone,noinsert,noselect"
-
--- Avoid showing extra messages when using completion
-vim.opt.shortmess = vim.opt.shortmess + "c"
-
--- Find files
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-
-
-local function on_attach(client, buffer)
-	-- This callback is called when the LSP is atttached/enabled for this buffer
-	-- we could set keymaps related to LSP, etc here.
-	local keymap_opts = { buffer = buffer }
-
-	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-	vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-	vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-	vim.keymap.set('n', '<space>wl', function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
-	vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-	vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-	vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-	vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-end
-
--- Configure LSP through rust-tools.nvim plugin.
--- rust-tools will configure and enable certain LSP features for us.
--- See https://github.com/simrat39/rust-tools.nvim#configuration
-require("rust-tools").setup({
-	tools = {
-		runnables = {
-			use_telescope = true,
-		},
-		inlay_hints = {
-			auto = true,
-			show_parameter_hints = false,
-			parameter_hints_prefix = "",
-			other_hints_prefix = "",
-		},
-	},
-
-	-- all the opts to send to nvim-lspconfig
-	-- these override the defaults set by rust-tools.nvim
-	-- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
-	server = {
-		-- on_attach is a callback called when the language server attachs to the buffer
-		on_attach = on_attach,
-		settings = {
-			-- to enable rust-analyzer settings visit:
-			-- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-			["rust-analyzer"] = {
-				-- enable clippy on save
-				checkOnSave = {
-					command = "clippy",
-				},
-			},
-		},
-	},
-})
-
 require('nvim-treesitter.configs').setup {
   -- A list of parser names, or "all"
-  ensure_installed = "all",
+  ensure_installed = { "all" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -245,23 +150,28 @@ require('nvim-treesitter.configs').setup {
     additional_vim_regex_highlighting = false,
   },
 }
+-- Set completeopt to have a better completion experience
+-- :help completeopt
+-- menuone: popup even when there's only one match
+-- noinsert: Do not insert text until a selection is made
+-- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
+vim.o.completeopt = "menuone,noinsert,noselect"
 
+-- Avoid showing extra messages when using completion
+vim.opt.shortmess = vim.opt.shortmess + "c"
 
--- Lua lsp
-require('lspconfig').sumneko_lua.setup({
-	on_attach = on_attach,
-})
+-- Find files
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 
 -- Setup Completion
 -- See https://github.com/hrsh7th/nvim-cmp#basic-configuration
 local cmp = require("cmp")
 cmp.setup({
 	preselect = cmp.PreselectMode.None,
-	snippet = {
-		expand = function(args)
-			vim.fn["vsnip#anonymous"](args.body)
-		end,
-	},
 	mapping = {
 		["<C-p>"] = cmp.mapping.select_prev_item(),
 		["<C-n>"] = cmp.mapping.select_next_item(),
@@ -280,8 +190,6 @@ cmp.setup({
 
 	-- Installed sources
 	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "vsnip" },
 		{ name = "path" },
 		{ name = "buffer" },
 	},
@@ -330,9 +238,9 @@ set ttyfast
 set backspace=indent,eol,start
 
 "" Tabs. May be overridden by autocmd rules
-set tabstop=4
+set tabstop=2
 set softtabstop=0
-set shiftwidth=4
+set shiftwidth=2
 set noexpandtab
 
 "" Map leader to ,

@@ -1,6 +1,8 @@
 #!/usr/bin/env lua
+
+
+--package.path = os.getenv("HOME") .. ";" .. package.path
 require "luarocks.loader"
-package.path = '/?.lua;' .. package.path
 
 print ("boostrapping minilib ...")
 os.execute("minilib/setup")
@@ -10,7 +12,6 @@ local Sh = require('minilib.shell')
 local Pr = require('minilib.process')
 local Ut = require('minilib.util')
 
-local _HOME = os.getenv("HOME")
 
 local config_group = {
     openbox = {
@@ -118,8 +119,11 @@ function setup_config(name)
 	print("setup_config>", name)
 	-- Sh.sh(string.format([[%s/setup]], name))
     local e = dofile(string.format([[%s/setup]], name))
+	print("..dependsOn")
 	if e.dependsOn then e.dependsOn() end
+	print("..configure")
 	if e.configure then e.configure() end
+	print("..installer")
 	if e.installer then e.installer() end
 	return 0
 end

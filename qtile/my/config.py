@@ -25,7 +25,7 @@
 # SOFTWARE.
 
 from libqtile import bar, layout, widget, hook
-from libqtile import extension
+from libqtile import extension, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -35,7 +35,13 @@ from io import open
 
 mod        = "mod4"
 alt        = "mod1"
-terminal   = "qterminal"
+
+if qtile.core.name == "x11":
+    terminal = "alacritty"
+elif qtile.core.name == "wayland":
+    terminal = "foot"
+
+g_home = path.expanduser('~')
 theme_file = "colors-terminal.sexy-4"
 
 def get_theme_from_file():
@@ -55,7 +61,6 @@ color_theme = get_theme_from_file()
 colors = ["black","red","green","yellow","blue","magenta","cyan","white"]
 colorv = [("#"+color_theme[f'color{n}'], "#"+color_theme[f'color{n+8}']) for n in range(8)]
 colorm = dict(list(zip(colors, colorv)))
-print(colorm)
 color_alert = colorm["red"][1]
 color_frame = colorm["black"][0]
 
@@ -65,27 +70,7 @@ def float_to_front(w):
 
 @hook.subscribe.startup_once
 def autostart():
-    home = os.path.expanduser('~')
-    subprocess.Popen([home + '/.config/qtile/autostart'])
-
-@lazy.function
-def dmenu_run():
-    lazy.run_extension(extension.DmenuRun(
-        dmenu_prompt=">",
-        background="#15181a",
-        foreground="#00ff00",
-        selected_background="#079822",
-        selected_foreground="#fff",
-        dmenu_height=24,  # Only supported by some dmenu forks
-    ))
-
-@lazy.function
-def dmenu_windowlist():
-    lazy.run_extension(extension.WindowList(
-        dmenu_prompt=">",
-        all_groups = True,
-        dmenu_height=24,  # Only supported by some dmenu forks
-    ))
+    lazy.spawn("picom")
 
 # only window manangement hotkeys
 # others via triggerhappy
@@ -129,12 +114,27 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    
+    # Key([mod], 'd', lazy.spawn("mxctl.control dmenu_run")),
+    # Key([mod], 'w', lazy.spawn("mxctl.control dmenu_select_window")),
+    Key([mod], 'd', lazy.run_extension(extension.DmenuRun(
+        dmenu_prompt=">",
+        dmenu_lines=10,
+        background="#15181a",
+        foreground="#00ff00",
+        selected_background="#079822",
+        selected_foreground="#fff",
+        # dmenu_height=24,  # Only supported by some dmenu forks
+    ))),
+    Key([mod], 'w', lazy.run_extension(extension.WindowList(
+        dmenu_prompt=">",
+        dmenu_lines=10,
+        all_groups = True,
+        # dmenu_height=24,  # Only supported by some dmenu forks
+    ))),
+
     # ALT
     Key([alt], "grave", lazy.window.bring_to_front()),
     Key([alt], "Tab", lazy.group.next_window()),
-    Key([alt], 'r',  dmenu_run()),
-    Key([alt], 'w',  dmenu_windowlist()),
 
     # Key(['mod4'], 'r', lazy.run_extension(extension.DmenuRun(
     #     dmenu_prompt=">",
@@ -189,9 +189,9 @@ for i in groups:
     )
 
 border = dict(
-    border_focus     = colorm['yellow'][0],
+    border_focus     = colorm['blue'][0],
     border_normal    = colorm['white'][0],
-    border_width     = 4,
+    border_width     = 2,
 )
 
 layouts = [
@@ -201,9 +201,9 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="Terminus",
-    fontsize=12,
-    padding=3,
+    font="monospace",
+    fontsize=14,
+    padding=2,
 )
 
 extension_defaults = widget_defaults.copy()
@@ -236,7 +236,7 @@ top_bar = [
     #     width=50,
     #     )
     widget.CPU(
-        format='CPU {load_percent: 2.1f}%',
+        format='Cpu {load_percent: 2.1f}%',
         update_interval=2,
     ),
     # widget.MemoryGraph(
@@ -249,7 +249,7 @@ top_bar = [
     #     width=50,
     #     ),
     widget.Memory(
-        format="{MemUsed: .0f}{mm}",
+        format="Mem {MemUsed: .0f}{mm}",
         update_interval=2,
     ),
     # widget.Net(
@@ -263,7 +263,7 @@ top_bar = [
                    update_delay = 5,
                    charge_char = u'↑',
                    discharge_char = u'↓',),
-    widget.QuickExit(),
+    # widget.QuickExit(),
 ]
 
 bottom_bar = [
@@ -285,6 +285,8 @@ bottom_bar = [
 
 screens = [
     Screen(
+        wallpaper = g_home + "/.wlprs/wallpaper",
+        wallpaper_mode = "stretch",
         top=bar.Bar(top_bar,
             24,
         ),
@@ -368,5 +370,5 @@ wl_input_rules = None
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = "LG3D"
+# wmname = "LG3D" # set this to have you teeth kicked in.
 
