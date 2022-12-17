@@ -9,6 +9,30 @@
 
 let
   nix-gaming = import (builtins.fetchTarball "https://github.com/fufexan/nix-gaming/archive/master.tar.gz");
+  startqtile = pkgs.writeShellScriptBin "startqtile" ''
+
+# Session
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP=qtile
+export XDG_CURRENT_DESKTOP=qtile
+
+# Wayland stuff
+export MOZ_ENABLE_WAYLAND=1
+export QT_QPA_PLATFORM=wayland
+export SDL_VIDEODRIVER=wayland
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+#exec qtile start -b wayland $@
+exec systemd-cat --identifier=qtile  qtile start -b wayland $@
+
+#
+# If you use systemd and want sway output to go to the journal, use this
+# instead of the `exec sway $@` above:
+#
+#    exec systemd-cat --identifier=sway sway $@
+#
+  '';
+
 in
 {
   imports =
@@ -43,10 +67,10 @@ in
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
+  networking.firewall.allowedUDPPorts = [  ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   # fonts
   fonts.fontconfig.enable = true;
@@ -114,17 +138,18 @@ in
   services.logind.extraConfig = ''
       HandlePowerKey=suspend
     '';
- 
+
 	environment.etc."greetd/environments".text = ''
 bash
 startx
 weston
 qtile start -b wayland
+startqtile
 '';		
 
 	environment.etc."greetd/gtkgreet.css".text = ''
 window {
-   background-image: url("file:///usr/share/backgrounds/default.png");
+   background-color: rgba(30, 20, 10, 0.8);
    background-size: cover;
    background-position: center;
 }
@@ -329,7 +354,8 @@ box#body {
 		# wayland 
 		greetd.gtkgreet
 		cage 
-    weston
+    startqtile
+		weston
     wofi
     foot
 		clipman

@@ -74,6 +74,34 @@ def autostart():
     if qtile.core.name == "x11":
         lazy.spawn("picom")
 
+def xorg_app_launcher_1(qtile):
+    extension.DmenuRun(
+        dmenu_prompt=">",
+        dmenu_lines=10,
+        background="#15181a",
+        foreground="#00ff00",
+        selected_background="#079822",
+        selected_foreground="#fff",
+        # dmenu_height=24,  # Only supported by some dmenu forks
+    )
+def xorg_app_launcher():
+    return lazy.run_extension(extension.DmenuRun(
+        dmenu_prompt=">",
+        dmenu_lines=10,
+        background="#15181a",
+        foreground="#00ff00",
+        selected_background="#079822",
+        selected_foreground="#fff",
+        # dmenu_height=24,  # Only supported by some dmenu forks
+    ))
+def xorg_window_list():
+    return lazy.run_extension(extension.WindowList(
+        dmenu_prompt=">",
+        dmenu_lines=10,
+        all_groups = True,
+        # dmenu_height=24,  # Only supported by some dmenu forks
+    ))
+
 # only window manangement hotkeys
 # others via triggerhappy
 keys = [
@@ -116,23 +144,8 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    # Key([mod], 'd', lazy.spawn("mxctl.control dmenu_run")),
-    # Key([mod], 'w', lazy.spawn("mxctl.control dmenu_select_window")),
-    Key([mod], 'd', lazy.run_extension(extension.DmenuRun(
-        dmenu_prompt=">",
-        dmenu_lines=10,
-        background="#15181a",
-        foreground="#00ff00",
-        selected_background="#079822",
-        selected_foreground="#fff",
-        # dmenu_height=24,  # Only supported by some dmenu forks
-    ))),
-    Key([mod], 'w', lazy.run_extension(extension.WindowList(
-        dmenu_prompt=">",
-        dmenu_lines=10,
-        all_groups = True,
-        # dmenu_height=24,  # Only supported by some dmenu forks
-    ))),
+    Key([mod], 'd', xorg_app_launcher()),
+    Key([mod], 'w', xorg_window_list()),
 
     # ALT
     Key([alt], "grave", lazy.window.bring_to_front()),
