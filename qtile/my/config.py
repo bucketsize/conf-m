@@ -32,6 +32,7 @@ from libqtile.utils import guess_terminal
 from re import findall
 from os import path
 from io import open
+from libqtile.backend.wayland import InputConfig
 
 mod        = "mod4"
 alt        = "mod1"
@@ -70,7 +71,8 @@ def float_to_front(w):
 
 @hook.subscribe.startup_once
 def autostart():
-    lazy.spawn("picom")
+    if qtile.core.name == "x11":
+        lazy.spawn("picom")
 
 # only window manangement hotkeys
 # others via triggerhappy
@@ -212,7 +214,6 @@ top_bar = [
     widget.Clock(
         format='%a %d %b %Y %H:%M:%S', **widget_defaults
     ),
-    # widget.CurrentLayoutIcon(),
     # widget.LaunchBar(
     #     progs = [
     #         ("Terminal", "qterminal", "Launch QTerminal")
@@ -281,6 +282,7 @@ bottom_bar = [
         max_title_width=256,
         urgent_border=color_alert,
     ),
+    widget.CurrentLayoutIcon(),
 ]
 
 screens = [
@@ -360,7 +362,17 @@ reconfigure_screens = True
 auto_minimize = True
 
 # When using the Wayland backend, this can be used to configure input devices.
-wl_input_rules = None
+# wl_input_rules = None
+wl_input_rules = {
+    "*": InputConfig(left_handed=False, tap=True),
+    "type:pointer": InputConfig(left_handed=False, tap=True),
+    "type:keyboard": InputConfig(kb_options="ctrl:nocaps,compose:ralt"),
+    "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(left_handed=True, tap=True, dwt=True),
+    }
+
+
+
+
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
