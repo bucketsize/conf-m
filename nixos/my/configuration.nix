@@ -356,8 +356,8 @@ box#body {
 		cage 
     startqtile
 		weston
-    wofi
     foot
+		bemenu
 		clipman
 		drm_info
 		grim
