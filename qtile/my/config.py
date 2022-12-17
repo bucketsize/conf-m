@@ -65,14 +65,22 @@ colorm = dict(list(zip(colors, colorv)))
 color_alert = colorm["red"][1]
 color_frame = colorm["black"][0]
 
+def is_running(process):
+    s = subprocess.Popen(["ps", "axw"], stdout=subprocess.PIPE)
+    for x in s.stdout:
+        if re.search(process, x):
+            return True
+        return False
+def execute_once(process):
+    if not is_running(process):
+        return subprocess.Popen(process.split())
+@hook.subscribe.startup
+def startup():
+    if qtile.core.name == "x11":
+        execute_once('picom')
 @hook.subscribe.client_focus
 def float_to_front(w):
     w.cmd_bring_to_front()
-
-@hook.subscribe.startup_once
-def autostart():
-    if qtile.core.name == "x11":
-        lazy.spawn("picom")
 def app_launcher():
     if qtile.core.name == "x11":
         return lazy.run_extension(extension.DmenuRun(
@@ -145,6 +153,31 @@ keys = [
     # ALT
     Key([alt], "grave", lazy.window.bring_to_front()),
     Key([alt], "Tab", lazy.group.next_window()),
+
+    # Change the volume if our keyboard has keys
+    Key(
+        [], "XF86AudioRaiseVolume",
+        lazy.spawn("pactl -i 8%")
+    ),
+    Key(
+        [], "XF86AudioLowerVolume",
+        lazy.spawn("pactl -d 8%")
+    ),
+    Key(
+        [], "XF86AudioMute",
+        lazy.spawn("pactl -t")
+    ),
+
+    # backlight controls
+    Key([], "XF86MonBrightnessUp", 
+        lazy.spawn("brightnessctl set +4%")),
+    
+    Key([], "XF86MonBrightnessDown",
+        lazy.spawn("brightnessctl set 4%-")),
+
+    Key([], "Print",
+        lazy.spawn("grim")),
+
 
     # Key(['mod4'], 'r', lazy.run_extension(extension.DmenuRun(
     #     dmenu_prompt=">",
