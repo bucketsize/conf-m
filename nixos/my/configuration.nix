@@ -5,12 +5,11 @@
 # example: 
 # https://gitlab.com/engmark/root/-/blob/master/configuration.nix
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, python, ... }:
 
 let
-  nix-gaming = import (builtins.fetchTarball "https://github.com/fufexan/nix-gaming/archive/master.tar.gz");
+  #nix-gaming = import (builtins.fetchTarball "https://github.com/fufexan/nix-gaming/archive/master.tar.gz");
   startqtile = pkgs.writeShellScriptBin "startqtile" ''
-
 # Session
 export XDG_SESSION_TYPE=wayland
 export XDG_SESSION_DESKTOP=qtile
@@ -32,7 +31,7 @@ exec systemd-cat --identifier=qtile  qtile start -b wayland $@
 #    exec systemd-cat --identifier=sway sway $@
 #
   '';
-
+	
 in
 {
   imports =
@@ -40,7 +39,7 @@ in
       ./hardware-configuration.nix
 
       # from the web config.tar.gz
-      "${nix-gaming}/modules/pipewireLowLatency.nix"
+      #"${nix-gaming}/modules/pipewireLowLatency.nix"
     ];
 
   # kernel => nixos-rebuild boot
@@ -174,14 +173,12 @@ box#body {
 	  jack.enable = true;
 	  pulse.enable = true;
 
-	  # the star of the show
-	  lowLatency.enable = true;
-
+	  #lowLatency.enable = true;
 	  # defaults (no need to be set unless modified)
-	  lowLatency = {
-		  quantum = 64;
-		  rate = 48000;
-	  };
+	  #lowLatency = {
+		#  quantum = 64;
+		#  rate = 48000;
+	  #};
   };
   
   # Enable the OpenSSH daemon.
@@ -344,13 +341,23 @@ box#body {
     gnumake 
     openssl
     gnutls 
-    (lua.withPackages(ps: with ps; [ busted luafilesystem luaossl cqueues http ]))
+    (lua5_3.withPackages(ps: with ps; [ busted luafilesystem luaossl cqueues http ]))
     luarocks-nix
     ocaml opam 
     cargo
 		python3
-    python3.pkgs.pip
-    
+		python3.pkgs.pip
+		/* (let  */
+		/* 	my-python-packages = python-packages: with python-packages; [  */
+		/* 		pandas */
+		/* 		requests */
+		/* 		pip */
+		/* 		 #other python packages you want */
+		/* 	]; */
+		/* 	python-with-my-packages = python3.withPackages my-python-packages; */
+		/* in */
+		/* python-with-my-packages) */
+
 		# wayland 
 		greetd.gtkgreet
 		cage 

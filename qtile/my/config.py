@@ -260,11 +260,9 @@ top_bar = [
     #         ("Terminal", "qterminal", "Launch QTerminal")
     #     ]
     # ),
+    widget.Sep(),
     widget.WindowName(),
     widget.Systray(),
-    widget.ThermalSensor(
-        update_interval=2
-    ),
     widget.Volume(
         update_interval=2
     ),
@@ -278,8 +276,10 @@ top_bar = [
     #     width=50,
     #     )
     widget.CPU(
-        format='Cpu {load_percent: 2.1f}%',
         update_interval=2,
+    ),
+    widget.ThermalZone(
+        update_interval=2
     ),
     # widget.MemoryGraph(
     #     graph_color=color_alert,
@@ -294,6 +294,7 @@ top_bar = [
         format="Mem {MemUsed: .0f}{mm}",
         update_interval=2,
     ),
+    widget.Wlan(),
     # widget.Net(
     #    interface = "wlp0s20f3",
     #    format = 'Net: {down} ↓↑ {up}',
