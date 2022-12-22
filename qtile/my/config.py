@@ -36,14 +36,13 @@ from libqtile.backend.wayland import InputConfig
 
 mod        = "mod4"
 alt        = "mod1"
+g_home = path.expanduser('~')
+theme_file = "colors-terminal.sexy-4"
 
 if qtile.core.name == "x11":
     terminal = "alacritty"
 elif qtile.core.name == "wayland":
     terminal = "foot"
-
-g_home = path.expanduser('~')
-theme_file = "colors-terminal.sexy-4"
 
 def get_theme_from_file():
     home = path.expanduser('~/')
@@ -411,10 +410,6 @@ wl_input_rules = {
     "type:keyboard": InputConfig(kb_options="ctrl:nocaps,compose:ralt"),
     "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(left_handed=True, tap=True, dwt=True),
     }
-
-
-
-
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the

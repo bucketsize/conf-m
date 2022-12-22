@@ -6,6 +6,12 @@ local Util = require('minilib.util')
 
 return {
 	configure = function()
+		Shell.sh([[
+			[ -d ~/.config/mxctl ] \
+				|| mkdir -v -p ~/.config/mxctl
+			[ -f ~/.config/mxctl/config ] \
+				|| cp -v $(pwd)/mxctl/my/config ~/.config/mxctl/
+		]])
 	end,
 	dependsOn = function()
 		Shell.file_exists({"git", "make", "urxvt", "xrandr", "fzy", "wmctrl", "pactl", "feh"})
@@ -13,14 +19,11 @@ return {
 	installer = function()
 		Shell.github_fetch("bucketsize", "frmad")
 		Shell.sh(string.format([[
+			export CRYPTO_INCDIR=/usr/include	
 			LIBDIR=/usr/lib/%s-linux-gnu
-			cd ~/frmad && luarocks make --local CRYPTO_LIBDIR=$LIBDIR OPENSSL_LIBDIR=$LIBDIR 
-			if [ -d ~/.config/frmad ]; then
-				echo "[~/.config/frmad] already present"
-			else
-				mkdir -p ~/.config/frmad
-				cp ~/scripts/config/frmad/my/config ~/.config/frmad/
-			fi
+ 			CRYPTO_LIBDIR=$LIBDIR
+ 			OPENSSL_LIBDIR=$LIBDIR 
+			cd ~/frmad && luarocks make --local
 		]], Shell.arch()))
 	end
 }

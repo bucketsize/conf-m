@@ -4,12 +4,10 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-
-Shell.ln("$(pwd)/weston/my/weston.ini"
-    , "~/.config/weston.ini")
-
 return {
 	configure = function()
+		Shell.ln("$(pwd)/weston/my/weston.ini", "~/.config/weston.ini")
+		Shell.ln("$(pwd)/weston/startweston", "~/startweston")
 	end,
 	dependsOn = function()
 		Shell.file_exists("weston")

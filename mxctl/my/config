@@ -3,9 +3,9 @@
 			"/usr/local/bin",
 			"/usr/share/applications"
 		},
-	  menu_sel = "fzy",
+	  menu_sel = "fzf",
 	  ctrl_bin = "~/.luarocks/bin/mxctl.control",
-	  pop_term = 'urxvt',
+	  pop_term = 'stterm',
 
 	  displays = {
 		 {

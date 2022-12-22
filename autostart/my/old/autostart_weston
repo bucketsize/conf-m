@@ -7,9 +7,11 @@ local Ut = require("minilib.util")
 
 function autostart()
 	Sh.sh([[
+		# incase xwayland is needed
 		xrdb -merge ~/.Xresources
 		xhost +
 		xsetroot -cursor_name left_ptr
+		
 		setxkbmap us
     
 		# dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
@@ -18,15 +20,20 @@ function autostart()
 	]])
     
 	-- needed on VBox for proper display scaling
-	Sh.forkonce("VBoxClient --vmsvga")
+	Sh.forkonce("VBoxClient", " --vmsvga")
 
     -- sys key binder
-	Sh.forkonce("thd --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
+	-- Sh.forkonce("thd", " --triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
+	Sh.sh("(swhks &) && pkexec swhkd -c ~/.config/sxhkd/sharedrc")
+
 	Sh.forkonce("mpd")
     Sh.forkonce("dunst")
-    Sh.forkonce("lxqt-policykit-agent")
-    Sh.forkonce("lxqt-powermanagement")
-    Sh.forkonce("VBoxClient --clipboard")
+
+	-- for guest <> host clipboard working
+    Sh.forkonce("VBoxClient", " --clipboard")
+
+	-- get wallpaper and symlink for next time
+	Sh.sh("mxctl.control getwallpaper")
 end
 
 return autostart
