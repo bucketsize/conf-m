@@ -1,45 +1,58 @@
 # system
-wget
+## core
 intel-ucode
 amd-ucode
-usbutils
-usb-modeswitch
-connman 
 inotify-tools
 libnotify
 pciutils
 coreutils
-alsa-tools
-alsa-utils
+usbutils
+usb-modeswitch
 ntfs3g
 ntfsprogs
-upower
-thermald
-tlp
-openssh
-openssl
 man
 fakeroot
 sudo
-cpupower
+openssh
+openssl
 
+## power saving
+cpupower
+upower
+thermald
+tlp
+acpi
+
+## network
+connman 
+iwd
+avahi                
+
+## audio
+alsa-tools
+alsa-utils
+pipewire-alsa pipewire-audio pipewire-jack pipewire-pulse pipewire-media-session pipewire-v4l2                            
 
 # cli
 brightnessctl 
 wget
-iwd
 pamixer
 ripgrep
 curl
 fd 
 
 # term apps 
+wget
 tmux
 ranger
 htop
 iotop
 
+# themes
+oxygen-icons
+
 # apps
+alacritty
 xarchiver
 firefox
 bluez
@@ -47,17 +60,16 @@ blueman
 connman-gtk
 wpa_supplicant_gui
 w3m
-triggerhappy
 fzf
 zip
 unzip
+connman-gtk #aur
+steam #aur
 
 # mediaplayer
 mpd
 mpv
 imagemagick 
-oxygen-icons
-
 
 # dev
 neovim 
@@ -74,15 +86,23 @@ cargo
 python3
 lua
 luarocks
+mk-configure
+autogen
+pkg-config
+fakeroot
+make   
+crypto++
+m4 
+pixman1
 
 # wayland 
 greetd 
 gtkgreet
 cage 
-weston
 foot
 bemenu
 clipman
+clipmenu wl-clipboard
 drm_info
 grim
 imv 
@@ -90,13 +110,23 @@ kanshi
 wev
 wlsunset
 wtype
+swhkd-bin #aur
+wmctrl
+wev
+wbg
+greetd-tuigreet
+greetd-gtkgreet
 
+# weston
+weston
 
-mk-configure
-autogen
-pkg-config
+# wayland qtile
+qtile
+python-pywayland
+python-pywlroots
+python-mypy
+python-pip
+python-psutil
+python-iwlib
+python-dbus-next
 
-# aur
-steam
-swhkd-bin
-connman-gtk

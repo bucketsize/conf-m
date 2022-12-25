@@ -7,8 +7,8 @@ local Util = require('minilib.util')
 return {
 	configure = function()
 		Shell.sh([[
-			sudo cp -vf sysctl.d/my/*.conf /etc/sysctl.d/
-			sudo sysctl -p
+			sudo cp -vf tlp.d/my/*.conf /etc/tlp.d/
+			sudo tlp start
 		]])
 	end,
 	dependsOn = function()

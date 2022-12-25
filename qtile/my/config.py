@@ -1,50 +1,27 @@
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 from libqtile import bar, layout, widget, hook
 from libqtile import extension, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
 from re import findall
 from os import path
 from io import open
 from libqtile.backend.wayland import InputConfig
+from libqtile.log_utils import logger
 
 mod        = "mod4"
 alt        = "mod1"
 g_home = path.expanduser('~')
 theme_file = "colors-terminal.sexy-4"
 
-if qtile.core.name == "x11":
+def get_backend():
+    return "wayland"
+
+if get_backend() == "x11":
     terminal = "alacritty"
-elif qtile.core.name == "wayland":
+elif get_backend() == "wayland":
     terminal = "foot"
 
-def get_theme_from_file():
+def parse_terminal_sexy():
     home = path.expanduser('~/')
     theme_path = home + '.config/xresources.d/'+theme_file
     f = open(theme_path, 'r')
@@ -56,13 +33,16 @@ def get_theme_from_file():
         theme.update({ 'cursorColor': theme['color4']})
     return theme
 
+def map_colors(color_theme):
+    colors = ["black","red","green","yellow","blue","magenta","cyan","white"]
+    colorv = [("#"+color_theme[f'color{n}'], "#"+color_theme[f'color{n+8}']) for n in range(8)]
+    return dict(list(zip(colors, colorv)))
+
 # Colours
-color_theme = get_theme_from_file()
-colors = ["black","red","green","yellow","blue","magenta","cyan","white"]
-colorv = [("#"+color_theme[f'color{n}'], "#"+color_theme[f'color{n+8}']) for n in range(8)]
-colorm = dict(list(zip(colors, colorv)))
-color_alert = colorm["red"][1]
-color_frame = colorm["black"][0]
+color_theme = parse_terminal_sexy()
+color_map = map_colors(color_theme)
+color_alert = color_map["red"][1]
+color_frame = color_map["black"][0]
 
 def is_running(process):
     s = subprocess.Popen(["ps", "axw"], stdout=subprocess.PIPE)
@@ -70,18 +50,22 @@ def is_running(process):
         if re.search(process, x):
             return True
         return False
+
 def execute_once(process):
     if not is_running(process):
         return subprocess.Popen(process.split())
+
 @hook.subscribe.startup
 def startup():
-    if qtile.core.name == "x11":
+    if get_backend() == "x11":
         execute_once('picom')
+
 @hook.subscribe.client_focus
 def float_to_front(w):
     w.cmd_bring_to_front()
+
 def app_launcher():
-    if qtile.core.name == "x11":
+    if get_backend() == "x11":
         return lazy.run_extension(extension.DmenuRun(
             dmenu_prompt=">",
             dmenu_lines=10,
@@ -90,18 +74,19 @@ def app_launcher():
             selected_background="#079822",
             selected_foreground="#fff",
             # dmenu_height=24,  # Only supported by some dmenu forks
-        ))
-    elif qtile.core.name == "wayland":
+            ))
+    elif get_backend() == "wayland":
         return lazy.spawn("bemenu-run --center --list 10 --prompt '>>'")
+
 def window_list():
-    if qtile.core.name == "x11":
+    if get_backend() == "x11":
         return lazy.run_extension(extension.WindowList(
             dmenu_prompt=">",
             dmenu_lines=10,
             all_groups = True,
             # dmenu_height=24,  # Only supported by some dmenu forks
-        ))
-    elif qtile.core.name == "wayland":
+            ))
+    elif get_backend() == "wayland":
         return lazy.spawn("bemenu-run --center --list 10 --prompt '>>'")
 
 # only window manangement hotkeys
@@ -146,8 +131,18 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod], 'd', app_launcher()),
-    Key([mod], 'w', window_list()),
+
+    Key([mod], "d"
+        , app_launcher()
+        , desc="Spawn app launcher"),
+    
+    Key(["control"], "space"
+        , app_launcher()
+        , desc="Spawn app launcher"),
+    
+    Key([mod], "w"
+        , window_list()
+        , desc="Spawn window selector"),
 
     # ALT
     Key([alt], "grave", lazy.window.bring_to_front()),
@@ -231,8 +226,8 @@ for i in groups:
     )
 
 border = dict(
-    border_focus     = colorm['blue'][0],
-    border_normal    = colorm['white'][0],
+    border_focus     = color_map['blue'][0],
+    border_normal    = color_map['white'][0],
     border_width     = 2,
 )
 
@@ -262,7 +257,7 @@ top_bar = [
     widget.Sep(),
     widget.WindowName(),
     widget.Systray(),
-    widget.Volume(
+    widget.PulseVolume(
         update_interval=2
     ),
     # widget.CPUGraph(
@@ -421,3 +416,4 @@ wl_input_rules = {
 # java that happens to be on java's whitelist.
 # wmname = "LG3D" # set this to have you teeth kicked in.
 
+logger.info("qtile config parsed")

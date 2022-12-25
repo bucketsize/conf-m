@@ -52,16 +52,20 @@ local config_group = {
         tz = {},
         fseer = {state="noi"},
         conky = {},
-        ["sysctl.d"] = {},
         pipewire = {},
-		["qterminal.org"] = {},
         alacritty = {},
+		["qterminal.org"] = {},
+        ["tlp.d"] = {},
+        ["sysctl.d"] = {},
     },
     wayland_weston = {
         weston = {},
         foot = {},
         triggerhappy = {}
-    }
+    },
+	wayland_qtile = {
+        qtile = {},
+	}
 }
 
 function update_configs(path, subhbs)
@@ -143,7 +147,9 @@ if arg[1] == nil then
 	prepare_configs()
 	-- groups
 	setup_configs("openbox")
+	setup_configs("bspwm")
 	setup_configs("wayland_weston")
+	setup_configs("wayland_qtile")
 	setup_configs("common")
 else
 	print("setup> " .. arg[1])

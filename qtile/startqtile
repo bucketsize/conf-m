@@ -15,6 +15,7 @@ export QT_QPA_PLATFORM=wayland
 export SDL_VIDEODRIVER=wayland
 export _JAVA_AWT_WM_NONREPARENTING=1
 
+export PYTHONTRACEMALLOC=1
 #exec qtile start $@
 exec systemd-cat --identifier=qtile qtile start -b wayland $@
 
