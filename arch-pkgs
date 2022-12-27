@@ -1,5 +1,6 @@
 # system
 ## core
+linux-firmware
 intel-ucode
 amd-ucode
 inotify-tools
@@ -15,6 +16,9 @@ fakeroot
 sudo
 openssh
 openssl
+read-edid
+xdg-desktop-portal-wlr
+ethtool
 
 ## power saving
 cpupower
@@ -33,13 +37,15 @@ alsa-tools
 alsa-utils
 pipewire-alsa pipewire-audio pipewire-jack pipewire-pulse pipewire-media-session pipewire-v4l2                            
 
-# cli
+# cli apps
 brightnessctl 
 wget
+curl
 pamixer
 ripgrep
-curl
 fd 
+redshift
+gammastep
 
 # term apps 
 wget
@@ -107,15 +113,17 @@ drm_info
 grim
 imv 
 kanshi 
-wev
+slurp
+wdisplays #aur
+wev #aur
 wlsunset
 wtype
 swhkd-bin #aur
 wmctrl
 wev
 wbg
-greetd-tuigreet
-greetd-gtkgreet
+greetd-tuigreet #aur
+greetd-gtkgreet #aur
 
 # weston
 weston

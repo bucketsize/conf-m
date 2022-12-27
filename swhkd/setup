@@ -1,0 +1,16 @@
+#!/usr/bin/env lua
+require "luarocks.loader"
+
+local Shell = require('minilib.shell')
+local Util = require('minilib.util')
+
+return {
+	configure = function()
+		Shell.ln ("$(pwd)/swhkd/my","~/.config/swhkd")
+	end,
+	dependsOn = function()
+		Shell.file_exists ("swhkd")
+	end,
+	installer = function()
+	end
+}

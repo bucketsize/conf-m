@@ -164,14 +164,16 @@ keys = [
 
     # backlight controls
     Key([], "XF86MonBrightnessUp", 
-        lazy.spawn("brightnessctl set +4%")),
+        lazy.spawn("brightnessctl set +2%")),
     
     Key([], "XF86MonBrightnessDown",
-        lazy.spawn("brightnessctl set 4%-")),
+        lazy.spawn("brightnessctl set 2%-")),
 
     Key([], "Print",
         lazy.spawn("grim")),
 
+    Key(["control"], "Print",
+        lazy.spawn("slurp")),
 
     # Key(['mod4'], 'r', lazy.run_extension(extension.DmenuRun(
     #     dmenu_prompt=">",
