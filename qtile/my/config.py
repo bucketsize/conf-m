@@ -133,16 +133,35 @@ keys = [
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
     Key([mod], "d"
-        , app_launcher()
-        , desc="Spawn app launcher"),
-    
-    Key(["control"], "space"
-        , app_launcher()
+        #, app_launcher()
+        , lazy.spawn("mxctl.control dmenu_run")
         , desc="Spawn app launcher"),
     
     Key([mod], "w"
-        , window_list()
+        #, window_list()
+        , lazy.spawn("mxctl.control dmenu_select_window")
         , desc="Spawn window selector"),
+
+    Key([mod], "q"
+        , lazy.spawn("mxctl.control dmenu_exit")
+        , desc="Exit menu"),
+    
+    # ALT
+    Key([alt], "grave", lazy.window.bring_to_front()),
+    Key([alt], "Tab", lazy.group.next_window()),
+    
+    Key([alt, "control"], "2"
+        , lazy.spawn("mxctl.control dmenu_setup_display")
+        , desc="setup display"),
+    
+    Key([alt, "control"], "3"
+        , lazy.spawn("mxctl.control dmenu_select_pa_sinks")
+        , desc="select pa sink"),
+
+    Key([alt, "control"], "4"
+        , lazy.spawn("mxctl.control dmenu_misc")
+        , desc="Misc menu"),
+
 
     # ALT
     Key([alt], "grave", lazy.window.bring_to_front()),
@@ -151,15 +170,15 @@ keys = [
     # Change the volume if our keyboard has keys
     Key(
         [], "XF86AudioRaiseVolume",
-        lazy.spawn("pactl -i 8%")
+        lazy.spawn("mxctl.control vol_up")
     ),
     Key(
         [], "XF86AudioLowerVolume",
-        lazy.spawn("pactl -d 8%")
+        lazy.spawn("mxctl.control vol_down")
     ),
     Key(
         [], "XF86AudioMute",
-        lazy.spawn("pactl -t")
+        lazy.spawn("mxctl.control vol_mute")
     ),
 
     # backlight controls
@@ -224,18 +243,18 @@ for i in groups:
             # # mod1 + shift + letter of group = move focused window to group
             # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
             #     desc="move focused window to group {}".format(i.name)),
-        ]
-    )
-
+        ])
 border = dict(
     border_focus     = color_map['blue'][0],
     border_normal    = color_map['white'][0],
     border_width     = 2,
+    margin           = 8,
+    radio            = 0.5001,
 )
 
 layouts = [
     layout.Floating(**border),
-    layout.Tile(**border),
+    layout.Spiral(**border),
     layout.Max(),
 ]
 
@@ -256,11 +275,11 @@ top_bar = [
     #         ("Terminal", "qterminal", "Launch QTerminal")
     #     ]
     # ),
-    widget.Sep(),
+    widget.Sep(padding=12),
     widget.WindowName(),
-    widget.Systray(),
-    widget.PulseVolume(
-        update_interval=2
+    widget.Systray(icon_size=24),
+    widget.Volume(
+        update_interval=2,
     ),
     # widget.CPUGraph(
     #     graph_color=color_alert,
@@ -327,6 +346,8 @@ screens = [
     Screen(
         wallpaper = g_home + "/.wlprs/wallpaper",
         wallpaper_mode = "stretch",
+        left=bar.Gap(8),
+        right=bar.Gap(8),
         top=bar.Bar(top_bar,
             24,
         ),
@@ -405,17 +426,9 @@ wl_input_rules = {
     "*": InputConfig(left_handed=False, tap=True),
     "type:pointer": InputConfig(left_handed=False, tap=True),
     "type:keyboard": InputConfig(kb_options="ctrl:nocaps,compose:ralt"),
-    "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(left_handed=True, tap=True, dwt=True),
-    }
 
-# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
-# string besides java UI toolkits; you can see several discussions on the
-# mailing lists, GitHub issues, and other WM documentation that suggest setting
-# this string if your java app doesn't work correctly. We may as well just lie
-# and say that we're a working one by default.
-#
-# We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
-# java that happens to be on java's whitelist.
-# wmname = "LG3D" # set this to have you teeth kicked in.
+    # actual device using `qtile cmd-obj -o core -f get_inputs`
+    "1267:12608:MSFT0001:01 04F3:3140 Touchpad": InputConfig(left_handed=True, tap=True, dwt=True),
+    }
 
 logger.info("qtile config parsed")

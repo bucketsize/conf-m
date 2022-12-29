@@ -125,10 +125,10 @@ function setup_config(name)
     local e = dofile(string.format([[%s/setup]], name))
 	print("..dependsOn")
 	if e.dependsOn then e.dependsOn() end
-	print("..configure")
-	if e.configure then e.configure() end
 	print("..installer")
 	if e.installer then e.installer() end
+	print("..configure")
+	if e.configure then e.configure() end
 	return 0
 end
 function setup_configs(name)
