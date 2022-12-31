@@ -11,6 +11,7 @@ initial-window-size-chars=96x24
 pad=2x2
 # shell=$SHELL (if set, otherwise user's default shell from /etc/passwd)
 # term=foot (or xterm-256color if built with -Dterminfo=disabled)
+term=xterm-256color
 # login-shell=no
 # workers=<number of logical CPUs>
 # bold-text-in-bright=no
@@ -35,9 +36,9 @@ lines=2048
 # alternate-scroll-mode=yes
 
 [colors]
-alpha=0.96
+alpha=0.88
 # foreground=dcdccc
-background=000000
+# background=000000
 # regular0=222222  # black
 # regular1=cc9393  # red
 # regular2=7f9f7f  # green
