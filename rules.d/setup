@@ -6,13 +6,12 @@ local Util = require('minilib.util')
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/weston/my/weston.ini", "~/.config/weston.ini")
-		Shell.ln("$(pwd)/weston/startweston", "~/.local/bin/startweston")
+		Shell.sh([[
+		[ -d /etc/systemd/logind.conf.d ] || sudo mkdir /etc/systemd/logind.conf.d	
+		sudo cp -vf logind.d/my/*.conf /etc/systemd/logind.conf.d/
+		]])
 	end,
 	dependsOn = function()
-		Shell.file_exists("weston")
-		Shell.file_exists("foot")
-
 	end,
 	installer = function()
 	end

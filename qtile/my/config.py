@@ -1,12 +1,22 @@
 from libqtile import bar, layout, widget, hook
 from libqtile import extension, qtile
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord
 from libqtile.lazy import lazy
 from re import findall
 from os import path
 from io import open
-from libqtile.backend.wayland import InputConfig
 from libqtile.log_utils import logger
+
+try:
+    from libqtile.backend.wayland import InputConfig
+except ImportError:
+    pass
+
+import subprocess
+
+logger.info("using backend = " + qtile.core.name)
+
+PYTHONTRACEMALLOC=1
 
 mod        = "mod4"
 alt        = "mod1"
@@ -14,12 +24,32 @@ g_home = path.expanduser('~')
 theme_file = "colors-terminal.sexy-4"
 
 def get_backend():
-    return "wayland"
+    if qtile.core.name == "wayland":
+        return "W"
+    else:
+        return "X"
 
-if get_backend() == "x11":
-    terminal = "alacritty"
-elif get_backend() == "wayland":
-    terminal = "foot"
+backend_opts_map = {
+        "X": {  "terminal": "alacritty"
+              , "windows": lazy.spawn("mxctl.control dmenu_select_window")
+              , "input_rules": None
+              },
+        "W": {  "terminal": "foot"
+              , "windows": lazy.spawn("mxctl.control dmenu_select_window")
+              , "input_rules": {
+                  "*": InputConfig(left_handed=False, tap=True),
+                  "type:pointer": InputConfig(left_handed=False, tap=True),
+                  "type:keyboard": InputConfig(kb_options="ctrl:nocaps,compose:ralt"),
+
+                  # actual device using `qtile cmd-obj -o core -f get_inputs`
+                  "1267:12608:MSFT0001:01 04F3:3140 Touchpad": InputConfig(left_handed=False, tap=True, dwt=True),
+                  }
+              },
+        }    
+
+backend_opts = backend_opts_map[get_backend()]
+
+terminal = backend_opts["terminal"]
 
 def parse_terminal_sexy():
     home = path.expanduser('~/')
@@ -55,39 +85,9 @@ def execute_once(process):
     if not is_running(process):
         return subprocess.Popen(process.split())
 
-@hook.subscribe.startup
-def startup():
-    if get_backend() == "x11":
-        execute_once('picom')
-
 @hook.subscribe.client_focus
 def float_to_front(w):
     w.cmd_bring_to_front()
-
-def app_launcher():
-    if get_backend() == "x11":
-        return lazy.run_extension(extension.DmenuRun(
-            dmenu_prompt=">",
-            dmenu_lines=10,
-            background="#15181a",
-            foreground="#00ff00",
-            selected_background="#079822",
-            selected_foreground="#fff",
-            # dmenu_height=24,  # Only supported by some dmenu forks
-            ))
-    elif get_backend() == "wayland":
-        return lazy.spawn("bemenu-run --center --list 10 --prompt '>>'")
-
-def window_list():
-    if get_backend() == "x11":
-        return lazy.run_extension(extension.WindowList(
-            dmenu_prompt=">",
-            dmenu_lines=10,
-            all_groups = True,
-            # dmenu_height=24,  # Only supported by some dmenu forks
-            ))
-    elif get_backend() == "wayland":
-        return lazy.spawn("bemenu-run --center --list 10 --prompt '>>'")
 
 # only window manangement hotkeys
 # others via triggerhappy
@@ -162,7 +162,6 @@ keys = [
         , lazy.spawn("mxctl.control dmenu_misc")
         , desc="Misc menu"),
 
-
     # ALT
     Key([alt], "grave", lazy.window.bring_to_front()),
     Key([alt], "Tab", lazy.group.next_window()),
@@ -217,6 +216,17 @@ keys = [
     #     },
     # pre_commands=['[ $(mocp -i | wc -l) -lt 1 ] && mocp -S'],
     # **Theme.dmenu))),
+
+    KeyChord([mod], "z", [
+        Key([], "g", lazy.layout.grow()),
+        Key([], "s", lazy.layout.shrink()),
+        Key([], "n", lazy.layout.normalize()),
+        Key([], "m", lazy.layout.maximize())],
+        mode=True,
+        name="Windows"
+    ),
+
+    # Key([alt, "control"], "F2", qtile.change_vt(2))
 ]
 
 groups = [Group(i) for i in "1234"]
@@ -260,13 +270,17 @@ layouts = [
 
 widget_defaults = dict(
     font="monospace",
-    fontsize=14,
-    padding=2,
+    fontsize=16,
+    padding=4,
 )
 
 extension_defaults = widget_defaults.copy()
 
 top_bar = [
+    widget.TextBox(
+        text='',
+        padding=4
+    ),
     widget.Clock(
         format='%a %d %b %Y %H:%M:%S', **widget_defaults
     ),
@@ -280,6 +294,7 @@ top_bar = [
     widget.Systray(icon_size=24),
     widget.Volume(
         update_interval=2,
+        fmt="墳 {}"
     ),
     # widget.CPUGraph(
     #     graph_color=color_alert,
@@ -291,10 +306,12 @@ top_bar = [
     #     width=50,
     #     )
     widget.CPU(
-        update_interval=2,
+        format=" {load_percent}%",
+        update_interval=2
     ),
     widget.ThermalZone(
-        update_interval=2
+        update_interval=2,
+        format=" {temp}°C"
     ),
     # widget.MemoryGraph(
     #     graph_color=color_alert,
@@ -306,10 +323,13 @@ top_bar = [
     #     width=50,
     #     ),
     widget.Memory(
-        format="Mem {MemUsed: .0f}{mm}",
-        update_interval=2,
+        format="溜{MemUsed: .0f}{mm}",
+        update_interval=2
     ),
-    widget.Wlan(),
+    widget.Wlan(
+        format=" {essid} {quality}",
+        update_interval=2
+    ),
     # widget.Net(
     #    interface = "wlp0s20f3",
     #    format = 'Net: {down} ↓↑ {up}',
@@ -319,8 +339,8 @@ top_bar = [
                    energy_full_file = "charge_full",
                    power_now_file = "current_now",
                    update_delay = 5,
-                   charge_char = u'↑',
-                   discharge_char = u'↓',),
+                   charge_char = u'',
+                   discharge_char = u'',),
     # widget.QuickExit(),
 ]
 
@@ -336,9 +356,18 @@ bottom_bar = [
     widget.TaskList(
         border=color_frame,
         highlight_method='block',
-        max_title_width=256,
+        max_title_width=196,
         urgent_border=color_alert,
     ),
+    widget.TextBox(
+        text=' ',
+        padding=2
+        ),
+    widget.CheckUpdates(
+        update_interval=18000,
+        display_format="{updates}",
+        colour_have_updates="#191724",
+        ),
     widget.CurrentLayoutIcon(),
 ]
 
@@ -346,13 +375,15 @@ screens = [
     Screen(
         wallpaper = g_home + "/.wlprs/wallpaper",
         wallpaper_mode = "stretch",
-        left=bar.Gap(8),
-        right=bar.Gap(8),
+        #left=bar.Gap(8),
+        #right=bar.Gap(8),
         top=bar.Bar(top_bar,
-            24,
+            26,
+            background="#00000088"
         ),
         bottom=bar.Bar(bottom_bar,
-            24,
+            26,
+            background="#00000088"
         ),
     ),
 ]
@@ -422,13 +453,11 @@ auto_minimize = True
 
 # When using the Wayland backend, this can be used to configure input devices.
 # wl_input_rules = None
-wl_input_rules = {
-    "*": InputConfig(left_handed=False, tap=True),
-    "type:pointer": InputConfig(left_handed=False, tap=True),
-    "type:keyboard": InputConfig(kb_options="ctrl:nocaps,compose:ralt"),
-
-    # actual device using `qtile cmd-obj -o core -f get_inputs`
-    "1267:12608:MSFT0001:01 04F3:3140 Touchpad": InputConfig(left_handed=True, tap=True, dwt=True),
-    }
+wl_input_rules = backend_opts["input_rules"] 
 
 logger.info("qtile config parsed")
+@hook.subscribe.startup
+def startup():
+    if get_backend() == "X":
+        execute_once('picom')
+

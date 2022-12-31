@@ -19,6 +19,9 @@ openssl
 read-edid
 xdg-desktop-portal-wlr
 ethtool
+lshw
+pam
+
 
 ## power saving
 cpupower
@@ -26,6 +29,8 @@ upower
 thermald
 tlp
 acpi
+powertop
+smartmontools
 
 ## network
 connman 
@@ -35,7 +40,13 @@ avahi
 ## audio
 alsa-tools
 alsa-utils
-pipewire-alsa pipewire-audio pipewire-jack pipewire-pulse pipewire-media-session pipewire-v4l2                            
+pipewire
+pipewire-pulse
+pipewire-audio 
+pipewire-v4l2                            
+pipewire-jack
+pipewire-alsa
+wireplumber
 
 # cli apps
 brightnessctl 
@@ -48,7 +59,6 @@ redshift
 gammastep
 
 # term apps 
-wget
 tmux
 ranger
 htop
@@ -71,6 +81,12 @@ zip
 unzip
 connman-gtk #aur
 steam #aur
+alacritty
+rxvt-unicode
+pcmanfm
+gvfs
+gvfs-mtp
+gvfs-afc
 
 # mediaplayer
 mpd
@@ -103,7 +119,9 @@ pixman1
 
 # wayland 
 greetd 
-gtkgreet
+greetd-gtkgreet | greetd-gtkgreet-git | greetd-tuigreet
+gtklock
+gtklock-userinfo-module gtklock-powerbar-module gtklock-playerctl-module
 cage 
 foot
 bemenu
@@ -111,9 +129,9 @@ clipman
 clipmenu wl-clipboard
 drm_info
 grim
+slurp
 imv 
 kanshi 
-slurp
 wdisplays #aur
 wev #aur
 wlsunset
@@ -122,8 +140,12 @@ swhkd-bin #aur
 wmctrl
 wev
 wbg
-greetd-tuigreet #aur
-greetd-gtkgreet #aur
+wayland-client
+wayland-utils
+
+# X / openbox 
+openbox obconf2 feh
+arandr
 
 # weston
 weston
@@ -137,4 +159,11 @@ python-pip
 python-psutil
 python-iwlib
 python-dbus-next
+
+# nvidia
+nvidia
+opencl-nvidia
+nvidia-prime
+envycontrol
+mesa-utils 
 

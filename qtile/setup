@@ -7,8 +7,7 @@ local Util = require('minilib.util')
 return {
 	configure = function()
 		Shell.ln ("$(pwd)/qtile/my","~/.config/qtile")
-		--deprecated: doesnt work well
-		--Shell.ln("$(pwd)/qtile/startqtile", "~/startqtile")
+		Shell.ln ("$(pwd)/qtile/startqtile", "~/.local/bin/startqtile")
 	end,
 	dependsOn = function()
 		Shell.file_exists ("qtile")
