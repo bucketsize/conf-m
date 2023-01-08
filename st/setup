@@ -5,14 +5,16 @@ local Shell = require('minilib.shell')
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/qtile/my","~/.config/qtile")
+		if not Shell.path_exists("~/.local/bin/stterm") then
+			Shell.sh([[chmod +x $(pwd)/st/bin/stterm]])
+		end
 	end,
 	dependsOn = function()
-		Shell.file_exists ("qtile")
 	end,
 	installer = function()
 		Shell.sh ([[
-			cp $(pwd)/qtile/bin/* ${HOME}/.local/bin/
+			cp $(pwd)/st/bin/* ${HOME}/.local/bin/
 			]])
 	end
 }
+

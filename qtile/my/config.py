@@ -14,10 +14,6 @@ except ImportError:
 
 import subprocess
 
-logger.info("using backend = " + qtile.core.name)
-
-PYTHONTRACEMALLOC=1
-
 mod        = "mod4"
 alt        = "mod1"
 g_home = path.expanduser('~')
@@ -33,6 +29,7 @@ backend_opts_map = {
         "X": {  "terminal": "alacritty"
               , "windows": lazy.spawn("mxctl.control dmenu_select_window")
               , "input_rules": None
+              , "keys": []
               },
         "W": {  "terminal": "foot"
               , "windows": lazy.spawn("mxctl.control dmenu_select_window")
@@ -44,7 +41,15 @@ backend_opts_map = {
                   # actual device using `qtile cmd-obj -o core -f get_inputs`
                   "1267:12608:MSFT0001:01 04F3:3140 Touchpad": InputConfig(left_handed=False, tap=True, dwt=True),
                   }
+              , "keys": [  Key([alt, "control"], "F1", lazy.change_vt(1))
+                         , Key([alt, "control"], "F2", lazy.change_vt(2))
+                         , Key([alt, "control"], "F3", lazy.change_vt(3))
+                         , Key([alt, "control"], "F4", lazy.change_vt(4))
+                         , Key([alt, "control"], "F5", lazy.change_vt(5))
+                         , Key([alt, "control"], "F6", lazy.change_vt(6))
+                  ]
               },
+             
         }    
 
 backend_opts = backend_opts_map[get_backend()]
@@ -225,9 +230,7 @@ keys = [
         mode=True,
         name="Windows"
     ),
-
-    # Key([alt, "control"], "F2", qtile.change_vt(2))
-]
+] + backend_opts["keys"]
 
 groups = [Group(i) for i in "1234"]
 
@@ -454,10 +457,3 @@ auto_minimize = True
 # When using the Wayland backend, this can be used to configure input devices.
 # wl_input_rules = None
 wl_input_rules = backend_opts["input_rules"] 
-
-logger.info("qtile config parsed")
-@hook.subscribe.startup
-def startup():
-    if get_backend() == "X":
-        execute_once('picom')
-

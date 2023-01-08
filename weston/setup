@@ -7,7 +7,6 @@ local Util = require('minilib.util')
 return {
 	configure = function()
 		Shell.ln("$(pwd)/weston/my/weston.ini", "~/.config/weston.ini")
-		Shell.ln("$(pwd)/weston/startweston", "~/.local/bin/startweston")
 	end,
 	dependsOn = function()
 		Shell.file_exists("weston")
@@ -15,5 +14,8 @@ return {
 
 	end,
 	installer = function()
+		Shell.sh ([[
+			cp $(pwd)/weston/bin/* ${HOME}/.local/bin/
+			]])
 	end
 }

@@ -1,6 +1,10 @@
+#!/bin/sh
+
 # exec ~/.xmonad/xmonad-x86_64-linux
 # exec openbox-session
 # exec bspwm
 # exec ~/.local/bin/fwm_penrose
 # exec ~/.local/bin/qtile start
-exec qtile start
+# exec qtile start
+
+source ~/.local/bin/startx-default

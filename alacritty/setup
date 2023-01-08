@@ -36,20 +36,15 @@ function setup_prebuilt()
 		x86_64  = "https://github.com/bucketsize/alacritty/releases/download/20220723/alacritty.x86_64.tar.gz"
 	}
 	local arch = Shell.arch()
-	Shell.wget(rel[arch], "/tmp/alacritty.tgz")
-	Shell.sh([[
-        tar -xvzf /tmp/alacritty.tgz -C /tmp
-		mv /tmp/target/release/alacritty ~/.local/bin/
-		]])
-	if arch == "aarch64" then
+	if not Shell.file_exists("alacritty") then
+		Shell.wget(rel[arch], "/tmp/alacritty.tgz")
 		Shell.sh([[
-			mv ~/.local/bin/alacritty ~/.local/bin/_alacritty
-			cat > ~/.local/bin/alacritty <<-EOF
-#!/bin/sh
-LIBGL_ALWAYS_SOFTWARE=1 ~/.local/bin/_alacritty
-EOF
-			chmod +x ~/.local/bin/alacritty
+			tar -xvzf /tmp/alacritty.tgz -C /tmp
+			mv /tmp/target/release/alacritty ~/.local/bin/
 			]])
+	end
+	if not Shell.file_exists("alacritty.nogl") then
+		Shell.sh([[chmod +x $(pwd)/alacritty/bin/alacritty.nogl]])
 	end
 end
 
@@ -64,6 +59,9 @@ return {
 	installer = function()
 		-- build_pack()
 		setup_prebuilt()
+		Shell.sh ([[
+			cp $(pwd)/alacritty/bin/* ${HOME}/.local/bin/
+			]])
 	end
 }
 

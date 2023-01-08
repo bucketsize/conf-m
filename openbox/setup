@@ -12,6 +12,10 @@ return {
 		Shell.file_exists ("openbox", "obconf")
 	end,
 	installer = function()
+		Shell.sh ([[
+			cp $(pwd)/openbox/bin/* ${HOME}/.local/bin/
+			]])
+		
 		-- theme
 		Shell.mkdir ("~/.themes")
 

@@ -12,5 +12,8 @@ return {
 		Shell.file_exists ("bspwm")
 	end,
 	installer = function()
+		Shell.sh ([[
+			cp $(pwd)/bspwm/bin/* ${HOME}/.local/bin/
+			]])
 	end
 }
