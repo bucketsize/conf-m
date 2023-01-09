@@ -4,12 +4,6 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util = require('minilib.util')
 
-Shell.file_exists("xinit")
-
-Shell.sh([[
-	sudo ln -sfv $(pwd)/xinit/my/30-touchpad.conf /etc/X11/xorg.conf.d/
-	]])
-
 return {
 	configure = function()
 	end,

@@ -7,4 +7,4 @@
 # exec ~/.local/bin/qtile start
 # exec qtile start
 
-source ~/.local/bin/startx-default
+$(cat /tmp/99-xinitrc)

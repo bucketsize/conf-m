@@ -5,6 +5,9 @@ local Shell = require('minilib.shell')
 
 return {
 	configure = function()
+		Shell.sh([[
+		sudo cp -vf greetd/my/* /etc/greetd/
+		]])
 	end,
 	dependsOn = function()
 	end,

@@ -1,4 +1,4 @@
 #!/bin/sh
 
-echo "exec bspw" > /tmp/99-xinitrc
+echo "exec bspwm" > /tmp/99-xinitrc
 sleep 1 && startx

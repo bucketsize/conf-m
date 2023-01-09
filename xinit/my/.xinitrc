@@ -5,7 +5,4 @@ export XDG_SESSION_TYPE=x11
 export GDK_BACKEND=x11
 export XDG_CURRENT_DESKTOP=GNOME
 
-#exec gnome-session
-#exec openbox-session
-#exec i3
-exec bspwm
+$(cat /tmp/99-xinitrc)
