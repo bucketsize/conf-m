@@ -4,11 +4,11 @@ require "luarocks.loader"
 local Shell = require('minilib.shell')
 local Util  = require('minilib.util')
 
-Shell.file_exists("xrdb")
-Shell.ln("$(pwd)/Xresources/my","~/.config/xresources.d")
-Shell.ln("$(pwd)/Xresources/my/Xresources","~/.Xresources")
 return {
 	configure = function()
+		Shell.file_exists("xrdb")
+		Shell.ln("$(pwd)/Xresources/my","~/.config/xresources.d")
+		Shell.ln("$(pwd)/Xresources/my/Xresources","~/.Xresources")
 	end,
 	dependsOn = function()
 	end,

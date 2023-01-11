@@ -6,7 +6,6 @@ local Sh = require("minilib.shell")
 local Ut = require("minilib.util")
 local Tr = require("minilib.timer")
 
-function autostart()
 	Sh.sh([[
 		xrdb -merge ~/.Xresources
 		xhost +
@@ -20,7 +19,7 @@ function autostart()
 	Tr.sleep(1)
     
 	-- needed on VBox for proper display scaling
-	Sh.forkonce("VBoxClient", "--vmsvga")
+	Sh.forkonce("name=vbox_vga VBoxClient", "--vmsvga")
 
     -- sys key binder
 	-- Sh.forkonce("thd", " --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
@@ -47,10 +46,6 @@ function autostart()
 	Sh.forkonce("name=lemonbar tail", "-f /tmp/frmad.lemonbar.out | lemonbar -B '#000000' -F '#ba8040' ") -- xmobar or conky or lemonbar
     
 	-- Sh.forkonce("tint2")
-    Sh.forkonce("lxqt-policykit-agent")
-    Sh.forkonce("lxqt-powermanagement")
-	Sh.forkonce("qlipper")
-    Sh.forkonce("VBoxClient", "--clipboard")
-end
-
-return autostart
+    Sh.forkonce("lxpolkit")
+	Sh.forkonce("diodon")
+    Sh.forkonce("name=vbox_clipboard VBoxClient", "--clipboard")

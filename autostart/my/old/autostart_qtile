@@ -6,7 +6,6 @@ local Sh = require("minilib.shell")
 local Ut = require("minilib.util")
 local Tr = require("minilib.timer")
 
-function autostart()
 	Sh.sh([[
 		xrdb -merge ~/.Xresources
 		xhost +
@@ -51,6 +50,3 @@ function autostart()
     Sh.forkonce("lxqt-powermanagement")
 	Sh.forkonce("qlipper")
     Sh.forkonce("VBoxClient", "--clipboard")
-end
-
-return autostart

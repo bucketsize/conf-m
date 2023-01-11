@@ -5,7 +5,6 @@ require "luarocks.loader"
 local Sh = require("minilib.shell")
 local Ut = require("minilib.util")
 
-function autostart()
 	Sh.sh([[
 		# incase xwayland is needed
 		xrdb -merge ~/.Xresources
@@ -34,6 +33,3 @@ function autostart()
 
 	-- get wallpaper and symlink for next time
 	Sh.sh("mxctl.control getwallpaper")
-end
-
-return autostart
