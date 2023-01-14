@@ -49,3 +49,5 @@ local Tr = require("minilib.timer")
     Sh.forkonce("lxpolkit")
 	Sh.forkonce("diodon")
     Sh.forkonce("name=vbox_clipboard VBoxClient", "--clipboard")
+
+	Sh.forkonce("xss-lock", "gtklock")

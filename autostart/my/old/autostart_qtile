@@ -45,8 +45,8 @@ local Tr = require("minilib.timer")
 
 	Sh.forkonce("name=lemonbar tail", "-f /tmp/frmad.lemonbar.out | lemonbar -B '#000000' -F '#ba8040' ") -- xmobar or conky or lemonbar
     
-	-- Sh.forkonce("tint2")
-    Sh.forkonce("lxqt-policykit-agent")
-    Sh.forkonce("lxqt-powermanagement")
-	Sh.forkonce("qlipper")
+	Sh.forkonce("lxpolkit")
+	Sh.forkonce("diodon")
     Sh.forkonce("VBoxClient", "--clipboard")
+
+	Sh.forkonce("xss-lock", "gtklock")
