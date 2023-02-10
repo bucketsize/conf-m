@@ -28,7 +28,7 @@ bspc rule -a vlc state=floating
 
 # widgets
 bspc rule -a Conky state=floating
-bspc rule -a Popeye state=floating
+bspc rule -a Popeye state=floating follow=on
 
 # gaming
 bspc rule -a Steam desktop=^5 state=floating follow=on
