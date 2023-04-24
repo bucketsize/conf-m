@@ -13,6 +13,8 @@ bspc config focus_follows_pointer false
 bspc rule -a Chromium desktop=^2
 bspc rule -a Chromium-browser desktop=^2
 bspc rule -a Firefox  desktop=^2
+bspc rule -a firefox  desktop=^2
+bspc rule -a Navigator desktop=^2
 
 # ide
 bspc rule -a Eclipse  desktop=^3 state=floating
@@ -28,7 +30,7 @@ bspc rule -a vlc state=floating
 
 # widgets
 bspc rule -a Conky state=floating
-bspc rule -a Popeye state=floating
+bspc rule -a Popeye state=floating follow=on
 
 # gaming
 bspc rule -a Steam desktop=^5 state=floating follow=on
