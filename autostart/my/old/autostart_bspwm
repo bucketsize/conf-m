@@ -6,48 +6,48 @@ local Sh = require("minilib.shell")
 local Ut = require("minilib.util")
 local Tr = require("minilib.timer")
 
-	Sh.sh([[
-		xrdb -merge ~/.Xresources
-		xhost +
-		xsetroot -cursor_name left_ptr
-		setxkbmap us
-    
-		# dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
-		dbus-launch --sh-syntax --exit-with-session
-		dbus-update-activation-environment --systemd --all
-	]])
-	Tr.sleep(1)
-    
-	-- needed on VBox for proper display scaling
-	Sh.forkonce("name=vbox_vga VBoxClient", "--vmsvga")
+Sh.sh([[
+xrdb -merge ~/.Xresources
+xhost +
+xsetroot -cursor_name left_ptr
+setxkbmap us
 
-    -- sys key binder
-	-- Sh.forkonce("thd", " --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
-	Sh.forkonce("sxhkd", " -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc")
-	Sh.forkonce("mpd")
-	Sh.forkonce("picom")
-    Sh.forkonce("dunst")
-    Sh.forkonce("tint2")
-	
-	-- Sh.forkonce("urxvtd", "-q -o -f")
-	-- Ut.sleep(1)
-	-- Sh.forkonce("urxvtc")  -- to be safe
-	-- Sh.forkonce("stterm")
-	Tr.sleep(1)
-	
-	Sh.sh("mxctl.control setup_video")
-	Tr.sleep(1)
-	
-	Sh.sh("mxctl.control applywallpaper")
-	
-	Sh.forkonce("frmad.daemon")
-	Tr.sleep(1)
+# dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
+dbus-launch --sh-syntax --exit-with-session
+dbus-update-activation-environment --systemd --all
+]])
+Tr.sleep(1)
 
-	Sh.forkonce("name=lemonbar tail", "-f /tmp/frmad.lemonbar.out | lemonbar -B '#000000' -F '#ba8040' ") -- xmobar or conky or lemonbar
-    
-	-- Sh.forkonce("tint2")
-    Sh.forkonce("lxpolkit")
-	Sh.forkonce("diodon")
-    Sh.forkonce("name=vbox_clipboard VBoxClient", "--clipboard")
+-- needed on VBox for proper display scaling
+Sh.forkonce("name=vbox_vga VBoxClient", "--vmsvga")
 
-	Sh.forkonce("xss-lock", "gtklock")
+-- sys key binder
+-- Sh.forkonce("thd", " --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
+Sh.forkonce("sxhkd", "-c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc")
+Sh.forkonce("mpd")
+Sh.forkonce("picom")
+Sh.forkonce("dunst")
+Sh.forkonce("tint2")
+
+-- Sh.forkonce("urxvtd", "-q -o -f")
+-- Ut.sleep(1)
+-- Sh.forkonce("urxvtc")  -- to be safe
+-- Sh.forkonce("stterm")
+Sh.forkonce("alacritty")
+Tr.sleep(1)
+
+Sh.sh("mxctl.control setup_video")
+Tr.sleep(1)
+
+Sh.sh("mxctl.control applywallpaper")
+
+Sh.forkonce("frmad.daemon")
+Tr.sleep(1)
+
+Sh.forkonce("name=lemonbar tail", "-f /tmp/frmad.lemonbar.out | lemonbar -B '#000000' -F '#ba8040' ") -- xmobar or conky or lemonbar
+
+Sh.forkonce("lxpolkit")
+Sh.forkonce("diodon")
+Sh.forkonce("name=vbox_clipboard VBoxClient", "--clipboard")
+
+--Sh.forkonce("xss-lock", "gtklock")

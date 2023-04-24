@@ -22,8 +22,11 @@ local Ut = require("minilib.util")
 	Sh.forkonce("VBoxClient", " --vmsvga")
 
     -- sys key binder
-	-- Sh.forkonce("thd", " --triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
-	Sh.sh("(swhks &) && pkexec swhkd -c ~/.config/sxhkd/sharedrc")
+	Sh.forkonce("thd", "--triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
+	
+	-- swhkd has some permission problems with regular user 
+	-- hence going to use thd for now
+	-- Sh.sh("(swhks &) && pkexec swhkd -c ~/.config/sxhkd/sharedrc")
 
 	Sh.forkonce("mpd")
     Sh.forkonce("dunst")
@@ -31,5 +34,5 @@ local Ut = require("minilib.util")
 	-- for guest <> host clipboard working
     Sh.forkonce("VBoxClient", " --clipboard")
 
-	-- get wallpaper and symlink for next time
+	-- get wallpaper and symlink for next login
 	Sh.sh("mxctl.control getwallpaper")
