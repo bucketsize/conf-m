@@ -44,9 +44,8 @@ Sh.sh("mxctl.control applywallpaper")
 Sh.forkonce("frmad.daemon")
 Tr.sleep(1)
 
-Sh.forkonce("name=lemonbar tail", "-f /tmp/frmad.lemonbar.out | lemonbar -B '#000000' -F '#ba8040' ") -- xmobar or conky or lemonbar
+Sh.forkonce("name=lemonbar tail", "-f /tmp/frmad.lemonbar.out | lemonbar") -- xmobar or conky or lemonbar
 
-Sh.forkonce("lxpolkit")
 Sh.forkonce("diodon")
 Sh.forkonce("name=vbox_clipboard VBoxClient", "--clipboard")
 
