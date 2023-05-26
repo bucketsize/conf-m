@@ -1,9 +1,8 @@
 #!/usr/bin/env lua
 
-require "luarocks.loader"
+require("luarocks.loader")
 
 local Sh = require("minilib.shell")
-local Ut = require("minilib.util")
 local Tr = require("minilib.timer")
 
 Sh.sh([[
@@ -19,7 +18,8 @@ dbus-update-activation-environment --systemd --all
 Tr.sleep(1)
 
 -- needed on VBox for proper display scaling
-Sh.forkonce("name=vbox_vga VBoxClient", "--vmsvga")
+Sh.forkonce("VBoxClient", "--vmsvga")
+Sh.forkonce("VBoxClient", "--clipboard")
 
 -- sys key binder
 -- Sh.forkonce("thd", " --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
@@ -28,25 +28,24 @@ Sh.forkonce("mpd")
 Sh.forkonce("picom")
 Sh.forkonce("dunst")
 Sh.forkonce("tint2")
+Sh.forkonce("parcellite")
 
 -- Sh.forkonce("urxvtd", "-q -o -f")
 -- Ut.sleep(1)
 -- Sh.forkonce("urxvtc")  -- to be safe
 -- Sh.forkonce("stterm")
-Sh.forkonce("alacritty")
-Tr.sleep(1)
+-- Sh.forkonce("alacritty")
 
 Sh.sh("mxctl.control setup_video")
-Tr.sleep(1)
-
 Sh.sh("mxctl.control applywallpaper")
 
+Sh.sh([[
+p=/tmp/frmad.lemonbar.out
+[ -p $p] || mkfifo $p
+]])
 Sh.forkonce("frmad.daemon")
 Tr.sleep(1)
 
-Sh.forkonce("name=lemonbar tail", "-f /tmp/frmad.lemonbar.out | lemonbar") -- xmobar or conky or lemonbar
-
-Sh.forkonce("diodon")
-Sh.forkonce("name=vbox_clipboard VBoxClient", "--clipboard")
+Sh.forkonce("tail", "-f /tmp/frmad.lemonbar.out | lemonbar") -- xmobar or conky or lemonbar
 
 --Sh.forkonce("xss-lock", "gtklock")

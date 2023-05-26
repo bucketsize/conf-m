@@ -19,6 +19,9 @@ control + bracketleft
 control + backslash
 	mxctl.control vol_mute
 
+alt + h 
+  parcellite 
+
 #
 # multimedia keys
 #
@@ -49,6 +52,13 @@ super + w
 super + q
 	mxctl.control dmenu_exit
 
+control + alt + Delete
+	mxctl.control dmenu_exit
+
+control + alt + l
+	mxctl.control scr_lock
+
+
 control + alt + 2
 	mxctl.control dmenu_setup_video
 
@@ -57,10 +67,4 @@ control + alt + 3
 
 control + alt + 9
 	mxctl.control dmenu_misc
-
-control + alt + Delete
-	mxctl.control dmenu_exit
-
-control + alt + l
-	mxctl.control scr_lock
 
