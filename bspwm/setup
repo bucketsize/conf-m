@@ -1,19 +1,19 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/bspwm/my","~/.config/bspwm")
+		Shell.ln("$(pwd)/bspwm/my", "~/.config/bspwm")
 	end,
 	dependsOn = function()
-		Shell.file_exists ("bspwm")
+		Shell.file_exists("bspwm")
 	end,
 	installer = function()
-		Shell.sh ([[
+		Shell.sh([[
 			cp $(pwd)/bspwm/bin/* ${HOME}/.local/bin/
+      chmod +x $(pwd)/bspwm/my/bspwmrc
 			]])
-	end
+	end,
 }

@@ -40,12 +40,12 @@ Sh.sh("mxctl.control setup_video")
 Sh.sh("mxctl.control applywallpaper")
 
 Sh.sh([[
-p=/tmp/frmad.lemonbar.out
+p=/tmp/frmad.lemonbar.out.${USER}
 [ -p $p] || mkfifo $p
 ]])
 Sh.forkonce("frmad.daemon")
 Tr.sleep(1)
 
-Sh.forkonce("tail", "-f /tmp/frmad.lemonbar.out | lemonbar") -- xmobar or conky or lemonbar
+Sh.forkonce("tail", "-f /tmp/frmad.lemonbar.out.${USER} | lemonbar") -- xmobar or conky or lemonbar
 
 --Sh.forkonce("xss-lock", "gtklock")

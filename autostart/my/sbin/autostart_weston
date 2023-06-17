@@ -1,38 +1,40 @@
 #!/usr/bin/env lua
 
-require "luarocks.loader"
+require("luarocks.loader")
 
 local Sh = require("minilib.shell")
-local Ut = require("minilib.util")
+local Tr = require("minilib.timer")
 
-	Sh.sh([[
-		# incase xwayland is needed
-		xrdb -merge ~/.Xresources
-		xhost +
-		xsetroot -cursor_name left_ptr
-		
-		setxkbmap us
-    
-		# dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
-		dbus-launch --sh-syntax --exit-with-session
-		dbus-update-activation-environment --systemd --all
-	]])
-    
-	-- needed on VBox for proper display scaling
-	Sh.forkonce("VBoxClient", " --vmsvga")
+Sh.sh([[
+xrdb -merge ~/.Xresources
+xhost +
+xsetroot -cursor_name left_ptr
+setxkbmap us
 
-    -- sys key binder
-	Sh.forkonce("thd", "--triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
-	
-	-- swhkd has some permission problems with regular user 
-	-- hence going to use thd for now
-	-- Sh.sh("(swhks &) && pkexec swhkd -c ~/.config/sxhkd/sharedrc")
+# dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
+dbus-launch --sh-syntax --exit-with-session
+dbus-update-activation-environment --systemd --all
+]])
+Tr.sleep(1)
 
-	Sh.forkonce("mpd")
-    Sh.forkonce("dunst")
+-- needed on VBox for proper display scaling
+Sh.forkonce("VBoxClient", "--vmsvga")
+Sh.forkonce("VBoxClient", "--clipboard")
 
-	-- for guest <> host clipboard working
-    Sh.forkonce("VBoxClient", " --clipboard")
+Sh.forkonce("mpd")
+Sh.forkonce("dunst")
 
-	-- get wallpaper and symlink for next login
-	Sh.sh("mxctl.control getwallpaper")
+-- Sh.forkonce("alacritty")
+Sh.sh("mxctl.control getwallpaper")
+
+-- sys key binder
+Sh.forkonce("thd", "--triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
+
+-- swhkd has some permission problems with regular user
+-- hence going to use thd for now
+-- Sh.sh("(swhks &) && pkexec swhkd -c ~/.config/sxhkd/sharedrc")
+
+-- get wallpaper and symlink for next login
+Sh.sh("mxctl.control getwallpaper")
+
+-- Sh.forkonce("xss-lock", "gtklock")

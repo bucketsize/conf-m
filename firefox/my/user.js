@@ -31,12 +31,12 @@ user_pref("dom.enable_performance",				true);
 // PREF: Disable resource timing API
 // https://www.w3.org/TR/resource-timing/#privacy-security
 // NOTICE: Disabling resource timing API breaks some DDoS protection pages (Cloudflare)
-//user_pref("dom.enable_resource_timing",				false);
+user_pref("dom.enable_resource_timing",				true);
 
 // PREF: Make sure the User Timing API does not provide a new high resolution timestamp
 // https://trac.torproject.org/projects/tor/ticket/16336
 // https://www.w3.org/TR/2013/REC-user-timing-20131212/#privacy-security
-//user_pref("dom.enable_user_timing",				false);
+user_pref("dom.enable_user_timing",				true);
 
 // PREF: Disable Web Audio API
 // https://bugzilla.mozilla.org/show_bug.cgi?id=1288359
@@ -811,26 +811,26 @@ user_pref("browser.cache.offline.enable",			false);
 // NOTICE: Installing user.js **will remove your saved passwords** (https://github.com/pyllyukko/user.js/issues/27)
 // NOTICE: Clearing open windows on Firefox exit causes 2 windows to open when Firefox starts https://bugzilla.mozilla.org/show_bug.cgi?id=1334945
 user_pref("privacy.sanitize.sanitizeOnShutdown",		true);
-//user_pref("privacy.clearOnShutdown.cache",			true);
-//user_pref("privacy.clearOnShutdown.cookies",			true);
-//user_pref("privacy.clearOnShutdown.downloads",			true);
+user_pref("privacy.clearOnShutdown.cache",			false);
+user_pref("privacy.clearOnShutdown.cookies",			false);
+user_pref("privacy.clearOnShutdown.downloads",			false);
 user_pref("privacy.clearOnShutdown.formdata",			true);
-//user_pref("privacy.clearOnShutdown.history",			true);
-//user_pref("privacy.clearOnShutdown.offlineApps",		true);
-//user_pref("privacy.clearOnShutdown.sessions",			true);
+user_pref("privacy.clearOnShutdown.history",			true);
+user_pref("privacy.clearOnShutdown.offlineApps",		false);
+user_pref("privacy.clearOnShutdown.sessions",			false);
 user_pref("privacy.clearOnShutdown.openWindows",		true);
 
 // PREF: Set time range to "Everything" as default in "Clear Recent History"
 user_pref("privacy.sanitize.timeSpan",				0);
 
 // PREF: Clear everything but "Site Preferences" in "Clear Recent History"
-user_pref("privacy.cpd.offlineApps",				true);
-user_pref("privacy.cpd.cache",					true);
-user_pref("privacy.cpd.cookies",				true);
-user_pref("privacy.cpd.downloads",				true);
+user_pref("privacy.cpd.offlineApps",				false);
+user_pref("privacy.cpd.cache",					false);
+user_pref("privacy.cpd.cookies",				false);
+user_pref("privacy.cpd.downloads",				false);
 user_pref("privacy.cpd.formdata",				true);
 user_pref("privacy.cpd.history",				true);
-user_pref("privacy.cpd.sessions",				true);
+user_pref("privacy.cpd.sessions",				false);
 
 // PREF: Don't remember browsing history
 user_pref("places.history.enabled",				false);
@@ -846,7 +846,8 @@ user_pref("browser.cache.memory.enable",		true);
 // PREF: Disable Caching of SSL Pages
 // CIS Version 1.2.0 October 21st, 2011 2.5.8
 // http://kb.mozillazine.org/Browser.cache.disk_cache_ssl
-//user_pref("browser.cache.disk_cache_ssl",			false);
+// JS-based: almost everything is ssl 
+user_pref("browser.cache.disk_cache_ssl",			true);
 
 // PREF: Disable download history
 // CIS Version 1.2.0 October 21st, 2011 2.5.5

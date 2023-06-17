@@ -1,94 +1,96 @@
 #!/usr/bin/env lua
 
-
 --package.path = os.getenv("HOME") .. ";" .. package.path
-require "luarocks.loader"
+require("luarocks.loader")
 
-print ("boostrapping minilib ...")
+print("boostrapping minilib ...")
 os.execute("minilib/setup")
-print ("done.")
+print("done.")
 
-local Sh = require('minilib.shell')
-local Pr = require('minilib.process')
-local Ut = require('minilib.util')
-
+local Sh = require("minilib.shell")
+local Pr = require("minilib.process")
 
 local config_group = {
-    openbox = {
-        Xresources = {},
+	openbox = {
+		Xresources = {},
 		xinit = {},
-        autostart = {},
-        openbox = {},
-        triggerhappy = {},
+		autostart = {},
+		openbox = {},
+		-- triggerhappy = {}, -- deprecated
+		sxhkd = {},
 		tint2 = {},
-		lemonbar = {}
-    },
-    bspwm = {
-        Xresources = {},
+		lemonbar = {},
+	},
+	bspwm = {
+		Xresources = {},
 		xinit = {},
-        autostart = {},
-        bspwm = {},
-        sxhkd = {},
+		autostart = {},
+		bspwm = {},
+		sxhkd = {},
 		tint2 = {},
-		lemonbar = {}
-    },
-    common = {
+		lemonbar = {},
+	},
+	common = {
 		misc = {},
-        fontconfig = {},
-        gtk = {},
+		fontconfig = {},
+		gtk = {},
 		qt5ct = {},
-        dunst = {},
-        firefox = {},
-        chromium = {},
-		qutebrowser = {},
-        vim = {},
-        nvim = {},
-        mpd = {},
-        ympd = {state="noi"},
-        mpv = {},
-        mxctl = {},
-        frmad = {},
-        lspd = {},
-        tz = {},
-        fseer = {state="noi"},
-        conky = {},
-        pipewire = {},
-        alacritty = {},
-		["qterminal.org"] = {},
-        ["tlp.d"] = {},
-        ["sysctl.d"] = {},
-    },
-    wayland_weston = {
-        weston = {},
-        foot = {},
-        triggerhappy = {}
-    },
+		dunst = {},
+		-- firefox = {},-- custom
+		chromium = {},
+		-- qutebrowser = {}, -- bad browser, user chromium or firefox
+		-- vim = {},
+		-- lspd = {}, -- custom
+		-- nvim = {}, -- custom
+		-- mpd = {},  -- custom
+		-- ympd = {}, -- custom
+		mpv = {},
+		mxctl = {},
+		frmad = {},
+		-- fseer = {}, -- pilot - abandoned
+		-- conky = {},
+		-- pipewire = {}, -- custom, ignore if pulseaudio works fine
+		alacritty = {},
+		-- ["qterminal.org"] = {},
+
+		-- sys
+		-- ["tlp.d"] = {},
+		-- ["sysctl.d"] = {},
+		-- tz = {}, -- sys
+	},
+	wayland_weston = {
+		weston = {},
+		foot = {},
+		triggerhappy = {},
+	},
 	wayland_qtile = {
-        qtile = {},
-	}
+		qtile = {},
+	},
 }
 
-function update_configs(path, subhbs)
-    Pr.pipe()
-        .add(Sh.find(path, "%.t$"))
+local function update_configs(path, subhbs)
+	Pr.pipe()
+		.add(Sh.find(path, "%.t$"))
 		.add(function(f)
 			if f then
 				local cwd = require("lfs").currentdir()
-				print ("update_configs>", cwd, f)
+				print("update_configs>", cwd, f)
 			end
 			return f
 		end)
-        .add(Sh.read())
-        .add(Sh.sed(subhbs))
+		.add(Sh.read())
+		.add(Sh.sed(subhbs))
 		.add(function(fline)
-			if fline == nil then return nil end
+			if fline == nil then
+				return nil
+			end
 			fline.path = fline.path:gsub("%.t", "")
 			return fline
 		end)
-        .add(Sh.write("./"))
-        .run()
+		.add(Sh.write("./"))
+		.run()
 end
-function termicon()
+local function termicon()
 	return Pr.pipe()
 		.add(Sh.find("/usr/share/icons", "32.*terminal.*"))
 		.add(function(f)
@@ -99,46 +101,52 @@ function termicon()
 		end)
 		.run()
 end
-function default_subs(subs)
+local function default_subs(subs)
 	subs["{term_icon}"] = termicon()
 	return subs
 end
-function prepare_config(name)
-    local subcfg = require("config")
+local function prepare_config(name)
+	local subcfg = require("config")
 	local subhbs = default_subs({})
-	for i,v in pairs(subcfg) do
-		subhbs["{"..i.."}"] = v
+	for i, v in pairs(subcfg) do
+		subhbs["{" .. i .. "}"] = v
 	end
 	update_configs(string.format("%s/", name), subhbs)
 end
-function prepare_configs()
-    local subcfg = require("config")
+local function prepare_configs()
+	local subcfg = require("config")
 	local subhbs = default_subs({})
-	for i,v in pairs(subcfg) do
-		subhbs["{"..i.."}"] = v
+	for i, v in pairs(subcfg) do
+		subhbs["{" .. i .. "}"] = v
 	end
 	update_configs("./", subhbs)
 end
-function setup_config(name)
+local function setup_config(name)
 	print("setup_config>", name)
 	-- Sh.sh(string.format([[%s/setup]], name))
-    local e = dofile(string.format([[%s/setup]], name))
+	local e = dofile(string.format([[%s/setup]], name))
 	print("..dependsOn")
-	if e.dependsOn then e.dependsOn() end
+	if e.dependsOn then
+		e.dependsOn()
+	end
 	print("..installer")
-	if e.installer then e.installer() end
+	if e.installer then
+		e.installer()
+	end
 	print("..configure")
-	if e.configure then e.configure() end
+	if e.configure then
+		e.configure()
+	end
 	return 0
 end
-function setup_configs(name)
-    print("setup_config group>", name)
-    for k, v in pairs(config_group[name]) do
-        if not (v.state == "noi") then
-        	setup_config(k)
+local function setup_configs(name)
+	print("setup_config group>", name)
+	for k, v in pairs(config_group[name]) do
+		if not (v.state == "noi") then
+			setup_config(k)
 		end
-    end
-    return 0
+	end
+	return 0
 end
 
 if arg[1] == nil then
@@ -149,7 +157,6 @@ if arg[1] == nil then
 	setup_configs("openbox")
 	setup_configs("bspwm")
 	setup_configs("wayland_weston")
-	setup_configs("wayland_qtile")
 	setup_configs("common")
 else
 	print("setup> " .. arg[1])

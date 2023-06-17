@@ -1,19 +1,18 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Sh = require('minilib.shell')
-local Ut = require('minilib.util')
-local Pr = require('minilib.process')
+local Sh = require("minilib.shell")
+local Pr = require("minilib.process")
 
 return {
 	configure = function()
 		Pr.pipe()
-			.add(Sh.exec("find -L ~/.mozilla/ ~/snap -name \"xulstore.json\" | grep -v backup"))
+			.add(Sh.exec('find -L ~/.mozilla/ ~/snap -name "xulstore.json" | grep -v backup'))
 			.add(Sh.echo())
-			.add(function (x)
+			.add(function(x)
 				if x then
-					local f, p = Sh.split_path(x)
-					Sh.cp ("$(pwd)/firefox/my/user.js", p)
+					local _, p = Sh.split_path(x)
+					Sh.cp("$(pwd)/firefox/my/user.js", p)
 				end
 			end)
 			.run()
@@ -21,6 +20,5 @@ return {
 	dependsOn = function()
 		Sh.file_exists("firefox")
 	end,
-	installer = function()
-	end
+	installer = function() end,
 }
