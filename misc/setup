@@ -1,17 +1,18 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Sh= require('minilib.shell')
-local Ut= require('minilib.util')
+local Sh = require("minilib.shell")
+local Ut = require("minilib.util")
 
 local dirs = {
+	["~/.config"] = {},
 	["~/.cache"] = {},
 	["~/.theme"] = {},
 	["~/.wlprs"] = {},
 	["~/.local/bin"] = {},
 }
 
-function setup_bell()
+local function setup_bell()
 	Ut:exec([[
 		pcnobell=$(grep -Po "^set bell-style none" /etc/inputrc)
 		if [ "$pcnobell" = "" ]; then
@@ -23,26 +24,27 @@ function setup_bell()
 	]])
 end
 
-function setup_path()
+local function setup_path()
 	Ut:exec([[
 		if [ "" = "$(grep '\.local\/bin' ~/.bashrc | tr -d '\n')" ]; then
 			echo "export PATH=\$HOME/.local/bin:\$PATH" >> ~/.bashrc
 		fi
+		if [ "" = "$(grep '\.luarocks\/bin' ~/.bashrc | tr -d '\n')" ]; then
+			echo "export PATH=\$HOME/.luarocks/bin:\$PATH" >> ~/.bashrc
+		fi
 	]])
 end
 
-function setup_dirs()
-	for k, v in pairs(dirs) do
-		Sh.mkdir (k)
+local function setup_dirs()
+	for k, _ in pairs(dirs) do
+		Sh.mkdir(k)
 	end
 end
 
 -- TODO
-function setup_bins()
+local function setup_bins()
 	for k, v in pairs(bins) do
-		Sh.ln (
-			string.format("~/scripts/%s", k),
-			string.format("~/.local/bin/%s", k))
+		Sh.ln(string.format("~/scripts/%s", k), string.format("~/.local/bin/%s", k))
 	end
 end
 
@@ -52,8 +54,6 @@ return {
 		setup_dirs()
 		setup_bell()
 	end,
-	dependsOn = function()
-	end,
-	installer = function()
-	end
+	dependsOn = function() end,
+	installer = function() end,
 }

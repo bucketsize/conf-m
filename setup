@@ -154,10 +154,10 @@ if arg[1] == nil then
 	-- common
 	prepare_configs()
 	-- groups
+	setup_configs("common")
 	setup_configs("openbox")
 	setup_configs("bspwm")
-	setup_configs("wayland_weston")
-	setup_configs("common")
+	-- setup_configs("wayland_weston")
 else
 	print("setup> " .. arg[1])
 	-- common
