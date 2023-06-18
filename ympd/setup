@@ -1,12 +1,17 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 
-
-if not Shell.file_exists("~/.local/bin/ympd") then
-    local cmd = string.format([[
+return {
+	configure = function() end,
+	dependsOn = function()
+		Shell.file_exists({ "mpd" })
+	end,
+	installer = function()
+		if not Shell.file_exists("~/.local/bin/ympd") then
+			local cmd = string.format(
+				[[
         if [ -d ~/ympd ]; then
             cd ~/ympd
             git pull
@@ -18,14 +23,10 @@ if not Shell.file_exists("~/.local/bin/ympd") then
         make ympd
         strip ympd
         cp -vf ympd ~/.local/bin/
-    ]], Shell.arch())
-    Shell.exec(cmd)
-end
-return {
-	configure = function()
+    ]],
+				Shell.arch()
+			)
+			Shell.exec(cmd)
+		end
 	end,
-	dependsOn = function()
-	end,
-	installer = function()
-	end
 }

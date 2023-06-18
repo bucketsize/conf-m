@@ -1,17 +1,15 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/qterminal.org/my","~/.config/qterminal.org")
-		Shell.ln ("$(pwd)/qterminal.org/my/Popeye.conf","~/.config/Popeye.conf")
+		Shell.ln("$(pwd)/qterminal.org/my", "~/.config/qterminal.org")
+		Shell.ln("$(pwd)/qterminal.org/my/Popeye.conf", "~/.config/Popeye.conf")
 	end,
 	dependsOn = function()
-		Shell.file_exists ("qterminal")
+		Shell.file_exists("qterminal")
 	end,
-	installer = function()
-	end
+	installer = function() end,
 }

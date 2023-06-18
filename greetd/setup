@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
@@ -10,7 +10,7 @@ return {
 		]])
 	end,
 	dependsOn = function()
+		Shell.file_exists("greetd", "cage")
 	end,
-	installer = function()
-	end
+	installer = function() end,
 }

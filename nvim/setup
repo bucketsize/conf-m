@@ -1,16 +1,15 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.mkdir ("~/.config/nvim")
-		Shell.ln ("$(pwd)/nvim/my/init.lua","~/.config/nvim/init.lua")
+		Shell.mkdir("~/.config/nvim")
+		Shell.ln("$(pwd)/nvim/my/init.lua", "~/.config/nvim/init.lua")
 	end,
 	dependsOn = function()
-		Shell.file_exists ("nvim")
+		Shell.file_exists("nvim")
 	end,
-	installer = function()
-	end
+	installer = function() end,
 }

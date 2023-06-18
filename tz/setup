@@ -1,8 +1,8 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
+local Util = require("minilib.util")
 
 return {
 	configure = function()
@@ -13,6 +13,5 @@ return {
 	dependsOn = function()
 		Shell.file_exists("timedatectl")
 	end,
-	installer = function()
-	end
+	installer = function() end,
 }

@@ -1,18 +1,18 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/waybar/my","~/.config/waybar")
+		Shell.ln("$(pwd)/waybar/my", "~/.config/waybar")
 	end,
 	dependsOn = function()
-		Shell.file_exists ("waybar")
+		Shell.file_exists("waybar")
 	end,
 	installer = function()
-		Shell.sh ([[
+		Shell.sh([[
 			cp $(pwd)/waybar/bin/* ${HOME}/.local/bin/
 			]])
-	end
+	end,
 }

@@ -1,8 +1,7 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
@@ -14,16 +13,19 @@ return {
 		]])
 	end,
 	dependsOn = function()
-		Shell.file_exists({"git", "make", "urxvt", "xrandr", "fzy", "wmctrl", "pactl", "feh"})
+		Shell.file_exists({ "git", "make", "urxvt", "xrandr", "fzy", "wmctrl", "pactl", "feh" })
 	end,
 	installer = function()
 		Shell.github_fetch("bucketsize", "mxctl")
-		Shell.sh(string.format([[
+		Shell.sh(string.format(
+			[[
 			export CRYPTO_INCDIR=/usr/include	
 			LIBDIR=/usr/lib/%s-linux-gnu
  			CRYPTO_LIBDIR=$LIBDIR
  			OPENSSL_LIBDIR=$LIBDIR 
 			cd ~/mxctl && luarocks make --local
-		]], Shell.arch()))
-	end
+		]],
+			Shell.arch()
+		))
+	end,
 }

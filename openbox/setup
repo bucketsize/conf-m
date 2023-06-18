@@ -1,23 +1,22 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/openbox/my", "$HOME/.config/openbox")
+		Shell.ln("$(pwd)/openbox/my", "$HOME/.config/openbox")
 	end,
 	dependsOn = function()
-		Shell.file_exists ("openbox", "obconf")
+		Shell.file_exists("openbox", "obconf")
 	end,
 	installer = function()
-		Shell.sh ([[
+		Shell.sh([[
 			cp $(pwd)/openbox/bin/* ${HOME}/.local/bin/
 			]])
-		
+
 		-- theme
-		Shell.mkdir ("~/.themes")
+		Shell.mkdir("~/.themes")
 
 		-- TODO : use release tar.gz
 		Shell.sh([[
@@ -30,5 +29,5 @@ return {
 				cp -a arc-openbox/* ./
 			fi
 			]])
-	end
+	end,
 }

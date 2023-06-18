@@ -1,8 +1,7 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 --
 
 return {
@@ -13,8 +12,6 @@ return {
 		Shell.ln("$(pwd)/gtk/gtk.css", "~/.config/gtk-3.0/gtk.css")
 		Shell.ln("$(pwd)/gtk/settings.ini", "~/.config/gtk-3.0/settings.ini")
 	end,
-	dependsOn = function()
-	end,
-	installer = function()
-	end
+	dependsOn = function() end,
+	installer = function() end,
 }

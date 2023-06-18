@@ -43,7 +43,7 @@ end
 
 -- TODO
 local function setup_bins()
-	for k, v in pairs(bins) do
+	for k, _ in pairs(bins) do
 		Sh.ln(string.format("~/scripts/%s", k), string.format("~/.local/bin/%s", k))
 	end
 end

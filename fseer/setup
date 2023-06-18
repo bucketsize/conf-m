@@ -1,8 +1,7 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 
 local init_opam = [[ 
    init_opam() {
@@ -20,7 +19,8 @@ local init_opam = [[
    ]]
 
 function setup_sourcebuild()
-    local cmd = init_opam .. [[
+	local cmd = init_opam
+		.. [[
         cd ~/
         init_opam
         if [ ! -d ~/fseer ]; then
@@ -33,27 +33,25 @@ function setup_sourcebuild()
         ./build pack fseer
         ./build install fseer
     ]]
-    Shell.sh(cmd, "fseer sourcebuild")
+	Shell.sh(cmd, "fseer sourcebuild")
 end
 
 function setup_prebuilt()
-    local cmd = [[
+	local cmd = [[
         pkg=fseer.$(_arch).tar.gz
         cd /tmp
         wget https://github.com/bucketsize/fseer/releases/download/20220210/fseer.$(_arch).tar.gz 
         tar -xvzf $pkg -C ~/.local/bin
     ]]
-    Shell.sh(cmd, "fseer prebuilt")
+	Shell.sh(cmd, "fseer prebuilt")
 end
 
-
 return {
-	configure = function()
-	end,
+	configure = function() end,
 	dependsOn = function()
-		Shell.file_exists({"ocaml", "opam", "wget", "tar", "git"})
+		Shell.file_exists({ "ocaml", "opam", "wget", "tar", "git" })
 	end,
 	installer = function()
 		setup_sourcebuild()
-	end
+	end,
 }

@@ -1,14 +1,13 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 
 return {
 	dependsOn = function()
 		Shell.file_exists("compton")
 	end,
 	configure = function()
-		Shell.ln ("~/scripts/config/compton/my", "~/.config/compton")
-	end
+		Shell.ln("~/scripts/config/compton/my", "~/.config/compton")
+	end,
 }

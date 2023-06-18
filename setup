@@ -74,7 +74,7 @@ local function update_configs(path, subhbs)
 		.add(function(f)
 			if f then
 				local cwd = require("lfs").currentdir()
-				print("update_configs>", cwd, f)
+				print("#update_configs", cwd, f)
 			end
 			return f
 		end)
@@ -122,25 +122,22 @@ local function prepare_configs()
 	update_configs("./", subhbs)
 end
 local function setup_config(name)
-	print("setup_config>", name)
+	print("#setup_config", name)
 	-- Sh.sh(string.format([[%s/setup]], name))
 	local e = dofile(string.format([[%s/setup]], name))
-	print("..dependsOn")
 	if e.dependsOn then
 		e.dependsOn()
 	end
-	print("..installer")
 	if e.installer then
 		e.installer()
 	end
-	print("..configure")
 	if e.configure then
 		e.configure()
 	end
 	return 0
 end
 local function setup_configs(name)
-	print("setup_config group>", name)
+	print("#setup_config group", name)
 	for k, v in pairs(config_group[name]) do
 		if not (v.state == "noi") then
 			setup_config(k)
@@ -150,7 +147,7 @@ local function setup_configs(name)
 end
 
 if arg[1] == nil then
-	print("setup> *")
+	print("#setup *")
 	-- common
 	prepare_configs()
 	-- groups
@@ -159,7 +156,7 @@ if arg[1] == nil then
 	setup_configs("bspwm")
 	-- setup_configs("wayland_weston")
 else
-	print("setup> " .. arg[1])
+	print("#setup " .. arg[1])
 	-- common
 	prepare_config(arg[1])
 	setup_config(arg[1])

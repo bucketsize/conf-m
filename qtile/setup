@@ -1,18 +1,18 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/qtile/my","~/.config/qtile")
+		Shell.ln("$(pwd)/qtile/my", "~/.config/qtile")
 	end,
 	dependsOn = function()
-		Shell.file_exists ("qtile")
+		Shell.file_exists("qtile")
 	end,
 	installer = function()
-		Shell.sh ([[
+		Shell.sh([[
 			cp $(pwd)/qtile/bin/* ${HOME}/.local/bin/
 			]])
-	end
+	end,
 }

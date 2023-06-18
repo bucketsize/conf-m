@@ -1,8 +1,8 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Sh = require('minilib.shell')
-local M = require('minilib.monad')
+local Sh = require("minilib.shell")
+local M = require("minilib.monad")
 local Home = os.getenv("HOME")
 
 local fonts = {
@@ -10,47 +10,45 @@ local fonts = {
 		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/Agave.zip",
 		name = "agave",
 		ext = "zip",
-		cp =  "agave\\ regular\\ Nerd\\ Font\\ Complete.ttf "
-			.."agave\\ regular\\ Nerd\\ Font\\ Complete\\ Mono.ttf "
+		cp = "agave\\ regular\\ Nerd\\ Font\\ Complete.ttf " .. "agave\\ regular\\ Nerd\\ Font\\ Complete\\ Mono.ttf ",
 	},
 	{
 		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DejaVuSansMono.zip",
 		name = "dejavusansmono",
 		ext = "zip",
-		cp =  "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete.otf "
-		    .."Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete\\ Mono.otf "
+		cp = "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete.otf "
+			.. "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete\\ Mono.otf ",
 	},
 	{
 		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DroidSansMono.zip",
 		name = "droidsansmono",
 		ext = "zip",
-		cp = "DejaVu\\ Sans\\ Mono*Complete\\ Mono.ttf"
+		cp = "DejaVu\\ Sans\\ Mono*Complete\\ Mono.ttf",
 	},
 	{
 		url = "https://github.com/sunaku/tamzen-font/archive/refs/tags/Tamzen-1.11.5.tar.gz",
 		name = "tamzen",
 		ext = "tar.gz",
-		cp = "/tmp/tamzen-font-Tamzen-1.11.5/otb/Tamzen*.otb"
+		cp = "/tmp/tamzen-font-Tamzen-1.11.5/otb/Tamzen*.otb",
 	},
 }
 
 return {
-	configure = function()
-	end,
-	dependsOn = function()
-	end,
+	configure = function() end,
+	dependsOn = function() end,
 	installer = function()
-		local d = Sh.test(Home.."/.fonts")
+		local d = Sh.test(Home .. "/.fonts")
 		if d == nil or d == "file" then
-			Sh.rm(Home.."/.fonts")
-			Sh.mkdir(Home.."/.fonts")
+			Sh.rm(Home .. "/.fonts")
+			Sh.mkdir(Home .. "/.fonts")
 		end
 
 		Sh.sh([[rm /tmp/dlfo_*]])
 
-		M.List.of(fonts)
+		M.List
+			.of(fonts)
 			:fmap(function(font)
-				Sh.wget(font.url, "/tmp/dlfo_"..font.name)
+				Sh.wget(font.url, "/tmp/dlfo_" .. font.name)
 				return font
 			end)
 			:fmap(function(font)
@@ -60,11 +58,16 @@ return {
 				elseif font.ext == "tar.gz" then
 					extcmd = "tar --overwrite -xvzf "
 				end
-				Sh.sh(string.format([[
+				Sh.sh(string.format(
+					[[
 				cd /tmp
 				%s dlfo_%s
 				cp -av %s ~/.fonts/
-				]], extcmd, font.name, font.cp))
+				]],
+					extcmd,
+					font.name,
+					font.cp
+				))
 				return font
 			end)
 
@@ -77,5 +80,5 @@ return {
 			xset fp rehash
 			fc-cache -fv
 			]])
-	end
+	end,
 }

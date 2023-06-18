@@ -1,10 +1,10 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
+local Shell = require("minilib.shell")
 
-function build_pack()
-    Shell.sh([[
+local function build_pack()
+	Shell.sh([[
 		#sudo apt-get install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
 		#curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 		
@@ -30,10 +30,10 @@ function build_pack()
     ]])
 end
 
-function setup_prebuilt()
+local function setup_prebuilt()
 	local rel = {
 		aarch64 = "https://github.com/bucketsize/alacritty/releases/download/20220211/alacritty.aarch64.tar.gz",
-		x86_64  = "https://github.com/bucketsize/alacritty/releases/download/20220723/alacritty.x86_64.tar.gz"
+		x86_64 = "https://github.com/bucketsize/alacritty/releases/download/20220723/alacritty.x86_64.tar.gz",
 	}
 	local arch = Shell.arch()
 	if not Shell.file_exists("alacritty") then
@@ -50,18 +50,17 @@ end
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/alacritty/my", "~/.config/alacritty")
+		Shell.ln("$(pwd)/alacritty/my", "~/.config/alacritty")
 	end,
 	dependsOn = function()
-		-- Shell.assert_file_exists("alacritty")
+		Shell.file_exists("alacritty")
 		-- Shell.assert_file_exists("cargo")
 	end,
 	installer = function()
 		-- build_pack()
 		setup_prebuilt()
-		Shell.sh ([[
+		Shell.sh([[
 			cp $(pwd)/alacritty/bin/* ${HOME}/.local/bin/
 			]])
-	end
+	end,
 }
-

@@ -1,18 +1,19 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
+local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln ("$(pwd)/hypr/my","~/.config/hypr")
+		Shell.ln("$(pwd)/hypr/my", "~/.config/hypr")
 	end,
 	dependsOn = function()
-		Shell.file_exists ("hyprctl")
+		Shell.file_exists("Hyprland")
+		Shell.file_exists("hyprctl")
 	end,
 	installer = function()
-		Shell.sh ([[
+		Shell.sh([[
 			cp $(pwd)/hypr/bin/* ${HOME}/.local/bin/
 			]])
-	end
+	end,
 }

@@ -1,16 +1,12 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
+local Shell = require("minilib.shell")
 
 return {
-	configure = function()
-		Shell.file_exists("dunst")
-		Shell.ln("$(pwd)/dunst/my", "~/.config/dunst")
-	end,
+	configure = function() end,
 	dependsOn = function()
+		Shell.file_exists("mediatomb")
 	end,
-	installer = function()
-	end
+	installer = function() end,
 }

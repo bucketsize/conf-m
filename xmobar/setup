@@ -1,18 +1,14 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Shell = require('minilib.shell')
-local Util = require('minilib.util')
-
-Shell.file_exists("xmobar")
-
-Shell.ln("$(pwd)/xmobar/my", "~/.config/xmobar")
+local Shell = require("minilib.shell")
 
 return {
-	configure = function()
-	end,
+	configure = function() end,
 	dependsOn = function()
+		Shell.file_exists("xmobar")
 	end,
 	installer = function()
-	end
+		Shell.ln("$(pwd)/xmobar/my", "~/.config/xmobar")
+	end,
 }
