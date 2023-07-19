@@ -18,6 +18,8 @@ bspc rule -a Navigator desktop=^2
 
 # ide
 bspc rule -a Eclipse  desktop=^3 state=floating
+bspc rule -a Code  desktop=^3 state=floating
+bspc rule -a Idea  desktop=^3 state=floating
 
 # image viewers/editors
 bspc rule -a Gimp desktop=^4 state=floating follow=on

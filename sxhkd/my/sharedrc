@@ -11,13 +11,13 @@ control + alt + bracketleft
 	mxctl.control brightness_down
 
 control + bracketright
-	mxctl.control vol_up
+	ictl vol_up
 
 control + bracketleft
-	mxctl.control vol_down
+	ictl vol_down
 
 control + backslash
-	mxctl.control vol_mute
+	ictl vol_mute
 
 alt + h 
   parcellite 
@@ -26,13 +26,13 @@ alt + h
 # multimedia keys
 #
 @XF86AudioRaiseVolume
-	mxctl.control vol_up
+	ictl vol_up
 
 @XF86AudioLowerVolume
-	mxctl.control vol_down
+	ictl vol_down
 
 @XF86AudioMute
-	mxctl.control vol_mute
+	ictl vol_mute
 
 @XF86MonBrightnessUp
 	mxctl.control brightness_up
@@ -44,26 +44,25 @@ alt + h
 # menu shortcuts
 #
 super + d
-	mxctl.control dmenu_run
+	ictl dmenu_run
 
 super + w
-	mxctl.control dmenu_select_window
+	ictl dmenu_window
 
 super + q
-	mxctl.control dmenu_exit
+	ictl dmenu_exit
 
 control + alt + Delete
-	mxctl.control dmenu_exit
+	ictl dmenu_exit
 
 control + alt + l
 	mxctl.control scr_lock
 
-
 control + alt + 2
-	mxctl.control dmenu_setup_video
+	ictl dmenu_video
 
 control + alt + 3
-	mxctl.control dmenu_select_pa_sinks
+	ictl dmenu_audio_sink
 
 control + alt + 9
 	mxctl.control dmenu_misc
