@@ -1,11 +1,5 @@
-#!/usr/bin/env lua
+#!/bin/sh
 
-require("luarocks.loader")
-
-local Sh = require("minilib.shell")
-local Tr = require("minilib.timer")
-
-Sh.sh([[
 xrdb -merge ~/.Xresources
 xhost +
 xsetroot -cursor_name left_ptr
@@ -14,38 +8,37 @@ setxkbmap us
 # dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
 dbus-launch --sh-syntax --exit-with-session
 dbus-update-activation-environment --systemd --all
-]])
-Tr.sleep(1)
 
--- needed on VBox for proper display scaling
-Sh.forkonce("VBoxClient", "--vmsvga")
-Sh.forkonce("VBoxClient", "--clipboard")
+sleep 1
 
--- sys key binder
--- Sh.forkonce("thd", " --triggers", "~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
-Sh.forkonce("sxhkd", "-c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc")
-Sh.forkonce("mpd")
-Sh.forkonce("picom")
-Sh.forkonce("dunst")
-Sh.forkonce("tint2")
-Sh.forkonce("parcellite")
+# needed on VBox for proper display scaling
+VBoxClient --vmsvga
+VBoxClient --clipboard
 
--- Sh.forkonce("urxvtd", "-q -o -f")
--- Ut.sleep(1)
--- Sh.forkonce("urxvtc")  -- to be safe
--- Sh.forkonce("stterm")
--- Sh.forkonce("alacritty")
+# sys key binder
+# thd  --triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*
+sxhkd -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc &
+mpd &
+picom &
+dunst &
+tint2 &
+parcellite &
 
-Sh.sh("mxctl.control setup_video")
-Sh.sh("mxctl.control applywallpaper")
+#  urxvtd -q -o -f
+#  Ut.sleep(1)
+#  urxvtc  -- to be safe
+#  stterm
+#  alacritty
 
-Sh.sh([[
+ictl setup_video
+ictl applywallpaper
+
 p=/tmp/frmad.lemonbar.out.${USER}
 [ -p $p] || mkfifo $p
-]])
-Sh.forkonce("frmad.daemon")
-Tr.sleep(1)
 
-Sh.forkonce("tail", "-f /tmp/frmad.lemonbar.out.${USER} | lemonbar") -- xmobar or conky or lemonbar
+frmad.daemon &
+sleep 1
 
---Sh.forkonce("xss-lock", "gtklock")
+tail -f /tmp/frmad.lemonbar.out.${USER} | lemonbar # xmobar or conky or lemonbar
+
+# xss-lock gtklock

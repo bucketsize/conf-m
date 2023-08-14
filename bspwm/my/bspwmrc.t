@@ -38,7 +38,7 @@ bspc rule -a Popeye state=floating follow=on
 bspc rule -a Steam desktop=^5 state=floating follow=on
 
 bspc config normal_border_color		      "{color_normal}"
-bspc config active_border_color	          "{color_active}"
+bspc config active_border_color	        "{color_active}"
 bspc config focused_border_color	      "{color_active}"
 bspc config presel_feedback_color	      "{color_active_pre}"
 bspc config urgent_border_color 	      "{color_urgent}"
