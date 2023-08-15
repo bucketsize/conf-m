@@ -24,21 +24,19 @@ dunst &
 tint2 &
 parcellite &
 
-#  urxvtd -q -o -f
-#  Ut.sleep(1)
-#  urxvtc  -- to be safe
-#  stterm
-#  alacritty
-
 ictl setup_video
 ictl applywallpaper
 
 p=/tmp/frmad.lemonbar.out.${USER}
-[ -p $p] || mkfifo $p
+[ -p $p ] || mkfifo $p
 
-frmad.daemon &
+m360 &
 sleep 1
 
-tail -f /tmp/frmad.lemonbar.out.${USER} | lemonbar # xmobar or conky or lemonbar
+tail -f /tmp/m360.lemonbar.out.${USER} | lemonbar # xmobar or conky or lemonbar
+
+if [[ "$(hostnamectl hostname)" =~ "fuhrer" ]]; then
+	steam steam://open/bigpicturesteam
+fi
 
 # xss-lock gtklock

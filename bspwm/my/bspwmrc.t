@@ -17,9 +17,9 @@ bspc rule -a firefox  desktop=^2
 bspc rule -a Navigator desktop=^2
 
 # ide
-bspc rule -a Eclipse  desktop=^3 state=floating
-bspc rule -a Code  desktop=^3 state=floating
-bspc rule -a Idea  desktop=^3 state=floating
+bspc rule -a Eclipse  desktop=^3
+bspc rule -a Code  desktop=^3
+bspc rule -a Idea  desktop=^3
 
 # image viewers/editors
 bspc rule -a Gimp desktop=^4 state=floating follow=on
@@ -36,7 +36,10 @@ bspc rule -a Popeye state=floating follow=on
 
 # gaming
 bspc rule -a Steam desktop=^5 state=floating follow=on
+bspc rule -a steam desktop=^5 state=floating follow=on
+bspc rule -a steamwebhelper desktop=^5 state=floating follow=on
 
+# colors 
 bspc config normal_border_color		      "{color_normal}"
 bspc config active_border_color	        "{color_active}"
 bspc config focused_border_color	      "{color_active}"
@@ -47,4 +50,4 @@ bspc config urgent_border_color 	      "{color_urgent}"
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # autostart items
-~/.config/autostart/old/autostart_bspwm
+~/.config/autostart/sbin/autostart_bspwm
