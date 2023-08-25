@@ -30,4 +30,62 @@ return {
 	color_active = "#ba4824",
 	color_active_pre = "#884824",
 	color_urgent = "#2448aa",
+
+	groups = {
+		openbox = {
+			Xresources = {},
+			xinit = {},
+			autostart = {},
+			openbox = {},
+			-- triggerhappy = {}, -- deprecated
+			sxhkd = {},
+			tint2 = {},
+			lemonbar = {},
+		},
+		bspwm = {
+			Xresources = {},
+			xinit = {},
+			autostart = {},
+			bspwm = {},
+			sxhkd = {},
+			tint2 = {},
+			lemonbar = {},
+		},
+		common = {
+			misc = {},
+			fontconfig = {},
+			gtk = {},
+			qt5ct = {},
+			dunst = {},
+			-- firefox = {},-- custom
+			chromium = {},
+			-- qutebrowser = {}, -- bad browser, user chromium or firefox
+			-- vim = {},
+			-- lspd = {}, -- custom
+			-- nvim = {}, -- custom
+			-- mpd = {},  -- custom
+			-- ympd = {}, -- custom
+			mpv = {},
+			mxctl = {},
+			frmad = {},
+			-- fseer = {}, -- pilot - abandoned
+			-- conky = {},
+			-- pipewire = {}, -- custom, ignore if pulseaudio works fine
+			alacritty = {},
+			-- ["qterminal.org"] = {},
+
+			-- sys
+			-- ["tlp.d"] = {},
+			-- ["sysctl.d"] = {},
+			-- tz = {}, -- sys
+		},
+		wayland_weston = {
+			weston = {},
+			foot = {},
+			triggerhappy = {},
+		},
+		wayland_qtile = {
+			qtile = {},
+		},
+	},
 }

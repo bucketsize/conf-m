@@ -21,12 +21,12 @@ sxhkd -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc &
 mpd &
 picom &
 dunst &
-tint2 &
 parcellite &
 
 ictl setup_video
 ictl applywallpaper
 
+tint2 &
 m360 1 >/dev/null &
 tail -f /tmp/m360.lemonbar.out.${USER} | lemonbar & # xmobar or conky or lemonbar
 

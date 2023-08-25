@@ -1,11 +1,5 @@
-#!/usr/bin/env lua
+#!/bin/sh
 
-require("luarocks.loader")
-
-local Sh = require("minilib.shell")
-local Tr = require("minilib.timer")
-
-Sh.sh([[
 xrdb -merge ~/.Xresources
 xhost +
 xsetroot -cursor_name left_ptr
@@ -14,27 +8,21 @@ setxkbmap us
 # dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
 dbus-launch --sh-syntax --exit-with-session
 dbus-update-activation-environment --systemd --all
-]])
-Tr.sleep(1)
 
--- needed on VBox for proper display scaling
-Sh.forkonce("VBoxClient", "--vmsvga")
-Sh.forkonce("VBoxClient", "--clipboard")
+sleep 1
 
-Sh.forkonce("mpd")
-Sh.forkonce("dunst")
+# needed on VBox for proper display scaling
+VBoxClient --vmsvga
+VBoxClient --clipboard
 
--- Sh.forkonce("alacritty")
-Sh.sh("mxctl.control getwallpaper")
+mpd &
+dunst &
 
--- sys key binder
-Sh.forkonce("thd", "--triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*")
+ictl setup_video
+ictl applywallpaper
 
--- swhkd has some permission problems with regular user
--- hence going to use thd for now
--- Sh.sh("(swhks &) && pkexec swhkd -c ~/.config/sxhkd/sharedrc")
+tint2 &
 
--- get wallpaper and symlink for next login
-Sh.sh("mxctl.control getwallpaper")
-
--- Sh.forkonce("xss-lock", "gtklock")
+if [[ "$(hostnamectl hostname)" =~ "fuhrer" ]]; then
+	steam steam://open/bigpicturesteam
+fi

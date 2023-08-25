@@ -10,63 +10,7 @@ print("done.")
 local Sh = require("minilib.shell")
 local Pr = require("minilib.process")
 
-local config_group = {
-	openbox = {
-		Xresources = {},
-		xinit = {},
-		autostart = {},
-		openbox = {},
-		-- triggerhappy = {}, -- deprecated
-		sxhkd = {},
-		tint2 = {},
-		lemonbar = {},
-	},
-	bspwm = {
-		Xresources = {},
-		xinit = {},
-		autostart = {},
-		bspwm = {},
-		sxhkd = {},
-		tint2 = {},
-		lemonbar = {},
-	},
-	common = {
-		misc = {},
-		fontconfig = {},
-		gtk = {},
-		qt5ct = {},
-		dunst = {},
-		-- firefox = {},-- custom
-		chromium = {},
-		-- qutebrowser = {}, -- bad browser, user chromium or firefox
-		-- vim = {},
-		-- lspd = {}, -- custom
-		-- nvim = {}, -- custom
-		-- mpd = {},  -- custom
-		-- ympd = {}, -- custom
-		mpv = {},
-		mxctl = {},
-		frmad = {},
-		-- fseer = {}, -- pilot - abandoned
-		-- conky = {},
-		-- pipewire = {}, -- custom, ignore if pulseaudio works fine
-		alacritty = {},
-		-- ["qterminal.org"] = {},
-
-		-- sys
-		-- ["tlp.d"] = {},
-		-- ["sysctl.d"] = {},
-		-- tz = {}, -- sys
-	},
-	wayland_weston = {
-		weston = {},
-		foot = {},
-		triggerhappy = {},
-	},
-	wayland_qtile = {
-		qtile = {},
-	},
-}
+local config_group = require("config").groups
 
 local function update_configs(path, subhbs)
 	Pr.pipe()

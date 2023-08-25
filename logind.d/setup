@@ -6,8 +6,8 @@ local Shell = require("minilib.shell")
 return {
 	configure = function()
 		Shell.sh([[
-		[ -d /etc/udev/rules.d ] || sudo mkdir /etc/udev/rules.d	
-		sudo cp -vf rules.d/my/* /etc/udev/rules.d/
+		[ -d /etc/systemd/logind.conf.d ] || sudo mkdir /etc/systemd/logind.conf.d	
+		sudo cp -vf logind.d/my/*.conf /etc/systemd/logind.conf.d/
 		]])
 	end,
 	dependsOn = function()
