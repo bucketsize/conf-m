@@ -1,0 +1,17 @@
+#!/usr/bin/env lua
+require("luarocks.loader")
+
+local Shell = require("minilib.shell")
+
+return {
+	configure = function()
+		Shell.sh([[
+    sudo cp $(pwd)/network/my/dhcpcd.conf /etc/dhcpcd.conf
+    sudo cp $(pwd)/network/my/wpa_supplicant.conf /etc/wpa_supplicant/ 
+    ]])
+	end,
+	dependsOn = function()
+		Shell.file_exists("dhcpcd")
+	end,
+	installer = function() end,
+}
