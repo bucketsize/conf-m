@@ -1,5 +1,9 @@
 #!/bin/sh
 
+set -x
+
+echo ">> $(date)"
+
 xrdb -merge ~/.Xresources
 xhost +
 xsetroot -cursor_name left_ptr
@@ -26,12 +30,15 @@ parcellite &
 ictl setup_video
 ictl applywallpaper
 
-tint2 &
-m360 1 >/dev/null &
-tail -f /tmp/m360.lemonbar.out.${USER} | lemonbar & # xmobar or conky or lemonbar
+
+m360 1 > /dev/null &
+# tail -f /tmp/m360.lemonbar.out.${USER} | lemonbar & # xmobar or conky or lemonbar
+
+sleep 2 && tint2 &
 
 if [[ "$(hostnamectl hostname)" =~ "fuhrer" ]]; then
 	steam steam://open/bigpicturesteam
 fi
 
+echo "<< $(date)"
 # xss-lock gtklock

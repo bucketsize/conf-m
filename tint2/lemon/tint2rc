@@ -84,7 +84,7 @@ border_color_pressed = #ffffff 60
 
 #-------------------------------------
 # Panel
-panel_items = LTSC
+panel_items = LTESC
 panel_size = 100% 32
 panel_margin = 0 0
 panel_padding = 4 2 4
@@ -131,7 +131,7 @@ task_align = left
 
 #-------------------------------------
 # Task
-task_text = 1
+task_text = 0
 task_icon = 1
 task_centered = 1
 urgent_nb_of_blink = 100000
@@ -173,15 +173,35 @@ startup_notifications = 1
 launcher_tooltip = 1
 launcher_item_app = tint2conf.desktop
 launcher_item_app = firefox.desktop
-launcher_item_app = iceweasel.desktop
-launcher_item_app = chromium-browser.desktop
-launcher_item_app = google-chrome.desktop
-launcher_item_app = x-terminal-emulator.desktop
+launcher_item_app = alacritty.desktop
+
+#-------------------------------------
+# Executor 1
+execp = new
+execp_command = tail -1 /tmp/m360.lemonbar.out.jb | grep -Po '(?<=r}).*'
+execp_interval = 2 
+execp_has_icon = 0
+execp_cache_icon = 0
+execp_continuous = 0
+execp_markup = 1
+execp_tooltip = 
+execp_lclick_command = b=$(acpi -b) && notify-send "$b"
+execp_rclick_command = 
+execp_mclick_command = 
+execp_uwheel_command = 
+execp_dwheel_command = 
+execp_font = Monospace 9
+execp_font_color = #eeeeee 100
+execp_padding = 0 0
+execp_background_id = 0
+execp_centered = 0
+execp_icon_w = 18
+execp_icon_h = 18
 
 #-------------------------------------
 # Clock
 time1_format = %H:%M
-time2_format = %A %d %B
+time2_format = %d %b %Y
 time1_font = sans bold 8
 time1_timezone = 
 time2_timezone = 
@@ -192,7 +212,7 @@ clock_background_id = 0
 clock_tooltip = 
 clock_tooltip_timezone = 
 clock_lclick_command = zenity --calendar --text ""
-clock_rclick_command = orage
+clock_rclick_command = 
 clock_mclick_command = 
 clock_uwheel_command = 
 clock_dwheel_command = 
