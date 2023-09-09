@@ -21,7 +21,7 @@ VBoxClient --clipboard
 
 # sys key binder
 # thd  --triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*
-sxhkd -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc &
+sxhkd -c ~/.config/sxhkd/winrc ~/.config/sxhkd/sharedrc &
 picom &
 dunst &
 mpd &

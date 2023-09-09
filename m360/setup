@@ -1,0 +1,29 @@
+#!/usr/bin/env lua
+require("luarocks.loader")
+
+local Shell = require("minilib.shell")
+
+return {
+	configure = function()
+		Shell.sh([[
+			[ -d ~/.config/m360 ] || mkdir -v -p ~/.config/m360
+			[ -f ~/.config/m360/config ] || cp -v $(pwd)/m360/my/config ~/.config/m360/
+		]])
+	end,
+	dependsOn = function()
+		Shell.file_exists({ "git", "make", "urxvt", "xrandr", "fzy", "wmctrl", "pactl", "feh", "wget" })
+	end,
+	installer = function()
+		Shell.github_fetch("bucketsize", "frmad")
+		Shell.sh(string.format(
+			[[
+			export CRYPTO_INCDIR=/usr/include	
+			LIBDIR=/usr/lib/%s-linux-gnu
+ 			CRYPTO_LIBDIR=$LIBDIR
+ 			OPENSSL_LIBDIR=$LIBDIR 
+			cd ~/frmad && luarocks make --local
+		]],
+			Shell.arch()
+		))
+	end,
+}

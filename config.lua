@@ -7,9 +7,9 @@ return {
 
 	home = os.getenv("HOME"),
 	font = "DejaVu",
-	font_size = "12",
+	font_size = "11",
 	font_monospace = dejavu_sans_mono,
-	font_monospace_size = "10",
+	font_monospace_size = "9",
 	font_family_monospace = dejavu_sans_mono,
 	font_family_monospace_alt = dejavu_sans_mono,
 	font_family_serif = "DejaVu Serif",
@@ -23,7 +23,7 @@ return {
 	gtk_cursor_theme = "Arc", --"Adwaita",
 	dock_position = "Top",
 	font_conky = agave_mono,
-	font_conky_size = "12",
+	font_conky_size = "10",
 
 	-- window border colors
 	color_normal = "#644832",
@@ -77,7 +77,7 @@ return {
 			-- sys
 			-- ["tlp.d"] = {},
 			-- ["sysctl.d"] = {},
-			-- tz = {}, -- sys
+			-- tz = {},
 		},
 		wayland_weston = {
 			weston = {},

@@ -3,7 +3,7 @@
 !#define FONTMONO -*-{font_monospace}-*-*-*-*-{font_monospace_size}-*-*-*-*-*-iso8859-*
 
 #define FONT 	 xft:{font}:size={font_size}
-#define FONTMONO xft:{font_monospace}:size={font_monospace_size},xft:cozette:size=13
+#define FONTMONO xft:{font_monospace}:size={font_monospace_size}
 
 !global Font
 *font:         FONT
@@ -28,6 +28,22 @@ dunst.font: FONT
 
 !xterm
 xterm*faceName: FONTMONO
+XTerm*scaleHeight:		1.0
+XTerm*borderWidth:		0
+XTerm*internalBorder:		10
+XTerm*termName:			xterm-256color
+XTerm*vt100.metaSendsEscape:	true
+XTerm*v100.saveLines:		10240
+XTerm*vt100.scrollBar:		false
+XTerm*vt100.bellIsUrgent:	true
+XTerm*allowBoldFonts:		false
+XTerm*scrollKey:		true
+XTerm*fullscreen:		never
+XTerm*cutToBeginningOfLine:	false
+XTerm*cutNewline:		false
+XTerm*charClass:		33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
+XTerm*on2Clicks:		word
+XTerm*on3Clicks:		line
 
 !urxvt
 URxvt.depth: 32
