@@ -47,6 +47,8 @@ end
 setup_xmonad_config()
 return {
 	configure = function() end,
-	dependsOn = function() end,
+	dependsOn = function()
+		return true
+	end,
 	installer = function() end,
 }

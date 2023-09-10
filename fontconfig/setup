@@ -1,14 +1,14 @@
 #!/usr/bin/env lua
-require "luarocks.loader"
+require("luarocks.loader")
 
-local Sh = require('minilib.shell')
+local Sh = require("minilib.shell")
 
 return {
 	configure = function()
 		Sh.ln("$(pwd)/fontconfig/my", "~/.config/fontconfig")
 	end,
 	dependsOn = function()
+		return Sh.file_exists("fc-list")
 	end,
-	installer = function()
-	end
+	installer = function() end,
 }

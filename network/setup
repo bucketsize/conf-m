@@ -11,7 +11,7 @@ return {
     ]])
 	end,
 	dependsOn = function()
-		Shell.file_exists("dhcpcd")
+		return Shell.file_exists("dhcpcd")
 	end,
 	installer = function() end,
 }

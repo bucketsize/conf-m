@@ -8,7 +8,7 @@ return {
 		Shell.ln("$(pwd)/picom/my", "~/.config/picom")
 	end,
 	dependsOn = function()
-		Shell.file_exists("picom")
+		return Shell.file_exists("picom")
 	end,
 	installer = function() end,
 }

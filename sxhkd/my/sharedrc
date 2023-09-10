@@ -1,14 +1,16 @@
 Print
-	mxctl.control scr_cap
+	ictl scr_cap
 
 control + Print
-	mxctl.control scr_cap_sel
+	ictl scr_cap_sel
 
 control + alt + bracketright
-	mxctl.control brightness_up
+	brightnessctl s 8%+
+	#ictl brightness_up
 
 control + alt + bracketleft
-	mxctl.control brightness_down
+	brightnessctl s 8%-
+	#ictl brightness_down
 
 control + bracketright
 	ictl vol_up
@@ -20,7 +22,7 @@ control + backslash
 	ictl vol_mute
 
 alt + h 
-  parcellite 
+  	parcellite 
 
 #
 # multimedia keys
@@ -35,10 +37,12 @@ alt + h
 	ictl vol_mute
 
 @XF86MonBrightnessUp
-	mxctl.control brightness_up
+	brightnessctl s 8%+
+	#ictl brightness_up
 
 @XF86MonBrightnessDown
-	mxctl.control brightness_down
+	brightnessctl s 8%-
+	#ictl brightness_down
 
 # 
 # menu shortcuts
@@ -56,7 +60,7 @@ control + alt + Delete
 	ictl dmenu_exit
 
 control + alt + l
-	mxctl.control scr_lock
+	ictl scr_lock
 
 control + alt + 2
 	ictl dmenu_video
@@ -65,5 +69,5 @@ control + alt + 3
 	ictl dmenu_audio_sink
 
 control + alt + 9
-	mxctl.control dmenu_misc
+	ictl dmenu_misc
 

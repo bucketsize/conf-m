@@ -19,23 +19,25 @@ local fonts = {
 		cp = "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete.otf "
 			.. "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete\\ Mono.otf ",
 	},
-	{
-		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DroidSansMono.zip",
-		name = "droidsansmono",
-		ext = "zip",
-		cp = "DejaVu\\ Sans\\ Mono*Complete\\ Mono.ttf",
-	},
-	{
-		url = "https://github.com/sunaku/tamzen-font/archive/refs/tags/Tamzen-1.11.5.tar.gz",
-		name = "tamzen",
-		ext = "tar.gz",
-		cp = "/tmp/tamzen-font-Tamzen-1.11.5/otb/Tamzen*.otb",
-	},
+	-- {
+	-- 	url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DroidSansMono.zip",
+	-- 	name = "droidsansmono",
+	-- 	ext = "zip",
+	-- 	cp = "DejaVu\\ Sans\\ Mono*Complete\\ Mono.ttf",
+	-- },
+	-- {
+	-- 	url = "https://github.com/sunaku/tamzen-font/archive/refs/tags/Tamzen-1.11.5.tar.gz",
+	-- 	name = "tamzen",
+	-- 	ext = "tar.gz",
+	-- 	cp = "/tmp/tamzen-font-Tamzen-1.11.5/otb/Tamzen*.otb",
+	-- },
 }
 
 return {
 	configure = function() end,
-	dependsOn = function() end,
+	dependsOn = function()
+		return Sh.file_exists("fc-cache", "curl")
+	end,
 	installer = function()
 		local d = Sh.test(Home .. "/.fonts")
 		if d == nil or d == "file" then

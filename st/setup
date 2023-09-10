@@ -9,7 +9,9 @@ return {
 			Shell.sh([[chmod +x $(pwd)/st/bin/stterm]])
 		end
 	end,
-	dependsOn = function() end,
+	dependsOn = function()
+		return true
+	end,
 	installer = function()
 		Shell.sh([[
 			cp $(pwd)/st/bin/* ${HOME}/.local/bin/

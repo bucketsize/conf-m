@@ -8,8 +8,7 @@ return {
 		Shell.ln("$(pwd)/weston/my/weston.ini", "~/.config/weston.ini")
 	end,
 	dependsOn = function()
-		Shell.file_exists("weston")
-		Shell.file_exists("foot")
+		return Shell.file_exists("weston") and Shell.file_exists("foot")
 	end,
 	installer = function()
 		Shell.sh([[

@@ -49,7 +49,7 @@ end
 return {
 	configure = function() end,
 	dependsOn = function()
-		Shell.file_exists({ "ocaml", "opam", "wget", "tar", "git" })
+		return Shell.file_exists({ "ocaml", "opam", "wget", "tar", "git" })
 	end,
 	installer = function()
 		setup_sourcebuild()

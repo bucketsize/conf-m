@@ -24,16 +24,7 @@ local function setup_bell()
 	]])
 end
 
-local function setup_path()
-	Ut:exec([[
-		if [ "" = "$(grep '\.local\/bin' ~/.bashrc | tr -d '\n')" ]; then
-			echo "export PATH=\$HOME/.local/bin:\$PATH" >> ~/.bashrc
-		fi
-		if [ "" = "$(grep '\.luarocks\/bin' ~/.bashrc | tr -d '\n')" ]; then
-			echo "export PATH=\$HOME/.luarocks/bin:\$PATH" >> ~/.bashrc
-		fi
-	]])
-end
+local function setup_path() end
 
 local function setup_dirs()
 	for k, _ in pairs(dirs) do
@@ -54,6 +45,8 @@ return {
 		setup_dirs()
 		setup_bell()
 	end,
-	dependsOn = function() end,
+	dependsOn = function()
+		return true
+	end,
 	installer = function() end,
 }

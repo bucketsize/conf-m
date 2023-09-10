@@ -4,6 +4,8 @@ set -x
 
 echo ">> $(date)"
 
+. ~/.profile
+
 xrdb -merge ~/.Xresources
 xhost +
 xsetroot -cursor_name left_ptr

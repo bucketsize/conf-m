@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	dependsOn = function()
-		Shell.file_exists("lua", "luarocks")
+		return Shell.file_exists("lua", "luarocks")
 	end,
 	configure = function()
 		-- Shell.ln("$(pwd)/autostart/my/autostartd", "~/.local/bin/autostartd")

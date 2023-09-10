@@ -6,7 +6,7 @@ local Shell = require("minilib.shell")
 return {
 	configure = function() end,
 	dependsOn = function()
-		Shell.file_exists("mediatomb")
+		return Shell.file_exists("mediatomb")
 	end,
 	installer = function() end,
 }

@@ -55,7 +55,7 @@ return {
 			misc = {},
 			fontconfig = {},
 			gtk = {},
-			qt5ct = {},
+			-- qt5ct = {},
 			dunst = {},
 			-- firefox = {},-- custom
 			chromium = {},
@@ -66,18 +66,19 @@ return {
 			-- mpd = {},  -- custom
 			-- ympd = {}, -- custom
 			mpv = {},
-			mxctl = {},
-			frmad = {},
+			-- mxctl = {},
+			-- frmad = {},
 			-- fseer = {}, -- pilot - abandoned
 			-- conky = {},
 			-- pipewire = {}, -- custom, ignore if pulseaudio works fine
 			alacritty = {},
 			-- ["qterminal.org"] = {},
-
-			-- sys
-			-- ["tlp.d"] = {},
-			-- ["sysctl.d"] = {},
-			-- tz = {},
+		},
+		sys = {
+			["tlp.d"] = {},
+			["rules.d"] = {},
+			["sysctl.d"] = {},
+			tz = {},
 		},
 		wayland_weston = {
 			weston = {},

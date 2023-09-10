@@ -12,7 +12,7 @@ return {
 		Shell.sh("sudo systemctl disable mpd")
 	end,
 	dependsOn = function()
-		Shell.file_exists({ "mpd", "mpc" })
+		return Shell.file_exists({ "mpd", "mpc" })
 	end,
 	installer = function() end,
 }

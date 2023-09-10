@@ -6,10 +6,15 @@ local Shell = require("minilib.shell")
 return {
 	configure = function()
 		Shell.mkdir("~/.config/nvim")
-		Shell.ln("$(pwd)/nvim/my/init.lua", "~/.config/nvim/init.lua")
+		Shell.ln("$(pwd)/nvim/my", "~/.config/nvim")
+    if Shell.path_exists("~/.var/app/io.neovim.nvim/config/user-dirs.dirs")
+        && not Shell.path_exists("~/.var/app/io.neovim.nvim/config/nvim/init.lua") then
+      Shell.ln("~/.config/nvim", "~/.var/app/io.neovim.nvim/config/nvim")
+    end
 	end,
 	dependsOn = function()
-		Shell.file_exists("nvim")
+		return Shell.file_exists("nvim") 
+      || Shell.path_exists("~/.var/app/io.neovim.nvim/config/user-dirs.dirs")
 	end,
 	installer = function() end,
 }

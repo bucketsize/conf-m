@@ -13,7 +13,7 @@ return {
 		]])
 	end,
 	dependsOn = function()
-		Shell.file_exists({ "git", "make", "urxvt", "xrandr", "fzy", "wmctrl", "pactl", "feh" })
+		return Shell.file_exists({ "git", "make", "xrandr", "fzf", "wmctrl", "pactl", "feh" })
 	end,
 	installer = function()
 		Shell.github_fetch("bucketsize", "mxctl")

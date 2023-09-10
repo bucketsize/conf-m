@@ -6,7 +6,7 @@ local Sh = require("minilib.shell")
 return {
 	configure = function() end,
 	dependsOn = function()
-		Sh.file_exists({ "lua", "luarocks" })
+		return Sh.file_exists({ "lua", "luarocks" })
 	end,
 	installer = function()
 		local arch = Sh.arch()

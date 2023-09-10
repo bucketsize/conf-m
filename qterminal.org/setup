@@ -9,7 +9,7 @@ return {
 		Shell.ln("$(pwd)/qterminal.org/my/Popeye.conf", "~/.config/Popeye.conf")
 	end,
 	dependsOn = function()
-		Shell.file_exists("qterminal")
+		return Shell.file_exists("qterminal")
 	end,
 	installer = function() end,
 }

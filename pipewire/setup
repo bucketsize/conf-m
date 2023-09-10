@@ -13,7 +13,7 @@ return {
 		]])
 	end,
 	dependsOn = function()
-		Shell.file_exists("pipewire", "pipewire-pulse", "wireplumber")
+		return Shell.file_exists("pipewire", "pipewire-pulse", "wireplumber")
 	end,
 	installer = function()
 		-- deprecated

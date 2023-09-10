@@ -25,7 +25,7 @@ return {
 		end
 	end,
 	dependsOn = function()
-		Sh.file_exists("thd")
+		return Sh.file_exists("thd")
 	end,
 	installer = function() end,
 }

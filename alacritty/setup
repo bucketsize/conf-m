@@ -43,24 +43,25 @@ local function setup_prebuilt()
 			mv /tmp/target/release/alacritty ~/.local/bin/
 			]])
 	end
-	if not Shell.file_exists("alacritty.nogl") then
-		Shell.sh([[chmod +x $(pwd)/alacritty/bin/alacritty.nogl]])
-	end
 end
 
 return {
 	configure = function()
 		Shell.ln("$(pwd)/alacritty/my", "~/.config/alacritty")
+		if not Shell.file_exists("alacritty.nogl") then
+			Shell.sh([[chmod +x $(pwd)/alacritty/bin/alacritty.nogl]])
+		end
 	end,
 	dependsOn = function()
-		Shell.file_exists("alacritty")
-		-- Shell.assert_file_exists("cargo")
+		return true
 	end,
 	installer = function()
-		-- build_pack()
-		setup_prebuilt()
-		Shell.sh([[
-			cp $(pwd)/alacritty/bin/* ${HOME}/.local/bin/
-			]])
+		if not Shell.file_exists("alacritty") then
+			-- build_pack()
+			setup_prebuilt()
+			Shell.sh([[
+      cp $(pwd)/alacritty/bin/* ${HOME}/.local/bin/
+      ]])
+		end
 	end,
 }

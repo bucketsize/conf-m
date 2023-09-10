@@ -8,7 +8,7 @@ return {
 		Shell.ln("$(pwd)/openbox/my", "$HOME/.config/openbox")
 	end,
 	dependsOn = function()
-		Shell.file_exists("openbox", "obconf")
+		return Shell.file_exists("openbox", "obconf")
 	end,
 	installer = function()
 		Shell.sh([[

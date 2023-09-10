@@ -111,14 +111,14 @@ window:
 # Font configuration
 font:
   # Normal (roman) font face
-  normal:
+  #normal:
     # Font family
     #
     # Default:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: {font_monospace} 
+    #family: {font_monospace} 
 
     # The `style` can be specified to pick a specific face.
     #style: Book

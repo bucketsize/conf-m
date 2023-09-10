@@ -9,6 +9,6 @@ return {
 		Shell.sh("chmod +x $(pwd)/conky/line/conky-lemonbar.sh")
 	end,
 	dependsOn = function()
-		Shell.file_exists("conky")
+		return Shell.file_exists("conky")
 	end,
 }

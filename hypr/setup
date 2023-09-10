@@ -8,8 +8,8 @@ return {
 		Shell.ln("$(pwd)/hypr/my", "~/.config/hypr")
 	end,
 	dependsOn = function()
-		Shell.file_exists("Hyprland")
-		Shell.file_exists("hyprctl")
+		return Shell.file_exists("Hyprland")
+		        && Shell.file_exists("hyprctl")
 	end,
 	installer = function()
 		Shell.sh([[
