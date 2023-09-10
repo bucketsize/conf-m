@@ -80,6 +80,7 @@ return {
 			["tlp.d"] = {},
 			["rules.d"] = {},
 			["sysctl.d"] = {},
+			["misc"] = {},
 			tz = {},
 		},
 		wayland_weston = {

@@ -39,11 +39,18 @@ local function setup_bins()
 	end
 end
 
+local function setup_touchpad_tap()
+	Sh.sh([[
+			sudo cp -vf misc/my/40*.conf /etc/X11/xorg.conf.d/
+		]])
+end
+
 return {
 	configure = function()
 		setup_path()
 		setup_dirs()
 		setup_bell()
+		setup_touchpad_tap()
 	end,
 	dependsOn = function()
 		return true
