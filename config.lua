@@ -41,6 +41,7 @@ return {
 			sxhkd = {},
 			tint2 = {},
 			lemonbar = {},
+			picom = {},
 		},
 		bspwm = {
 			Xresources = {},
@@ -50,6 +51,7 @@ return {
 			sxhkd = {},
 			tint2 = {},
 			lemonbar = {},
+			picom = {},
 		},
 		common = {
 			misc = {},
