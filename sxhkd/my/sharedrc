@@ -5,11 +5,11 @@ control + Print
 	ictl scr_cap_sel
 
 control + alt + bracketright
-	brightnessctl s 8%+
+	brightnessctl s 2%+
 	#ictl brightness_up
 
 control + alt + bracketleft
-	brightnessctl s 8%-
+	brightnessctl s 2%-
 	#ictl brightness_down
 
 control + bracketright
@@ -37,11 +37,11 @@ alt + h
 	ictl vol_mute
 
 @XF86MonBrightnessUp
-	brightnessctl s 8%+
+	brightnessctl s 2%+
 	#ictl brightness_up
 
 @XF86MonBrightnessDown
-	brightnessctl s 8%-
+	brightnessctl s 2%-
 	#ictl brightness_down
 
 # 
