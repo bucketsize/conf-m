@@ -87,7 +87,7 @@ d-i netcfg/wireless_wep string
 # If non-free firmware is needed for the network or other hardware, you can
 # configure the installer to always try to load it, without prompting. Or
 # change to false to disable asking.
-#d-i hw-detect/load_firmware boolean true
+d-i hw-detect/load_firmware boolean true
 
 ### Network console
 # Use the following settings if you wish to make use of the network-console
@@ -104,7 +104,10 @@ d-i netcfg/wireless_wep string
 # Default value for the mirror protocol: http.
 #d-i mirror/protocol string ftp
 d-i mirror/country string manual
-d-i mirror/http/hostname string debian.inf.tu-dresden.de
+#debian.inf.tu-dresden.de
+#mirror.sg.gs
+#mirror.cse.iitk.ac.in 
+d-i mirror/http/hostname string mirror.cse.iitk.ac.in
 d-i mirror/http/directory string /debian
 d-i mirror/http/proxy string
 
@@ -326,15 +329,15 @@ d-i partman/confirm_nooverwrite boolean true
 # (default: false).
 d-i apt-setup/cdrom/set-first boolean false
 # You can choose to install non-free firmware.
-#d-i apt-setup/non-free-firmware boolean true
+d-i apt-setup/non-free-firmware boolean true
 # You can choose to install non-free and contrib software.
-#d-i apt-setup/non-free boolean true
-#d-i apt-setup/contrib boolean true
+d-i apt-setup/non-free boolean true
+d-i apt-setup/contrib boolean true
 # Uncomment the following line, if you don't want to have the sources.list
 # entry for a DVD/BD installation image active in the installed system
 # (entries for netinst or CD images will be disabled anyway, regardless of
 # this setting).
-#d-i apt-setup/disable-cdrom-entries boolean true
+d-i apt-setup/disable-cdrom-entries boolean true
 # Uncomment this if you don't want to use a network mirror.
 #d-i apt-setup/use_mirror boolean false
 # Select which update services to use; define the mirrors to be used.
@@ -376,7 +379,35 @@ d-i apt-setup/multiarch string i386
 d-i pkgsel/run_tasksel boolean false
 
 # Individual additional packages to install
-d-i pkgsel/include string openssh-server build-essential
+d-i pkgsel/include string \
+  openssh-server  \
+  thermald \
+  tlp \
+  systemd-oomd \
+  xserver-xorg-input-libinput \
+  xserver-xorg-input-evdev \
+  xserver-xorg-input-mouse \
+  xinput  \
+  build-essential \
+  liblua5.3 \
+  liblua5.3-dev \
+  python2-full  \
+  python3-pip  \
+  python3-venv \
+  python3-build \
+  tmux \
+  openbox  \
+  lemonbar  \
+  fzf  \
+  tint2 \
+  vim \
+  acpi \
+  dunst \
+  mpv \
+  mpd  \
+  mpc \
+  alacritty
+  
 # Whether to upgrade packages after debootstrap.
 # Allowed values: none, safe-upgrade, full-upgrade
 #d-i pkgsel/upgrade select none
@@ -392,7 +423,7 @@ popularity-contest popularity-contest/participate boolean true
 
 # This is fairly safe to set, it makes grub install automatically to the UEFI
 # partition/boot record if no other operating system is detected on the machine.
-d-i grub-installer/only_debian boolean true
+#d-i grub-installer/only_debian boolean true
 
 # This one makes grub-installer install to the UEFI partition/boot record, if
 # it also finds some other OS, which is less safe as it might not be able to

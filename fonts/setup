@@ -16,14 +16,14 @@ local fonts = {
 		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DejaVuSansMono.zip",
 		name = "dejavusansmono",
 		ext = "zip",
-		cp = "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete.otf "
-			.. "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete\\ Mono.otf ",
+		cp = "DejaVu\\ Sans\\ Mono*Complete\\ Mono.ttf",
 	},
 	-- {
 	-- 	url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DroidSansMono.zip",
 	-- 	name = "droidsansmono",
 	-- 	ext = "zip",
-	-- 	cp = "DejaVu\\ Sans\\ Mono*Complete\\ Mono.ttf",
+	-- 	cp = "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete.otf "
+	-- 		.. "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete\\ Mono.otf ",
 	-- },
 	-- {
 	-- 	url = "https://github.com/sunaku/tamzen-font/archive/refs/tags/Tamzen-1.11.5.tar.gz",
@@ -62,10 +62,10 @@ return {
 				end
 				Sh.sh(string.format(
 					[[
-				cd /tmp
-				%s dlfo_%s
-				cp -av %s ~/.fonts/
-				]],
+          cd /tmp
+          %s dlfo_%s
+          cp -av %s ~/.fonts/
+          ]],
 					extcmd,
 					font.name,
 					font.cp

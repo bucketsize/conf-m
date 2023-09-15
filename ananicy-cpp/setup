@@ -1,0 +1,41 @@
+#!/usr/bin/env lua
+require("luarocks.loader")
+
+local Shell = require("minilib.shell")
+
+return {
+	configure = function()
+		if not Shell.path_exists("~/ws/ananicy-rules/") then
+			Shell.sh([[
+        cd ~/ws
+        git clone https://github.com/CachyOS/ananicy-rules.git
+      ]])
+		end
+		if not Shell.path_exists("/etc/ananicy-d/") then
+			Shell.sh([[
+        sudo mkdir /etc/ananicy.d
+      ]])
+		end
+		Shell.sh([[
+      cd ~/ws
+      sudo cp -a ananicy-rules/* /etc/ananicy.d/ 
+    ]])
+	end,
+	dependsOn = function()
+		-- sudo apt install git cmake build-essential g++ libsystemd-dev
+		return Shell.file_exists("git", "cmake", "g++")
+	end,
+	installer = function()
+		Shell.sh([[
+      mkdir ~/ws
+      cd ~/ws
+      git clone https://gitlab.com/ananicy-cpp/ananicy-cpp.git
+      cd ananicy-cpp
+      cmake -B build \
+      -DCMAKE_RELEASE_TYPE=Release \
+      -S .
+      cmake --build build --target ananicy-cpp
+      sudo cmake --install build --component Runtime
+    ]])
+	end,
+}
