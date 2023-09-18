@@ -6,6 +6,7 @@ local Shell = require("minilib.shell")
 return {
 	configure = function()
 		if not Shell.path_exists("~/ws/ananicy-rules/") then
+			Shell.mkdir("~/ws")
 			Shell.sh([[
         cd ~/ws
         git clone https://github.com/CachyOS/ananicy-rules.git
@@ -36,6 +37,7 @@ return {
       -S .
       cmake --build build --target ananicy-cpp
       sudo cmake --install build --component Runtime
+      sudo systemctl enable --now ananicy-cpp 
     ]])
 	end,
 }

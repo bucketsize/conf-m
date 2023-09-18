@@ -2,7 +2,6 @@
 require("luarocks.loader")
 
 local Sh = require("minilib.shell")
-local Ut = require("minilib.util")
 
 local dirs = {
 	["~/.config"] = {},
@@ -13,7 +12,7 @@ local dirs = {
 }
 
 local function setup_bell()
-	Ut:exec([[
+	Sh.sh([[
 		pcnobell=$(grep -Po "^set bell-style none" /etc/inputrc)
 		if [ "$pcnobell" = "" ]; then
 			echo "disabling pc bell"
@@ -24,18 +23,15 @@ local function setup_bell()
 	]])
 end
 
-local function setup_path() end
-
 local function setup_dirs()
 	for k, _ in pairs(dirs) do
 		Sh.mkdir(k)
 	end
 end
 
--- TODO
 local function setup_bins()
-	for k, _ in pairs(bins) do
-		Sh.ln(string.format("~/scripts/%s", k), string.format("~/.local/bin/%s", k))
+	if not Sh.path_exists("~/.profile") then
+		Sh.ln("$(pwd)/misc/my/profile", "~/.profile")
 	end
 end
 
@@ -47,9 +43,9 @@ end
 
 return {
 	configure = function()
-		setup_path()
 		setup_dirs()
 		setup_bell()
+		setup_bins()
 		setup_touchpad_tap()
 	end,
 	dependsOn = function()

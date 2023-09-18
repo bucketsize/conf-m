@@ -1,16 +1,18 @@
 #!/usr/bin/env lua
 require "luarocks.loader"
 
-local Shell = require('minilib.shell')
-local Util  = require('minilib.util')
+local Sh = require('minilib.shell')
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/Xresources/my","~/.config/xresources.d")
-		Shell.ln("$(pwd)/Xresources/my/Xresources","~/.Xresources")
+		Sh.ln("$(pwd)/Xresources/my","~/.config/xresources.d")
+		Sh.ln("$(pwd)/Xresources/my/Xresources","~/.Xresources")
+		Sh.sh[[
+      sudo cp -vf misc/my/40*.conf /etc/X11/xorg.conf.d/
+    ]]
 	end,
 	dependsOn = function()
-		return Shell.file_exists("xrdb")
+		return Sh.file_exists("xrdb")
 	end,
 	installer = function()
 	end

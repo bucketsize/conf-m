@@ -1,3 +1,0 @@
-#!/bin/sh
-
-stterm -f "DejaVuSansMono Nerd Font Mono 9" $@
