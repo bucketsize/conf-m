@@ -8,11 +8,7 @@ return {
 		Shell.ln("$(pwd)/qtile/my", "~/.config/qtile")
 	end,
 	dependsOn = function()
-		return Shell.file_exists("qtile")
+		return Shell.file_exists({ "qtile", "waysel", "soso" })
 	end,
-	installer = function()
-		Shell.sh([[
-			cp $(pwd)/qtile/bin/* ${HOME}/.local/bin/
-			]])
-	end,
+	installer = function() end,
 }

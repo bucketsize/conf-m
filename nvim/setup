@@ -13,8 +13,8 @@ return {
     end
 	end,
 	dependsOn = function()
-		return Shell.file_exists("nvim") 
-      || Shell.path_exists("~/.var/app/io.neovim.nvim/config/user-dirs.dirs")
+		return Shell.file_exists("nvim")
+            or Shell.path_exists("~/.var/app/io.neovim.nvim/config/user-dirs.dirs"), "nvim"
 	end,
 	installer = function() end,
 }

@@ -3,28 +3,29 @@ require("luarocks.loader")
 
 local Sh = require("minilib.shell")
 local M = require("minilib.monad")
+local T = require("task")
 local Home = os.getenv("HOME")
 
 local fonts = {
-	{
-		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/Agave.zip",
-		name = "agave",
-		ext = "zip",
-		cp = "agave\\ regular\\ Nerd\\ Font\\ Complete.ttf " .. "agave\\ regular\\ Nerd\\ Font\\ Complete\\ Mono.ttf ",
-	},
+	-- {
+	-- 	url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/Agave.zip",
+	-- 	name = "agave",
+	-- 	ext = "zip",
+	-- 	cp = "agave\\ regular\\ Nerd\\ Font\\ Complete.ttf " .. "agave\\ regular\\ Nerd\\ Font\\ Complete\\ Mono.ttf ",
+	-- },
 	{
 		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DejaVuSansMono.zip",
 		name = "dejavusansmono",
 		ext = "zip",
 		cp = "DejaVu\\ Sans\\ Mono*Complete\\ Mono.ttf",
 	},
-	-- {
-	-- 	url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DroidSansMono.zip",
-	-- 	name = "droidsansmono",
-	-- 	ext = "zip",
-	-- 	cp = "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete.otf "
-	-- 		.. "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete\\ Mono.otf ",
-	-- },
+	{
+		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DroidSansMono.zip",
+		name = "droidsansmono",
+		ext = "zip",
+		cp = "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete.otf "
+			.. "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete\\ Mono.otf ",
+	},
 	-- {
 	-- 	url = "https://github.com/sunaku/tamzen-font/archive/refs/tags/Tamzen-1.11.5.tar.gz",
 	-- 	name = "tamzen",
@@ -47,31 +48,7 @@ return {
 
 		Sh.sh([[rm /tmp/dlfo_*]])
 
-		M.List
-			.of(fonts)
-			:fmap(function(font)
-				Sh.wget(font.url, "/tmp/dlfo_" .. font.name)
-				return font
-			end)
-			:fmap(function(font)
-				local extcmd
-				if font.ext == "zip" then
-					extcmd = "unzip -o "
-				elseif font.ext == "tar.gz" then
-					extcmd = "tar --overwrite -xvzf "
-				end
-				Sh.sh(string.format(
-					[[
-          cd /tmp
-          %s dlfo_%s
-          cp -av %s ~/.fonts/
-          ]],
-					extcmd,
-					font.name,
-					font.cp
-				))
-				return font
-			end)
+		M.List.of(fonts):fmap(T.geturl):fmap(T.extract)
 
 		Sh.sh([[
 			cd ~/.fonts

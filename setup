@@ -8,7 +8,9 @@ os.execute("minilib/setup")
 print("done.")
 
 local Sh = require("minilib.shell")
+local Ut = require("minilib.util")
 local Pr = require("minilib.process")
+local M = require("minilib.monad")
 
 local config_group = require("config").groups
 
@@ -67,10 +69,12 @@ local function pre_setup_config(name)
 	-- Sh.sh(string.format([[%s/setup]], name))
 	local e = dofile(string.format([[%s/setup]], name))
 	if e.dependsOn then
-		if not e.dependsOn() then
-			print("dependency failed for: ", name)
-			return false
+		local s, ls = e.dependsOn()
+		if not s then
+			print("dependsOn failed: ", name, Ut.tos(ls))
+			return s, ls
 		end
+		print("dependsOn Ok: ", name, Ut.tos(ls))
 	end
 	return true
 end
@@ -86,17 +90,25 @@ local function setup_config(name)
 	print(name, "Ok")
 	return 0
 end
+local function setup(name)
+	local s, ls = pre_setup_config(name)
+	if not s then
+		return 1
+	end
+	setup_config(name)
+end
 local function setup_configs(name)
-	local pre = true
-	for k, v in pairs(config_group[name]) do
+	local deplist = {}
+	for _, v in pairs(config_group[name]) do
 		if not (v.state == "noi") then
-			if not pre_setup_config(k) then
-				pre = false
+			local s, ls = pre_setup_config(name)
+			if not s then
+				table.insert(deplist, ls)
 			end
 		end
 	end
-	if not pre then
-		print("#setup_configs failed due to pre for group:", name)
+	if #deplist > 1 then
+		print("setup_configs failed:", name, Ut.tos(deplist))
 		return 1
 	end
 	for k, v in pairs(config_group[name]) do
@@ -120,6 +132,5 @@ else
 	print("#setup " .. arg[1])
 	-- common
 	prepare_config(arg[1])
-	pre_setup_config(arg[1])
-	setup_config(arg[1])
+	setup(arg[1])
 end
