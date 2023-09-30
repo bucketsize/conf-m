@@ -1,0 +1,3 @@
+. ~/myvenv/bin/activate
+export PATH=~/.local/bin:~/.luarocks/bin:~/scripts:$PATH
+
