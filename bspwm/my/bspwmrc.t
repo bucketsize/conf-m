@@ -1,6 +1,6 @@
 #! /bin/sh
 
-bspc monitor -d T F D X Y Z A B C 
+bspc monitor -d T F D X Steam Z A B C 
 bspc config border_width         2
 bspc config window_gap           4
 
@@ -10,17 +10,18 @@ bspc config gapless_monocle      false
 bspc config focus_follows_pointer false
 
 # browsers
-bspc rule -a Chromium desktop=^2
-bspc rule -a Chromium-browser desktop=^2
-bspc rule -a Firefox  desktop=^2
-bspc rule -a Firefox-esr  desktop=^2
-bspc rule -a firefox  desktop=^2
-bspc rule -a Navigator desktop=^2
+bspc rule -a Chromium desktop=^2 follow=on
+bspc rule -a Chromium-browser desktop=^2 follow=on
+bspc rule -a Firefox  desktop=^2 follow=on
+bspc rule -a Firefox-esr  desktop=^2 follow=on
+bspc rule -a firefox  desktop=^2 follow=on
+bspc rule -a Navigator desktop=^2 follow=on
 
 # ide
-bspc rule -a Eclipse  desktop=^3
-bspc rule -a Code  desktop=^3
-bspc rule -a Idea  desktop=^3
+bspc rule -a Eclipse  desktop=^3 follow=on
+bspc rule -a Code  desktop=^3 follow=on
+bspc rule -a Idea  desktop=^3 follow=on
+bspc rule -a Java  desktop=^3 follow=on state=floating
 
 # image viewers/editors
 bspc rule -a Gimp desktop=^4 state=floating follow=on
