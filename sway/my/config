@@ -1,14 +1,13 @@
 # programs
-# sway mako-notifier waybar swaybg --no-install-recommends swayidle swaylock xdg-desktop-portal-wlrs
+# sway mako-notifier waybar swaybg --no-install-recommends swayidle swaylock xdg-desktop-portal-wlrs wlr-randr grim wl-copy
 
 # defines
 set $mod Mod4
 set $alt Mod1
 set $term alacritty
-set $menu XDG_DATA_DIRS=/usr/share/:/usr/local/share/:/var/lib/flatpak/exports/share/:$HOME/.local/share/flatpak/exports/share/ j4-dmenu-desktop --dmenu="bemenu-run.sh -l 30" --term="alacritty" --no-generic --display-binary
 
 # display
-output eDP-1 pos 0 0 res 1280x720
+output eDP-1 mode --custom 1280x720@60Hz 
 output "*" background ~/.wlprs/wallpaper stretch
 
 ## lid closed -> default display off 
@@ -25,7 +24,7 @@ input type:touchpad {
 }
 
 input "1:1:AT_Translated_Set_2_keyboard" {
-        xkb_layout en 
+        xkb_layout "us,de" 
 }
 
 # mouse 
@@ -45,6 +44,10 @@ bindsym $mod+Return exec $term
 ## custom
 bindsym $mod+d exec ictl dmenu_run
 bindsym $mod+q exec ictl dmenu_exit 
+bindsym $mod+c kill
+bindsym $mod+Print exec grim - | wl-copy
+bindsym $mod+Shift+Print exec grim -g "$(slurp)" - | wl-copy
+
 bindsym XF86AudioRaiseVolume exec ictl vol_up 
 bindsym XF86AudioLowerVolume exec ictl vol_up 
 bindsym XF86AudioMute exec ictl vol_mute 
@@ -188,6 +191,15 @@ bindsym Shift+$alt+space exec makoctl dismiss --all
 bindsym $alt+Shift+m exec makoctl menu $BIN_DIR/bemenu-run.sh -l 30
 
 # wm look and feel
+
+# TokyoNight theme
+# Property Name             Border  BG      Text    Indicator Child-border
+client.focused              #0a0b16 #2f343f #4477ff #4477ff   #4477ff
+client.focused_inactive     #2f343f #2f343f #d8dee8 #2f343f   #2f343f
+client.unfocused            #2f343f #2f343f #d8dee8 #2f343f   #2f343f
+client.urgent               #2f343f #2f343f #d8dee8 #2f343f   #2f343f
+client.placeholder          #2f343f #2f343f #d8dee8 #2f343f   #2f343f
+
 gaps inner 4
 gaps outer 8 
 gaps left 0
@@ -201,6 +213,8 @@ default_border pixel 2
 ## window
 # app_id < swaymsg -t get_tree | jq '.' | grep "app_id" 
 # class  < xprop
+for_window [class = "Popeye"] floating enable
+for_window [app_id = "Popeye"] floating enable
 for_window [window_role = "pop-up"] floating enable
 for_window [window_role = "bubble"] floating enable
 for_window [window_role = "dialog"] floating enable
