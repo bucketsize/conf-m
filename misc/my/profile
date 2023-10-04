@@ -1,4 +1,5 @@
 . ~/myvenv/bin/activate
+. "$HOME/.cargo/env"
+
 export PATH=~/.local/bin:~/.luarocks/bin:~/scripts:$PATH
 
-. "$HOME/.cargo/env"

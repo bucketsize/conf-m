@@ -6,6 +6,7 @@ xsetroot -cursor_name left_ptr
 setxkbmap us
 
 # dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
+# if now set will take 20s to start
 dbus-launch --sh-syntax --exit-with-session
 dbus-update-activation-environment --systemd --all
 
