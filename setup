@@ -99,9 +99,9 @@ local function setup(name)
 end
 local function setup_configs(name)
 	local deplist = {}
-	for _, v in pairs(config_group[name]) do
+	for k, v in pairs(config_group[name]) do
 		if not (v.state == "noi") then
-			local s, ls = pre_setup_config(name)
+			local s, ls = pre_setup_config(k)
 			if not s then
 				table.insert(deplist, ls)
 			end
