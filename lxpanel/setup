@@ -1,0 +1,14 @@
+#!/usr/bin/env lua
+require("luarocks.loader")
+
+local Shell = require("minilib.shell")
+
+return {
+	configure = function()
+		Shell.ln("$(pwd)/lxpanel/my", "$HOME/.config/lxpanel")
+	end,
+	dependsOn = function()
+		return Shell.file_exists({ "lxpanel" })
+	end,
+	installer = function() end,
+}

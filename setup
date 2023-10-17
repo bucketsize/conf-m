@@ -124,6 +124,7 @@ if arg[1] == nil then
 	-- common
 	prepare_configs()
 	-- groups
+	setup_configs("sys")
 	setup_configs("common")
 	setup_configs("openbox")
 	setup_configs("bspwm")

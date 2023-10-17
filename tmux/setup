@@ -1,0 +1,14 @@
+#!/usr/bin/env lua
+require("luarocks.loader")
+
+local Sh = require("minilib.shell")
+
+return {
+	configure = function()
+		Sh.ln("$(pwd)/tmux/my", "$HOME/.config/tmux")
+	end,
+	dependsOn = function()
+		return Sh.file_exists({ "lxpanel" })
+	end,
+	installer = function() end,
+}

@@ -37,9 +37,8 @@ return {
 			xinit = {},
 			autostart = {},
 			openbox = {},
-			-- triggerhappy = {}, -- deprecated
 			sxhkd = {},
-			tint2 = {},
+			lxpanel = {},
 			lemonbar = {},
 			picom = {},
 		},
@@ -54,7 +53,7 @@ return {
 			picom = {},
 		},
 		common = {
-			misc = {},
+			fonts = {},
 			fontconfig = {},
 			gtk = {},
 			-- qt5ct = {},
@@ -69,12 +68,15 @@ return {
 			-- ympd = {}, -- custom
 			mpv = {},
 			-- mxctl = {},
+			ictl = {},
 			-- frmad = {},
+			m360 = {},
 			-- fseer = {}, -- pilot - abandoned
 			-- conky = {},
 			-- pipewire = {}, -- custom, ignore if pulseaudio works fine
 			alacritty = {},
 			-- ["qterminal.org"] = {},
+			tmux = {},
 		},
 		sys = {
 			["tlp.d"] = {},
