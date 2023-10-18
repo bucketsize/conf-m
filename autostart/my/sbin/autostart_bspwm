@@ -29,11 +29,12 @@ picom &
 dunst &
 mpd &
 
-# clipboard manager
-parcellite &
-
-ictl setup_video
+xrandr --output eDP-1 --mode 1280x720 --rotate normal --pos 0x0
 ictl applywallpaper
+
+bspc config left_padding 36
+lxpanel &
+parcellite &
 
 m360 1 >/dev/null &
 sleep 2 && (tail -f /tmp/m360.lemonbar.out.${USER} | lemonbar &) # xmobar or conky or lemonbar
