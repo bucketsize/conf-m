@@ -22,7 +22,7 @@ Global {
   iconsize=32
   align=center
   monitor=-1
-  autohide=1
+  autohide=0
   heightwhenhidden=3
 }
 Plugin {
