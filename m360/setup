@@ -7,7 +7,7 @@ return {
 	configure = function()
 		Shell.sh([[
 			[ -d ~/.config/m360 ] || mkdir -v -p ~/.config/m360
-			[ -f ~/.config/m360/config ] || cp -v $(pwd)/m360/my/config ~/.config/m360/
+			[ -f ~/.config/m360/config.json ] || cp -v $(pwd)/m360/my/config.json ~/.config/m360/
 		]])
 	end,
 	dependsOn = function()

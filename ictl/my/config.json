@@ -1,0 +1,56 @@
+{
+  "app_dirs": [
+    "/usr/local/bin",
+    "/usr/share/applications",
+    "/snap/bin",
+    "~/.local/share/applications",
+    "~/.local/bin"
+  ],
+  "menu_sel": ["fzf"],
+  "pop_term": {"xorg":"alacritty", "wayland":"alacritty"},
+  "lux_step": 2,
+
+  "wallpapermode": "fixed",
+  "wallpaperscache": ".wlprs",
+  "wallpaperfixd": "Downloads/spiderwalls/dark-background-playstation-4-ps4-4k-wallpaper-f8e68d687070dc18101c012e688284ba.jpg",
+  "wallpapersdir": "Pictures",
+
+  "displays": [
+    {
+      "name": "Virtual-0",
+      "mode": {"x":1280,"y":720},
+      "pos": [0,0],
+      "extra_opts": "--primary --set underscan off"
+    },
+    {
+      "name": "DisplayPort-0",
+      "mode": {"x":1280,"y":720},
+      "pos": [0,0],
+      "extra_opts": "--primary --set underscan off"
+    },
+    {
+      "name": "eDP-1",
+      "mode": {"x":1280, "y":720},
+      "pos": [0,0],
+      "extra_opts": "--primary --set underscan off"
+    },
+    {
+      "name": "eDP1",
+      "mode": {"x":1280, "y":720},
+      "pos": [0,0],
+      "extra_opts": "--primary --set underscan off"
+    },
+    {
+      "name": "HDMI-A-0",
+      "mode": {"x":1280, "y":720},
+      "pos": [0,0],
+      "extra_opts": "--primary --set underscan off"
+    },
+    {
+      "name": "HDMI-A-1",
+      "mode": {"x":1280, "y":720},
+      "pos": [1,0],
+      "extra_opts": "--set underscan on --set \"underscan hborder\" 48 --set \"underscan vborder\" 24"
+    }
+  ]
+}

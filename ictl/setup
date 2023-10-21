@@ -7,7 +7,7 @@ return {
 	configure = function()
 		Shell.sh([[
 			[ -d ~/.config/ictl ] || mkdir -v -p ~/.config/ictl
-			[ -f ~/.config/ictl/config ] || cp -v $(pwd)/ictl/my/config ~/.config/ictl/
+			[ -f ~/.config/ictl/config.json ] || cp -v $(pwd)/ictl/my/config.json ~/.config/ictl/
 		]])
 	end,
 	dependsOn = function()
