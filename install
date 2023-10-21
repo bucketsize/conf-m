@@ -5,11 +5,14 @@ if [ "$(lua -v)" == "" ]; then
   exit -1
 fi
 
+lf=$(mktemp)
 pk=conf-m
-curl --progress-bar -SkO -L https://codeload.github.com/$pk/zip/refs/heads/main
+curl -kSL https://github.com/bucketsize/conf-m/archive/refs/heads/main.zip -o $lf
 rm conf-m-main*
 mv conf-m conf-m.$(date | md5sum | tr -d " -")
-unzip conf-m-main.zip
+
+unzip $lf
+mv conf-m-main conf-m
 
 cd conf-m 
 ./setup 

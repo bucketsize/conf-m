@@ -40,7 +40,6 @@ return {
 		setup_dirs()
 		setup_bell()
 		setup_bins()
-		setup_touchpad_tap()
 	end,
 	dependsOn = function()
 		return true
