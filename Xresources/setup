@@ -8,7 +8,7 @@ return {
 		Sh.ln("$(pwd)/Xresources/my","~/.config/xresources.d")
 		Sh.ln("$(pwd)/Xresources/my/Xresources","~/.Xresources")
 		Sh.sh[[
-      sudo cp -vf misc/my/40*.conf /etc/X11/xorg.conf.d/
+      sudo cp -vf $(pwd)/Xresources/my/40*.conf /etc/X11/xorg.conf.d/
     ]]
 	end,
 	dependsOn = function()
