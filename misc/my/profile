@@ -1,4 +1,4 @@
-. ~/myvenv/bin/activate
-. "$HOME/.cargo/env"
+[ -f $HOME/myvenv/bin/activate ] && . ~/myvenv/bin/activate
+[ -f $HOME/.cargo/env ] && . $HOME/.cargo/env
 
 export PATH=~/.local/bin:~/.luarocks/bin:~/scripts:/usr/sbin:$PATH

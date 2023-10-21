@@ -24,7 +24,9 @@ return {
 	end,
 	dependsOn = function()
 		-- sudo apt install git cmake build-essential g++ libsystemd-dev
-		return Shell.file_exists("git", "cmake", "g++")
+		local a, x = Shell.file_exists({ "git", "cmake", "g++" })
+		local b, y = Shell.package_exists({ "build-essential", "libsystemd-dev" })
+		return (a and b), { x, y }
 	end,
 	installer = function()
 		Shell.sh([[

@@ -12,7 +12,7 @@ return {
     ]]
 	end,
 	dependsOn = function()
-		return Sh.file_exists("xrdb")
+		return Sh.file_exists({"xrdb"})
 	end,
 	installer = function()
 	end

@@ -11,7 +11,7 @@ return {
     ]])
 	end,
 	dependsOn = function()
-		return Shell.file_exists("dhcpcd")
+		return Shell.file_exists({ "dhcpcd", "wpa_supplicant" })
 	end,
 	installer = function() end,
 }

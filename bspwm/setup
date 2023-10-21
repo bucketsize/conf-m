@@ -8,7 +8,18 @@ return {
 		Shell.ln("$(pwd)/bspwm/my", "~/.config/bspwm")
 	end,
 	dependsOn = function()
-		return Shell.file_exists({ "bspwm", "sxhkd" })
+		return Shell.file_exists({
+			"bspwm",
+			"sxhkd",
+			"feh",
+			"lxpolkit",
+			"tint2",
+			"picom",
+			"dunst",
+			"ictl",
+			"m360",
+			"lemonbar",
+		})
 	end,
 	installer = function() end,
 }

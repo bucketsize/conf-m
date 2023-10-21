@@ -8,7 +8,7 @@ return {
 		Sh.ln("$(pwd)/tmux/my", "$HOME/.config/tmux")
 	end,
 	dependsOn = function()
-		return Sh.file_exists({ "lxpanel" })
+		return Sh.file_exists({ "tmux" }), { "tmux" }
 	end,
 	installer = function() end,
 }

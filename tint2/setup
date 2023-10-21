@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/tint2/lemon", "~/.config/tint2")
+		Shell.ln("$(pwd)/tint2/dashy", "~/.config/tint2")
 	end,
 	dependsOn = function()
 		return Shell.file_exists("tint2")

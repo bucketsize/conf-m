@@ -19,7 +19,7 @@ return {
 			"~/.var/app/io.neovim.nvim/config/user-dirs.dirs",
 			"ripgrep",
 		}),
-			"nvim"
+			{ "nvim", "ripgrep" }
 	end,
 	installer = function() end,
 }

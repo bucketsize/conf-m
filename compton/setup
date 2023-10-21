@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	dependsOn = function()
-		return Shell.file_exists("compton")
+		return Shell.file_exists({ "compton" })
 	end,
 	configure = function()
 		Shell.ln("~/scripts/config/compton/my", "~/.config/compton")
