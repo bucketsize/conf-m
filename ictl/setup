@@ -1,0 +1,25 @@
+#!/usr/bin/env lua
+require("luarocks.loader")
+
+local Shell = require("minilib.shell")
+
+return {
+	configure = function()
+		Shell.sh([[
+			[ -d ~/.config/ictl ] || mkdir -v -p ~/.config/ictl
+			[ -f ~/.config/ictl/config ] || cp -v $(pwd)/ictl/my/config ~/.config/ictl/
+		]])
+	end,
+	dependsOn = function()
+		return Shell.file_exists({
+			"xterm",
+			"xrandr",
+			"fzf",
+			"wmctrl",
+			"pactl",
+			"feh",
+			"curl",
+		})
+	end,
+	installer = function() end,
+}

@@ -11,19 +11,7 @@ return {
 		]])
 	end,
 	dependsOn = function()
-		return Shell.file_exists({ "git", "make", "urxvt", "xrandr", "fzy", "wmctrl", "pactl", "feh", "wget", "curl" })
+		return Shell.file_exists({ "python3", "pactl", "curl" })
 	end,
-	installer = function()
-		Shell.github_fetch("bucketsize", "frmad")
-		Shell.sh(string.format(
-			[[
-			export CRYPTO_INCDIR=/usr/include	
-			LIBDIR=/usr/lib/%s-linux-gnu
- 			CRYPTO_LIBDIR=$LIBDIR
- 			OPENSSL_LIBDIR=$LIBDIR 
-			cd ~/frmad && luarocks make --local
-		]],
-			Shell.arch()
-		))
-	end,
+	installer = function() end,
 }
