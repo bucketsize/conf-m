@@ -31,8 +31,17 @@ end
 
 local function setup_bins()
 	if not Sh.path_exists("~/.profile") then
-		Sh.ln("$(pwd)/misc/my/profile", "~/.profile")
+		Sh.cp("$(pwd)/misc/my/profile", "~/.profile")
 	end
+	Sh.append(
+		[[
+# conf-m/misc
+[ -f $HOME/myvenv/bin/activate ] && . ~/myvenv/bin/activate
+[ -f $HOME/.cargo/env ] && . $HOME/.cargo/env
+export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
+    ]],
+		"~/.profile"
+	)
 end
 
 return {

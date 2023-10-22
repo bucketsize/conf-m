@@ -1,4 +1,5 @@
-[ -f $HOME/myvenv/bin/activate ] && . ~/myvenv/bin/activate
-[ -f $HOME/.cargo/env ] && . $HOME/.cargo/env
-
-export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
+if [ "$BASH" ]; then
+  if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+  fi
+fi
