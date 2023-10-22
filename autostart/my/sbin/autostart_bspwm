@@ -1,11 +1,8 @@
 #!/bin/sh
 
-set -x
-
-echo ">> $(date)"
+echo "$(date) $*" >>/tmp/bspwm.log
 
 . ~/.profile
-
 xrdb -merge ~/.Xresources
 xhost +
 xsetroot -cursor_name left_ptr
@@ -27,7 +24,7 @@ sxhkd -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc &
 lxpolkit &
 picom &
 dunst &
-mpd &
+run_once mpd &
 
 # ictl setupvideo FIXME
 xrandr --output eDP-1 --mode 1280x720 --rotate normal --pos 0x0
@@ -37,12 +34,8 @@ bspc config left_padding 36
 tint2 &
 parcellite &
 
-m360 1 >/dev/null &
+run_once m360 1 >/dev/null &
 sleep 2 && (tail -f /tmp/m360.lemonbar.out.${USER} | lemonbar &) # xmobar or conky or lemonbar
 
-if [[ "$(hostnamectl hostname)" =~ "fuhrer" ]]; then
-	steam steam://open/bigpicturesteam
-fi
-
-echo "<< $(date)"
+notify-send "bspwm autostart done"
 # xss-lock gtlxklock

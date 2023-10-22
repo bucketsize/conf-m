@@ -20,9 +20,3 @@ dunst &
 
 ictl setup_video
 ictl applywallpaper
-
-tint2 &
-
-if [[ "$(hostnamectl hostname)" =~ "fuhrer" ]]; then
-	steam steam://open/bigpicturesteam
-fi
