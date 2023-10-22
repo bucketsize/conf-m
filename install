@@ -7,7 +7,7 @@ fi
 
 gh_get() {
 	pk=$1
-	curl --retry --retry-all-errors -kSL https://github.com/bucketsize/$pk/archive/refs/heads/main.zip -o $pk.zip
+	curl --retry 2 --retry-all-errors -kSL https://github.com/bucketsize/$pk/archive/refs/heads/main.zip -o $pk.zip
 
 	rm $pk-main* -rf
 	mv $pk $pk.$(date | md5sum | tr -d " -")
@@ -22,8 +22,10 @@ cd ~/.bucketsize
 echo "running in [$(pwd)]"
 
 gh_get scripts
-echo "export PATH=$HOME/.bucketsize/scripts:$PATH" >>~/.profile
+export PATH=$HOME/.bucketsize/scripts:$PATH
+
+gh_get minilib
+cd minilib; luarocks make --local; cd ..	
 
 gh_get conf-m
-cd conf-m
-./setup
+cd conf-m; ./setup; cd ..
