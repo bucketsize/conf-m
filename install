@@ -6,18 +6,20 @@ if [ "$(lua -v)" == "" ]; then
 fi
 
 gh_get() {
-	pk=conf-m
-	curl -kSL https://github.com/bucketsize/conf-m/archive/refs/heads/main.zip -o $pk.zip
+	pk=$1
+	curl --retry --retry-all-errors -kSL https://github.com/bucketsize/$pk/archive/refs/heads/main.zip -o $pk.zip
 
-	rm $pk-main*
+	rm $pk-main* -rf
 	mv $pk $pk.$(date | md5sum | tr -d " -")
 
 	unzip $pk.zip
 	mv $pk-main $pk
 }
 
-[ -d ~/.bucketsize ] || mdkir -p ~/.bucketsize
+[ -d ~/.bucketsize ] || mkdir -p ~/.bucketsize
 cd ~/.bucketsize
+
+echo "running in [$(pwd)]"
 
 gh_get scripts
 echo "export PATH=$HOME/.bucketsize/scripts:$PATH" >>~/.profile
