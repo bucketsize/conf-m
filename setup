@@ -1,12 +1,6 @@
 #!/usr/bin/env lua
 
---package.path = os.getenv("HOME") .. ";" .. package.path
 require("luarocks.loader")
-
-print("boostrapping minilib ...")
-os.execute("minilib/setup")
-print("done.")
-
 local Sh = require("minilib.shell")
 local Ut = require("minilib.util")
 local Pr = require("minilib.process")
@@ -66,7 +60,6 @@ local function prepare_configs()
 	update_configs("./", subhbs)
 end
 local function pre_setup_config(name)
-	-- Sh.sh(string.format([[%s/setup]], name))
 	local e = dofile(string.format([[%s/setup]], name))
 	if e.dependsOn then
 		local s, ls = e.dependsOn()
@@ -79,7 +72,6 @@ local function pre_setup_config(name)
 	return true
 end
 local function setup_config(name)
-	-- Sh.sh(string.format([[%s/setup]], name))
 	local e = dofile(string.format([[%s/setup]], name))
 	if e.installer then
 		e.installer()
@@ -121,17 +113,12 @@ end
 
 if arg[1] == nil then
 	print("#setup *")
-	-- common
 	prepare_configs()
-	-- groups
 	setup_configs("sys")
 	setup_configs("common")
 	setup_configs("openbox")
-	setup_configs("bspwm")
-	-- setup_configs("wayland_weston")
 else
 	print("#setup " .. arg[1])
-	-- common
 	prepare_config(arg[1])
 	setup(arg[1])
 end

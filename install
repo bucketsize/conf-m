@@ -1,18 +1,27 @@
-#!/bin/sh 
+#!/bin/sh
 
 if [ "$(lua -v)" == "" ]; then
-  echo "install lua5.3, luarocks, curl and retry."
-  exit -1
+	echo "install lua5.3, luarocks, curl, unzip and retry."
+	exit -1
 fi
 
-lf=$(mktemp)
-pk=conf-m
-curl -kSL https://github.com/bucketsize/conf-m/archive/refs/heads/main.zip -o $lf
-rm conf-m-main*
-mv conf-m conf-m.$(date | md5sum | tr -d " -")
+gh_get() {
+	pk=conf-m
+	curl -kSL https://github.com/bucketsize/conf-m/archive/refs/heads/main.zip -o $pk.zip
 
-unzip $lf
-mv conf-m-main conf-m
+	rm $pk-main*
+	mv $pk $pk.$(date | md5sum | tr -d " -")
 
-cd conf-m 
-./setup 
+	unzip $pk.zip
+	mv $pk-main $pk
+}
+
+[ -d ~/.bucketsize ] || mdkir -p ~/.bucketsize
+cd ~/.bucketsize
+
+gh_get scripts
+echo "export PATH=$HOME/.bucketsize/scripts:$PATH" >>~/.profile
+
+gh_get conf-m
+cd conf-m
+./setup
