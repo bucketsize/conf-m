@@ -1,0 +1,16 @@
+#!/usr/bin/env lua
+require("luarocks.loader")
+
+local Sh = require("minilib.shell")
+
+return {
+	configure = function()
+		Sh.ln("$(pwd)/mangohud/my", "~/.config/MangoHud")
+	end,
+	dependsOn = function()
+		return Sh.file_exists({
+			"mangohud",
+		})
+	end,
+	installer = function() end,
+}
