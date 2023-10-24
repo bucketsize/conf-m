@@ -3,12 +3,8 @@ require("luarocks.loader")
 
 local Shell = require("minilib.shell")
 
-return {
-	configure = function()
-		Shell.sh([[
-		[ -d /etc/systemd/logind.conf.d ] || sudo mkdir /etc/systemd/logind.conf.d	
-		sudo cp -vf logind.d/my/*.conf /etc/systemd/logind.conf.d/
-
+local function setup_autologin()
+	Shell.sh([[
     sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
     sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf <<EOF
 [Service]
@@ -16,6 +12,14 @@ ExecStart=
 ExecStart=-/sbin/agetty --noissue --autologin jb %I $TERM
 Type=idle 
 EOF
+		]])
+end
+
+return {
+	configure = function()
+		Shell.sh([[
+		[ -d /etc/systemd/logind.conf.d ] || sudo mkdir /etc/systemd/logind.conf.d	
+		sudo cp -vf logind.d/my/*.conf /etc/systemd/logind.conf.d/
 		]])
 	end,
 	dependsOn = function()

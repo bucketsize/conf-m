@@ -1,5 +1,6 @@
 wayland-weston
-wayland-qtile
+wayland-sway
 xorg-openbox
 xorg-bspwm
+xorg-steam
 bash

@@ -6,11 +6,15 @@ local Shell = require("minilib.shell")
 return {
 	configure = function()
 		Shell.sh([[
+    mkdir /etc/greetd
 		sudo cp -vf greetd/my/* /etc/greetd/
+    sudo useradd -M -G video greeter
+    sudo chmod -R go+r /etc/greetd/
 		]])
+		print("when ready, `sudo systemctl enable --now greetd`")
 	end,
 	dependsOn = function()
-		return Shell.file_exists({ "greetd", "cage" })
+		return Shell.file_exists({ "greetd" })
 	end,
 	installer = function() end,
 }
