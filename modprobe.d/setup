@@ -1,0 +1,14 @@
+#!/usr/bin/env lua
+require("luarocks.loader")
+
+local Sh = require("minilib.shell")
+
+return {
+	configure = function() end,
+	dependsOn = function()
+		return Sh.file_exists("modprobe")
+	end,
+	installer = function()
+		Sh.sh("sudo cp -v $(pwd)/modprobe.d/my/* /etc/modprobe.d/")
+	end,
+}
