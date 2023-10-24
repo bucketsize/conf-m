@@ -22,10 +22,6 @@ return {
 		})
 	end,
 	installer = function()
-		Shell.sh([[
-			cp $(pwd)/openbox/bin/* ${HOME}/.local/bin/
-			]])
-
 		-- theme
 		Shell.mkdir("~/.themes")
 

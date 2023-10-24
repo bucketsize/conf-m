@@ -7,14 +7,18 @@ xsetroot -cursor_name left_ptr
 setxkbmap us
 
 # dbus for dbus aware apps integration . ie pulseaudio, nautilus, firefox, dunst
-dbus-launch --sh-syntax --exit-with-session
-dbus-update-activation-environment --systemd --all
+if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+	dbus-launch --sh-syntax --exit-with-session
+	dbus-update-activation-environment --systemd --all
+fi
 
 sleep 1
 
 # needed on VBox for proper display scaling
-VBoxClient --vmsvga
-VBoxClient --clipboard
+if which VBoxClient; then
+	VBoxClient --vmsvga
+	VBoxClient --clipboard
+fi
 
 # sys key binder
 # thd  --triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*
@@ -24,7 +28,8 @@ picom &
 dunst &
 run_once mpd &
 
-xrandr --output eDP-1 --mode 1280x720 --rotate normal --pos 0x0
+# xrandr --output eDP-1 --mode 1280x720 --rotate normal --pos 0x0
+ictl setup_video
 ictl applywallpaper
 
 tint2 &

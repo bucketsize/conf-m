@@ -12,11 +12,16 @@
 
   "wallpapermode": "fixed",
   "wallpaperscache": ".wlprs",
-  "wallpaperfixd": "Downloads/spiderwalls/dark-background-playstation-4-ps4-4k-wallpaper-f8e68d687070dc18101c012e688284ba.jpg",
+  "wallpaperfixd": "Pictures/wallpaper.jpg",
   "wallpapersdir": "Pictures",
 
+  "__info":[
+    "why set 1280x720",
+    "This is the most optimal resolution for gaming on ryzen 3 APU"
+  ],
   "displays": [
     {
+      "__name:": "vbox",
       "name": "Virtual-0",
       "mode": {"x":1280,"y":720},
       "pos": [0,0],
@@ -41,16 +46,25 @@
       "extra_opts": "--primary --set underscan off"
     },
     {
+      "__name:": "pi4",
       "name": "HDMI-A-0",
       "mode": {"x":1280, "y":720},
       "pos": [0,0],
       "extra_opts": "--primary --set underscan off"
     },
     {
+      "__name:": "pi4 display2",
       "name": "HDMI-A-1",
       "mode": {"x":1280, "y":720},
       "pos": [1,0],
       "extra_opts": "--set underscan on --set \"underscan hborder\" 48 --set \"underscan vborder\" 24"
+    },
+    {
+      "__name:": "ryzen3 PC",
+      "name": "HDMI-1",
+      "mode": {"x":1280, "y":720},
+      "pos": [1,0],
+      "extra_opts": "--primary --set underscan off"
     }
   ]
 }
