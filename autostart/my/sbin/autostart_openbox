@@ -1,6 +1,8 @@
 #!/bin/sh
 
 . ~/.profile
+ictl setup_video
+ictl applywallpaper
 xrdb -merge ~/.Xresources
 xhost +
 xsetroot -cursor_name left_ptr
@@ -22,15 +24,25 @@ fi
 
 # sys key binder
 # thd  --triggers ~/.config/triggerhappy/th.conf --deviceglob /dev/input/event*
-sxhkd -c ~/.config/sxhkd/winrc ~/.config/sxhkd/sharedrc &
+case "$XDG_CURRENT_DESKTOP" in
+bspwm)
+	sxhkd -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc &
+	;;
+openbox)
+	sxhkd -c ~/.config/sxhkd/winrc ~/.config/sxhkd/sharedrc &
+	;;
+esac
+
 lxpolkit &
-picom &
+
+if which VBoxClient; then
+	compton &
+else
+	picom &
+fi
+
 dunst &
 run_once mpd &
-
-# xrandr --output eDP-1 --mode 1280x720 --rotate normal --pos 0x0
-ictl setup_video
-ictl applywallpaper
 
 tint2 &
 parcellite &
@@ -38,5 +50,5 @@ parcellite &
 run_once m360 1 >/dev/null &
 sleep 1 && (tail -f /tmp/m360.lemonbar.out.${USER} | lemonbar &) # xmobar or conky or lemonbar
 
-notify-send "openbox autostart done"
+notify-send "$XDG_CURRENT_DESKTOP autostart done"
 # xss-lock gtlxklock

@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 bspc monitor -d T F D X Steam Z A B C 
 bspc config border_width         2
@@ -50,6 +50,3 @@ bspc config urgent_border_color 	      "{color_urgent}"
 
 # java sh*t
 export _JAVA_AWT_WM_NONREPARENTING=1
-
-# autostart items
-~/.config/autostart/sbin/autostart_bspwm 2>&1
