@@ -1,6 +1,5 @@
 #!/bin/sh
 
-. ~/.profile
 ictl setup_video
 ictl applywallpaper
 xrdb -merge ~/.Xresources
