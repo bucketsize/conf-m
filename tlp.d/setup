@@ -7,7 +7,7 @@ return {
 	configure = function()
 		Shell.sh([[
 			sudo cp -vf tlp.d/my/*.conf /etc/tlp.d/
-			sudo tlp start
+			sudo systemctl restart tlp
 		]])
 	end,
 	dependsOn = function()

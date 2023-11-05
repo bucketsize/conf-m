@@ -1,22 +1,15 @@
 [terminal]
-# The VT to run the greeter on. Can be "next", "current" or a number
-# designating the VT.
-vt = 1
+vt = 7
 
-# switch vt
-switch = true
-
-# The default session, also known as the greeter.
 [default_session]
-user = "greeter"
-command = "agreety --cmd xorg-openbox"
+# command = "/usr/sbin/agreety --cmd /bin/sh"
 # command = "cage -s -- gtkgreet"
+command = "/usr/sbin/agreety --cmd xorg-openbox"
+# command = "cage -s -- regreet"
+# command = "sway --config /etc/greetd/sway-config"
 
+user = "greeter"
 
 [initial_session]
 user = "jb"
 command = "xorg-openbox"
-
-[general]
-source_profile = true
-

@@ -1,6 +1,6 @@
+xorg-openbox
+xorg-steam
+xorg-bspwm
 wayland-weston
 wayland-sway
-xorg-openbox
-xorg-bspwm
-xorg-steam
 bash

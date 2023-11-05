@@ -2,12 +2,16 @@
 require("luarocks.loader")
 
 local Shell = require("minilib.shell")
-local Util = require("minilib.util")
 
 return {
 	configure = function() end,
 	dependsOn = function()
 		return true
 	end,
-	installer = function() end,
+	installer = function()
+		Shell.sh([[
+      sudo mkdir -p /usr/share/xsessions
+      sudo cp $(pwd)/xinit/my/*.desktop /usr/share/xsessions
+    ]])
+	end,
 }

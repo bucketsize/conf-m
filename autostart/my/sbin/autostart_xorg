@@ -37,6 +37,8 @@ lxpolkit &
 case "$XDG_MAJOR_MODE" in
 steam)
 	echo "compositors are bad"
+	steam &
+	sleep 1
 	;;
 *)
 	if which VBoxClient; then
