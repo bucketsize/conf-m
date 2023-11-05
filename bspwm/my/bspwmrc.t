@@ -50,3 +50,5 @@ bspc config urgent_border_color 	      "{color_urgent}"
 
 # java sh*t
 export _JAVA_AWT_WM_NONREPARENTING=1
+
+~/.config/autostart/sbin/autostart_bspwm 
