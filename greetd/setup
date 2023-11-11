@@ -10,8 +10,11 @@ return {
 		sudo cp -vf greetd/my/* /etc/greetd/
     sudo useradd -M -G video greeter
     sudo chmod -R go+r /etc/greetd/
+     
+    # when ready, execute
+    sudo systemctk disable display-manager
+    sudo systemctl enable greetd
 		]])
-		print("when ready, `sudo systemctl enable --now greetd`")
 	end,
 	dependsOn = function()
 		return Shell.file_exists({ "greetd" })

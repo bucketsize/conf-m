@@ -86,6 +86,7 @@ return {
 			["modprobe.d"] = {},
 			["misc"] = {},
 			tz = {},
+			-- greetd = {},
 		},
 		wayland_weston = {
 			weston = {},

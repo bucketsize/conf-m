@@ -4,7 +4,7 @@
 
 [background]
 # Path to the background image
-path = "/var/tmp/wallpaper"
+path = "/var/tmp/wallpaper.jpg"
 
 # How the background image covers the screen if the aspect ratio doesn't match
 # Available values: "Fill", "Contain", "Cover", "ScaleDown"

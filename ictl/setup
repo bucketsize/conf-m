@@ -21,5 +21,7 @@ return {
 			"curl",
 		})
 	end,
-	installer = function() end,
+	installer = function()
+		Shell.ln("$(pwd)/ictl/my/wallpaper-1.jpg", "~/Pictures/wallpaper-1.jpg")
+	end,
 }
