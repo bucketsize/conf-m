@@ -24,19 +24,32 @@
 							<type>intel_pstate</type>
 							<influence>90</influence>
 							<SamplingPeriod>5</SamplingPeriod>
-						</CoolingDevice>
+            </CoolingDevice>
+            <!--
+              pstate should work well enough
+              powerclamp may not be required
+            -->
+            <!--
 						<CoolingDevice>
 							<index>13</index>
 							<type>intel_powerclamp</type>
 							<influence>80</influence>
 							<SamplingPeriod>5</SamplingPeriod>
-						</CoolingDevice>
+            </CoolingDevice>
+            -->
+            <!--
+              cpufreq governor in case where pstate works is bad 
+              - consumes more battery
+              - has little effect
+            -->
+            <!--
 						<CoolingDevice>
 							<index>15</index>
 							<type>cpufreq</type>
 							<influence>70</influence>
 							<SamplingPeriod>5</SamplingPeriod>
-						</CoolingDevice>
+              </CoolingDevice>
+            -->
 						<CoolingDevice>
 							<index>20</index>
 							<type>Processor</type>
