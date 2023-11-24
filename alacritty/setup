@@ -55,6 +55,9 @@ return {
 	dependsOn = function()
 		return true
 	end,
+	installDeps = {
+		"alacritty",
+	},
 	installer = function()
 		if not Shell.file_exists("alacritty") then
 			-- build_pack()

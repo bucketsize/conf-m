@@ -21,5 +21,17 @@ return {
 			"lemonbar",
 		})
 	end,
+	installDeps = {
+		"bspwm",
+		"sxhkd",
+		"feh",
+		"lxpolkit",
+		"tint2",
+		"picom",
+		"dunst",
+		["ictl"] = { method = "github/bucketsize" },
+		["m360"] = { method = "github/bucketsize" },
+		"lemonbar",
+	},
 	installer = function() end,
 }

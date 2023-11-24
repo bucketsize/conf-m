@@ -38,20 +38,4 @@ function T.extract(t)
 	))
 	return t
 end
-local distro_map = {
-	["Debian"] = {
-		pm = "apt install --no-install-recommends %s",
-		pm_update = "apt update",
-		pm_search = "apt-cache search %s",
-		pm_installed = "dpkg -L | grep '^ii' |",
-		pm_pkgfile = "apt-file search '%s'",
-	},
-}
-function T.getpackage(file)
-	local inst = Sh.lsb_release()
-	pm = distro_map[inst.distro]
-	if pm then
-		Sh.sh(string.format(pm.pm_pkgfile, file))
-	end
-end
 return T

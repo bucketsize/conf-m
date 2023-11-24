@@ -28,6 +28,13 @@ return {
 		local b, y = Shell.package_exists({ "build-essential", "libsystemd-dev" })
 		return (a and b), { x, y }
 	end,
+	installDeps = {
+		"git",
+		"cmake",
+		"g++",
+		"build-essential",
+		"libsystemd-dev",
+	},
 	installer = function()
 		Shell.sh([[
       mkdir ~/ws
