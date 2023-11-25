@@ -4,24 +4,7 @@ require("luarocks.loader")
 local Shell = require("minilib.shell")
 
 return {
-	configure = function()
-		Shell.ln("$(pwd)/bspwm/my", "~/.config/bspwm")
-	end,
-	dependsOn = function()
-		return Shell.file_exists({
-			"bspwm",
-			"sxhkd",
-			"feh",
-			"lxpolkit",
-			"tint2",
-			"picom",
-			"dunst",
-			"ictl",
-			"m360",
-			"lemonbar",
-		})
-	end,
-	installDeps = {
+	depends = {
 		"bspwm",
 		"sxhkd",
 		"feh",
@@ -29,9 +12,12 @@ return {
 		"tint2",
 		"picom",
 		"dunst",
+		"lemonbar",
 		["ictl"] = { method = "github/bucketsize" },
 		["m360"] = { method = "github/bucketsize" },
-		"lemonbar",
 	},
-	installer = function() end,
+	configure = function()
+		Shell.ln("$(pwd)/bspwm/my", "~/.config/bspwm")
+	end,
+	install = function() end,
 }

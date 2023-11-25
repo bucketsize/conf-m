@@ -1,4 +1,3 @@
-local dist_task = require "dist_task"
 #!/usr/bin/env lua
 
 require("luarocks.loader")
@@ -6,6 +5,7 @@ local Sh = require("minilib.shell")
 local Ut = require("minilib.util")
 local Pr = require("minilib.process")
 local M = require("minilib.monad")
+local dist_task = require("dist_task")
 
 local config_group = require("config").groups
 
@@ -31,22 +31,9 @@ local function update_configs(path, subhbs)
 		.add(Sh.write("./"))
 		.run()
 end
-local function termicon()
-	print("#termicon, find")
-	return Pr.pipe()
-		.add(Sh.find("/usr/share/icons", "32.*terminal.*"))
-		.add(function(f)
-			return f
-		end)
-		.run()
-end
-local function default_subs(subs)
-	subs["{term_icon}"] = termicon()
-	return subs
-end
 local function prepare_config(name)
 	local subcfg = require("config")
-	local subhbs = default_subs({})
+	local subhbs = {}
 	for i, v in pairs(subcfg) do
 		subhbs["{" .. i .. "}"] = v
 	end
@@ -54,42 +41,33 @@ local function prepare_config(name)
 end
 local function prepare_configs()
 	local subcfg = require("config")
-	local subhbs = default_subs({})
+	local subhbs = {}
 	for i, v in pairs(subcfg) do
 		subhbs["{" .. i .. "}"] = v
 	end
 	update_configs("./", subhbs)
 end
-local function pre_setup_config(name)
-	local e = dofile(string.format([[%s/setup]], name))
-	if e.dependsOn then
-		local s, ls = e.dependsOn()
-		if not s then
-			print("dependsOn failed: ", name, Ut.tos(ls))
-			return s, ls
-		end
-		print("dependsOn Ok: ", name, Ut.tos(ls))
-	end
-	return true
-end
-local function installDeps(name)
-	local e = dofile(string.format([[%s/setup]], name))
-  if e.installDeps then
-    M.List.of(e.installDeps)
+local function handle_deps(e)
+    local pkgs = M.List.of(e.depends)
     :filter(function(i)
-      return e.installDeps[i] == nil
+      return e.depends[i] == nil
     end)
-    :map(function(i)
-      return dist_task.pkgalias(i)
+    :fmap(function(i)
+      local r = dist_task.pkgalias(i)
+      if r then 
+        return r 
+      else
+        return i 
+      end
     end)
-    :map(function(i)
-      return dist_task.pkginst(i)
-    end)
-  end
+    print("handle_deps", Ut.tos(pkgs))
+    return dist_task.pkginst(pkgs)
 end
 local function setup_config(name)
 	local e = dofile(string.format([[%s/setup]], name))
-  installDeps(name)
+  if e.depends then
+    handle_deps(e)
+  end
 	if e.installer then
 		e.installer()
 	end
@@ -99,27 +77,7 @@ local function setup_config(name)
 	print(name, "Ok")
 	return 0
 end
-local function setup(name)
-	local s, ls = pre_setup_config(name)
-	if not s then
-		return 1
-	end
-	setup_config(name)
-end
 local function setup_configs(name)
-	local deplist = {}
-	for k, v in pairs(config_group[name]) do
-		if not (v.state == "noi") then
-			local s, ls = pre_setup_config(k)
-			if not s then
-				table.insert(deplist, ls)
-			end
-		end
-	end
-	if #deplist > 1 then
-		print("setup_configs failed:", name, Ut.tos(deplist))
-		return 1
-	end
 	for k, v in pairs(config_group[name]) do
 		if not (v.state == "noi") then
 			setup_config(k)
@@ -137,5 +95,5 @@ if arg[1] == nil then
 else
 	print("#setup " .. arg[1])
 	prepare_config(arg[1])
-	setup(arg[1])
+	setup_config(arg[1])
 end
