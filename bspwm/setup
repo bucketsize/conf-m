@@ -1,6 +1,5 @@
-#!/usr/bin/env lua
+-- vim: set ft=lua:
 require("luarocks.loader")
-
 local Shell = require("minilib.shell")
 
 return {
@@ -13,8 +12,8 @@ return {
 		"picom",
 		"dunst",
 		"lemonbar",
-		["ictl"] = { method = "github/bucketsize" },
-		["m360"] = { method = "github/bucketsize" },
+		["ictl"] = { method = "github", resource = "bucketsize/ictl" },
+		["m360"] = { method = "github", resource = "bucketsize/m360" },
 	},
 	configure = function()
 		Shell.ln("$(pwd)/bspwm/my", "~/.config/bspwm")

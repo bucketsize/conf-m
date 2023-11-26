@@ -4,10 +4,10 @@ local Ut = require("minilib.util")
 local M = require("minilib.monad")
 local distro_map = {
 	["Debian"] = {
-		pm_install = "apt install --no-install-recommends %s",
-		pm_update = "apt update",
+		pm_install = "sudo apt install --no-install-recommends %s",
+		pm_update = "sudo apt update",
 		pm_search = "apt-cache search %s",
-		pm_installed = "dpkg -L | grep '^ii' |",
+		pm_installed = "dpkg -L | grep '^ii' | grep -P '%s' ",
 		pm_pkgfile = "apt-file search '%s'",
 	},
 }
@@ -60,23 +60,25 @@ function T.pkgalias(name)
 	end
 	return pkg_alias[inst.distro][name]
 end
-function T.pkginst(name)
-	print("#pkginst", name)
+function T.pkginst(pkgs)
+	local names
+	if type(pkgs) == "table" then
+		names = M.List.of(pkgs):join(" ")
+	end
+	print("#pkginst", names)
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]
 	if not pm then
 		print("unsupported distro", inst.distro)
-		return {}
+		return { pkg = pkgs, status = 1 }
 	end
-	if type(name) == "table" then
-		name = M.List.of(name):join(" ")
-	end
-	local s, e, ls = Sh.sh(string.format(pm.pm_pkgfile, name))
+	local s, e, ls = Sh.sh(string.format(pm.pm_install, names))
 	if not s then
-		print("pkginst failed", e)
-		return {}
+		print("pkginst failed", e, Ut.tos(ls))
+		return { pkg = pkgs, status = 1 }
 	end
-	return { pkg = name, status = 0 }
+	print("#pkginst done", names, Ut.tos(ls))
+	return { pkg = pkgs, status = 0 }
 end
 
 local function test()

@@ -47,27 +47,46 @@ local function prepare_configs()
 	end
 	update_configs("./", subhbs)
 end
-local function handle_deps(e)
-    local pkgs = M.List.of(e.depends)
-    :filter(function(i)
-      return e.depends[i] == nil
-    end)
-    :fmap(function(i)
-      local r = dist_task.pkgalias(i)
-      if r then 
-        return r 
-      else
-        return i 
-      end
-    end)
-    print("handle_deps", Ut.tos(pkgs))
-    return dist_task.pkginst(pkgs)
+local function handle_pkg_deps(e)
+	local pkgs = M.List
+		.of(e.depends)
+		:filter(function(v)
+			return type(v) == "string"
+		end)
+		:fmap(function(v)
+			local r = dist_task.pkgalias(v)
+			if r then
+				return r
+			else
+				return v
+			end
+		end)
+	return dist_task.pkginst(pkgs)
+end
+local function handle_github_deps(e)
+	M.List
+		.of(e.depends)
+		:filter(function(v)
+			if type(v) == "table" and v.method == "github" then
+				return true
+			end
+			return false
+		end)
+		:fmap(function(v)
+			local uri = string.format("curl -L https://raw.githubusercontent.com/%s/main/install | bash ", v.resource)
+			print("#handle_github_deps", v.resource, "<-", uri)
+			local s, er, ls = Sh.sh(uri)
+			print("handle_github_deps", v, s, er, Ut.tos(ls))
+			return s, er
+		end)
+	return "done"
 end
 local function setup_config(name)
 	local e = dofile(string.format([[%s/setup]], name))
-  if e.depends then
-    handle_deps(e)
-  end
+	if e.depends then
+		handle_pkg_deps(e)
+		handle_github_deps(e)
+	end
 	if e.installer then
 		e.installer()
 	end
