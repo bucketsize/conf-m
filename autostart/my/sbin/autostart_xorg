@@ -27,7 +27,7 @@ case "$XDG_CURRENT_DESKTOP" in
 bspwm)
 	sxhkd -c ~/.config/sxhkd/bspwmrc ~/.config/sxhkd/sharedrc &
 	;;
-openbox)
+*)
 	sxhkd -c ~/.config/sxhkd/winrc ~/.config/sxhkd/sharedrc &
 	;;
 esac
