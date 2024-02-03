@@ -7,8 +7,6 @@ return {
 	configure = function()
 		Shell.ln("$(pwd)/tint2/dashy", "~/.config/tint2")
 	end,
-	dependsOn = function()
-		return Shell.file_exists("tint2")
-	end,
+	depends = { "tint2" },
 	installer = function() end,
 }

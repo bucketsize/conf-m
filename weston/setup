@@ -7,9 +7,7 @@ return {
 	configure = function()
 		Shell.ln("$(pwd)/weston/my/weston.ini", "~/.config/weston.ini")
 	end,
-	dependsOn = function()
-		return Shell.file_exists({ "weston", "foot" })
-	end,
+	depends = { "weston", "foot" },
 	installer = function()
 		Shell.sh([[
 			cp $(pwd)/weston/bin/* ${HOME}/.local/bin/

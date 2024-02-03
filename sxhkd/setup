@@ -7,8 +7,6 @@ return {
 	configure = function()
 		Shell.ln("$(pwd)/sxhkd/my", "~/.config/sxhkd")
 	end,
-	dependsOn = function()
-		return Shell.file_exists("sxhkd")
-	end,
+	depends = { "sxhkd" },
 	installer = function() end,
 }

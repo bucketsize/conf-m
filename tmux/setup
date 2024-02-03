@@ -7,8 +7,7 @@ return {
 	configure = function()
 		Sh.ln("$(pwd)/tmux/my", "$HOME/.config/tmux")
 	end,
-	dependsOn = function()
-		return Sh.file_exists({ "tmux" }), { "tmux" }
-	end,
+	depends = { "tmux" },
+
 	installer = function() end,
 }

@@ -10,8 +10,6 @@ return {
 			sudo timedatectl set-timezone Asia/Kolkata
 		]])
 	end,
-	dependsOn = function()
-		return Shell.file_exists("timedatectl")
-	end,
+	depends = { "timedatectl" },
 	installer = function() end,
 }

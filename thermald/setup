@@ -20,8 +20,6 @@ return {
         systemctl restart thermald 
     ]])
 	end,
-	dependsOn = function()
-		return Shell.file_exists("thermald")
-	end,
+	depends = { "thermald" },
 	installer = function() end,
 }

@@ -10,8 +10,8 @@ return {
 			sudo sysctl -p
 		]])
 	end,
-	dependsOn = function()
-		return Shell.file_exists("sysctl")
-	end,
+	depends = {
+		"sysctl",
+	},
 	installer = function() end,
 }

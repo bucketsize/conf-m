@@ -10,8 +10,6 @@ return {
 			sudo systemctl restart tlp
 		]])
 	end,
-	dependsOn = function()
-		return Shell.file_exists("tlp")
-	end,
+	depends = { "tlp" },
 	installer = function() end,
 }

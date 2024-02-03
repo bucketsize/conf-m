@@ -5,9 +5,9 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function() end,
-	dependsOn = function()
-		return Shell.file_exists({ "mpd" })
-	end,
+	depends = {
+		"mpd",
+	},
 	installer = function()
 		if not Shell.file_exists("~/.local/bin/ympd") then
 			local cmd = string.format(

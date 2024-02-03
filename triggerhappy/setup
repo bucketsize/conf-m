@@ -24,8 +24,6 @@ return {
 			print("relogin for it to work!")
 		end
 	end,
-	dependsOn = function()
-		return Sh.file_exists("thd")
-	end,
+	depends = { "thd" },
 	installer = function() end,
 }

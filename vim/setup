@@ -8,8 +8,6 @@ return {
 	configure = function()
 		Shell.ln("$(pwd)/vim/vimrc", "~/.vimrc")
 	end,
-	dependsOn = function()
-		return Shell.file_exists("vim")
-	end,
+	depends = { "vim" },
 	installer = function() end,
 }

@@ -5,9 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function() end,
-	dependsOn = function()
-		return Shell.file_exists("xmobar")
-	end,
+	depends = { "xmobar" },
 	installer = function()
 		Shell.ln("$(pwd)/xmobar/my", "~/.config/xmobar")
 	end,
