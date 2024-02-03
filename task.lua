@@ -14,7 +14,12 @@ function T.assert_extracttask(t)
 end
 function T.geturl(t)
 	T.assert_urltask(t)
-	Sh.wget(t.url, "/tmp/dlfo_" .. t.name)
+
+	if Sh.path_exists(t.path .. "/" .. t.name) then
+		print("#geturl, cache hit", t.url, t.path, t.name)
+		return t
+	end
+	Sh.wget(t.url, t.path .. "/" .. t.name)
 	return t
 end
 local extmap = {
@@ -28,13 +33,15 @@ function T.extract(t)
 	local extcmd = extmap[t.ext]
 	Sh.sh(string.format(
 		[[
-          cd /tmp
-          %s dlfo_%s
-          cp -av %s ~/.fonts/
+          cd %s 
+          %s %s
+          cp -av %s %s
           ]],
+		t.path,
 		extcmd,
 		t.name,
-		t.cp
+		t.cp,
+		t.dest
 	))
 	return t
 end

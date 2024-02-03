@@ -16,15 +16,19 @@ local fonts = {
 	{
 		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DejaVuSansMono.zip",
 		name = "dejavusansmono",
+		path = "/var/tmp/conf-m-cache",
 		ext = "zip",
 		cp = "DejaVu\\ Sans\\ Mono*Complete\\ Mono.ttf",
+		dest = "~/.fonts/",
 	},
 	{
 		url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/DroidSansMono.zip",
 		name = "droidsansmono",
+		path = "/var/tmp/conf-m-cache",
 		ext = "zip",
 		cp = "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete.otf "
 			.. "Droid\\ Sans\\ Mono\\ Nerd\\ Font\\ Complete\\ Mono.otf ",
+		dest = "~/.fonts/",
 	},
 	-- {
 	-- 	url = "https://github.com/sunaku/tamzen-font/archive/refs/tags/Tamzen-1.11.5.tar.gz",
@@ -46,7 +50,7 @@ return {
 			Sh.mkdir(Home .. "/.fonts")
 		end
 
-		Sh.sh([[rm /tmp/dlfo_*]])
+		Sh.sh([[mkdir -p /var/tmp/conf-m-cache/]])
 
 		M.List.of(fonts):fmap(T.geturl):fmap(T.extract)
 
