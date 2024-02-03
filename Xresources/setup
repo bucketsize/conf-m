@@ -14,9 +14,9 @@ return {
 	dependsOn = function()
 		return Sh.file_exists({"xrdb"})
 	end,
-  installDeps = {
+  depends = {
       'xrdb'
-    },
+  },
 	installer = function()
 	end
 }

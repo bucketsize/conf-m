@@ -7,8 +7,6 @@ return {
 	configure = function()
 		Shell.ln("$(pwd)/foot/my", "~/.config/foot")
 	end,
-	dependsOn = function()
-		return Shell.file_exists("foot")
-	end,
+	depends = { "foot" },
 	installer = function() end,
 }

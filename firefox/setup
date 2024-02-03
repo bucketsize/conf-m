@@ -17,8 +17,6 @@ return {
 			end)
 			.run()
 	end,
-	dependsOn = function()
-		return Sh.file_exists("firefox")
-	end,
+	depends = { "firefox" },
 	installer = function() end,
 }

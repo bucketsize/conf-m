@@ -10,8 +10,6 @@ return {
 		Shell.ln("$(pwd)/lspd/my/lspd-ocaml", "~/.local/bin/lspd-ocaml")
 		Shell.ln("$(pwd)/lspd/my/lspd-java", "~/.local/bin/lspd-java")
 	end,
-	dependsOn = function()
-		return true
-	end,
+	depends = {},
 	installer = function() end,
 }

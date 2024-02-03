@@ -7,9 +7,7 @@ return {
 	configure = function()
 		Shell.ln("$(pwd)/hypr/my", "~/.config/hypr")
 	end,
-	dependsOn = function()
-		return Shell.file_exists({ "Hyprland", "hyprctl" })
-	end,
+	depends = { "Hyprland", "hyprctl" },
 	installer = function()
 		Shell.sh([[
 			cp $(pwd)/hypr/bin/* ${HOME}/.local/bin/

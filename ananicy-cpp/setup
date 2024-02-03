@@ -22,13 +22,7 @@ return {
       sudo cp -a ananicy-rules/* /etc/ananicy.d/ 
     ]])
 	end,
-	dependsOn = function()
-		-- sudo apt install git cmake build-essential g++ libsystemd-dev
-		local a, x = Shell.file_exists({ "git", "cmake", "g++" })
-		local b, y = Shell.package_exists({ "build-essential", "libsystemd-dev" })
-		return (a and b), { x, y }
-	end,
-	installDeps = {
+	depends = {
 		"git",
 		"cmake",
 		"g++",

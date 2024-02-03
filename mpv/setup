@@ -7,8 +7,6 @@ return {
 	configure = function()
 		Shell.ln("$(pwd)/mpv/my", "~/.config/mpv")
 	end,
-	dependsOn = function()
-		return Shell.file_exists("mpv")
-	end,
+	depends = { "mpv" },
 	installer = function() end,
 }

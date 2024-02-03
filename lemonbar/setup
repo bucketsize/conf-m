@@ -41,8 +41,6 @@ end
 
 return {
 	configure = function() end,
-	dependsOn = function()
-		return Shell.file_exists("lemonbar")
-	end,
+	depends = { "lemonbar" },
 	installer = function() end,
 }

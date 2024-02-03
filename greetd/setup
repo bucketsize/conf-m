@@ -16,8 +16,6 @@ return {
     sudo systemctl enable greetd
 		]])
 	end,
-	dependsOn = function()
-		return Shell.file_exists({ "greetd" })
-	end,
+	depends = { "greetd" },
 	installer = function() end,
 }

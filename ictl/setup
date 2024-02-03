@@ -10,17 +10,15 @@ return {
 			[ -f ~/.config/ictl/config.json ] || cp -v $(pwd)/ictl/my/config.json ~/.config/ictl/
 		]])
 	end,
-	dependsOn = function()
-		return Shell.file_exists({
-			"xterm",
-			"xrandr",
-			"fzf",
-			"wmctrl",
-			"pactl",
-			"feh",
-			"curl",
-		})
-	end,
+	depends = {
+		"xterm",
+		"xrandr",
+		"fzf",
+		"wmctrl",
+		"pactl",
+		"feh",
+		"curl",
+	},
 	installer = function()
 		Shell.ln("$(pwd)/ictl/my/wallpaper-1.jpg", "~/Pictures/wallpaper-1.jpg")
 	end,

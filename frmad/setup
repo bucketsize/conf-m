@@ -12,9 +12,7 @@ return {
 				|| cp -v $(pwd)/mxctl/my/config ~/.config/mxctl/
 		]])
 	end,
-	dependsOn = function()
-		return Shell.file_exists({ "git", "make", "xrandr", "fzf", "wmctrl", "pactl", "feh", "wget" })
-	end,
+	depends = { "git", "make", "xrandr", "fzf", "wmctrl", "pactl", "feh", "wget" },
 	installer = function()
 		Shell.github_fetch("bucketsize", "frmad")
 		Shell.sh(string.format(

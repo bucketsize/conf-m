@@ -4,9 +4,7 @@ require("luarocks.loader")
 local Shell = require("minilib.shell")
 
 return {
-	dependsOn = function()
-		return Shell.file_exists({ "lua", "luarocks" })
-	end,
+	depends = { "lua", "luarocks" },
 	configure = function()
 		-- Shell.ln("$(pwd)/autostart/my/autostartd", "~/.local/bin/autostartd")
 		-- Shell.mkdir("~/.config/systemd/user")

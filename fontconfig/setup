@@ -7,8 +7,6 @@ return {
 	configure = function()
 		Sh.ln("$(pwd)/fontconfig/my", "~/.config/fontconfig")
 	end,
-	dependsOn = function()
-		return Sh.file_exists("fc-list")
-	end,
+	depends = { "fc-list" },
 	installer = function() end,
 }

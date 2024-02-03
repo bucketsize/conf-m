@@ -7,8 +7,6 @@ return {
 	configure = function()
 		Shell.ln("$(pwd)/lxpanel/my", "$HOME/.config/lxpanel")
 	end,
-	dependsOn = function()
-		return Shell.file_exists({ "lxpanel" })
-	end,
+	depends = { "lxpanel" },
 	installer = function() end,
 }

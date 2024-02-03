@@ -88,13 +88,18 @@ return {
 			tz = {},
 			-- greetd = {},
 		},
-		wayland_weston = {
+		weston = {
 			weston = {},
 			foot = {},
 			triggerhappy = {},
 		},
-		wayland_qtile = {
+		qtile = {
 			qtile = {},
+		},
+		sway = {
+			sway = {},
+			waybar = {},
+			foot = {},
 		},
 	},
 }

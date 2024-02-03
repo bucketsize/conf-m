@@ -23,8 +23,8 @@ return {
 		sudo cp -vf logind.d/my/*.conf /etc/systemd/logind.conf.d/
 		]])
 	end,
-	dependsOn = function()
-		return Shell.file_exists("udevadm")
-	end,
+	depends = {
+		"udevadm",
+	},
 	installer = function() end,
 }

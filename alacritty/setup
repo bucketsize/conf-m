@@ -46,18 +46,12 @@ local function setup_prebuilt()
 end
 
 return {
-	configure = function()
-		Shell.ln("$(pwd)/alacritty/my", "~/.config/alacritty")
-		if not Shell.file_exists("alacritty.nogl") then
-			Shell.sh([[chmod +x $(pwd)/alacritty/bin/alacritty.nogl]])
-		end
-	end,
-	dependsOn = function()
-		return true
-	end,
-	installDeps = {
+	depends = {
 		"alacritty",
 	},
+	configure = function()
+		Shell.ln("$(pwd)/alacritty/my", "~/.config/alacritty")
+	end,
 	installer = function()
 		if not Shell.file_exists("alacritty") then
 			-- build_pack()

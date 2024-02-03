@@ -48,8 +48,6 @@ return {
 		setup_bell()
 		setup_bins()
 	end,
-	dependsOn = function()
-		return true
-	end,
+	depends = {},
 	installer = function() end,
 }

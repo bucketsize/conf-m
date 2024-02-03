@@ -4,9 +4,7 @@ require("luarocks.loader")
 local Shell = require("minilib.shell")
 
 return {
-	dependsOn = function()
-		return Shell.file_exists({ "chromium" })
-	end,
+	depends = { "chromium" },
 	configure = function()
 		-- note; only works on arch linux
 		Shell.ln("$(pwd)/chromium/my/chromium-flags.conf", "~/.config/chromium-flags.conf")

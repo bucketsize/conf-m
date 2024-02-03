@@ -4,9 +4,7 @@ require("luarocks.loader")
 local Shell = require("minilib.shell")
 
 return {
-	dependsOn = function()
-		return Shell.file_exists({ "compton" })
-	end,
+	dependsOn = { "compton" },
 	configure = function()
 		Shell.ln("~/scripts/config/compton/my", "~/.config/compton")
 	end,

@@ -40,9 +40,7 @@ local fonts = {
 
 return {
 	configure = function() end,
-	dependsOn = function()
-		return Sh.file_exists({ "fc-cache", "curl" })
-	end,
+	depends = { "fc-cache", "curl" },
 	installer = function()
 		local d = Sh.test(Home .. "/.fonts")
 		if d == nil or d == "file" then

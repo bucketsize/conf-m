@@ -110,7 +110,8 @@ if arg[1] == nil then
 	prepare_configs()
 	setup_configs("sys")
 	setup_configs("common")
-	setup_configs("openbox")
+	setup_configs("bspwm")
+	setup_configs("sway")
 else
 	print("#setup " .. arg[1])
 	prepare_config(arg[1])

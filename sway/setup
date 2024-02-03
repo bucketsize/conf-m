@@ -4,11 +4,11 @@ require("luarocks.loader")
 local Shell = require("minilib.shell")
 
 return {
+	depends = {
+		"sway",
+	},
 	configure = function()
 		Shell.ln("$(pwd)/sway/my", "~/.config/sway")
-	end,
-	dependsOn = function()
-		return Shell.file_exists({ "sway", "alacritty" })
 	end,
 	installer = function() end,
 }

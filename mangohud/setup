@@ -7,10 +7,8 @@ return {
 	configure = function()
 		Sh.ln("$(pwd)/mangohud/my", "~/.config/MangoHud")
 	end,
-	dependsOn = function()
-		return Sh.file_exists({
-			"mangohud",
-		})
-	end,
+	depends = {
+		"mangohud",
+	},
 	installer = function() end,
 }

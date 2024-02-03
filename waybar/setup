@@ -4,11 +4,11 @@ require("luarocks.loader")
 local Shell = require("minilib.shell")
 
 return {
+	depends = {
+		"waybar",
+	},
 	configure = function()
 		Shell.ln("$(pwd)/waybar/my", "~/.config/waybar")
-	end,
-	dependsOn = function()
-		return Shell.file_exists("waybar")
 	end,
 	installer = function()
 		Shell.sh([[
