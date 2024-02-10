@@ -1,8 +1,8 @@
 #
 # depends
 #
-# strict:   sway mako-notifier waybar swaybg swayidle swaylock wlr-randr grim  
-# optional: wl-copy xdg-desktop-portal-wlrs playerctl
+# strict:   sway mako-notifier waybar swaybg swayidle swaylock wlr-randr grim playerctl
+# optional: wl-copy xdg-desktop-portal-wlrs
 
 # 
 # defines
@@ -13,11 +13,6 @@ set $term foot
 
 set $ws1 1 
 
-set $left h
-set $down j
-set $up k
-set $right l
-
 #
 # display
 #
@@ -26,7 +21,7 @@ output HDMI-A-1 mode --custom 1280x720@60Hz
 output "*" background ~/.wlprs/wallpaper stretch
 
 #
-# power / sleep / events
+# power / events
 #
 ## deprecated - handled by rules.d 
 ## lid closed -> default display off 
@@ -72,13 +67,15 @@ floating_modifier $mod normal
 bindsym $mod+Return exec $term
 
 ## custom
-bindsym $mod+$alt+w exec ictl dmenu_wallpaper
 bindsym $mod+d exec ictl dmenu_run
 bindsym $mod+q exec ictl dmenu_exit 
 bindsym $mod+c kill
 bindsym $mod+Print exec grim - | wl-copy
 bindsym $mod+Shift+Print exec grim -g "$(slurp)" - | wl-copy
+bindsym $mod+$alt+w exec ictl dmenu_wallpaper 
 
+bindsym $alt+Tab focus next
+bindsym $alt+Shift+Tab focus previous
 
 bindsym XF86AudioRaiseVolume exec ictl vol_up 
 bindsym XF86AudioLowerVolume exec ictl vol_up 
@@ -91,8 +88,6 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
-bindsym $alt+Tab focus next
-bindsym $alt+Shift+Tab focus next
 
 ## Navigate // Workspaces 1-10 // <> 0..9 ##
 bindsym $mod+1 workspace $ws1
@@ -354,6 +349,7 @@ set $criteria swayTerm
 #     }
 # }
 
+exec foot
 exec_always waybar
 exec_always ~/.config/autostart/sbin/autostart_weston
 
