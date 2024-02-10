@@ -10,6 +10,13 @@ local distro_map = {
 		pm_installed = "dpkg -L | grep '^ii' | grep -P '%s' ",
 		pm_pkgfile = "apt-file search '%s'",
 	},
+	["Fedora"] = {
+		pm_install = "sudo dnf install %s",
+		pm_update = "sudo dnf update",
+		pm_search = "sudo dnf search %s",
+		pm_installed = "rpm -q '%s'",
+		pm_pkgfile = "sudo dnf search %s",
+	},
 }
 local pkg_alias = {
 	["Debian"] = {
@@ -29,6 +36,13 @@ local Cache = {
 }
 
 local T = {}
+function T.ispkginst(name)
+	local inst = Cache.instance
+	local pm = distro_map[inst.distro]
+	if pm then
+		return Sh.sh(string.format(pm.pm_installed, name))
+	end
+end
 function T.pkgfile(file)
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]
@@ -83,7 +97,13 @@ end
 
 local function test()
 	T.pkgfile("pactl")
-	T.pkginst("tmux")
+	-- T.pkginst("tmux")
+	local s, e, ls = T.ispkginst("syayedr")
+	print("ispkginst", s, e, Ut.tos(ls))
+	s, e, ls = T.ispkginst("sway")
+	print("ispkginst", s, e, Ut.tos(ls))
 end
+
+test()
 
 return T

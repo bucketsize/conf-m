@@ -1,18 +1,33 @@
-# programs
-# sway mako-notifier waybar swaybg --no-install-recommends swayidle swaylock xdg-desktop-portal-wlrs wlr-randr grim wl-copy
+#
+# depends
+#
+# strict:   sway mako-notifier waybar swaybg swayidle swaylock wlr-randr grim  
+# optional: wl-copy xdg-desktop-portal-wlrs playerctl
 
+# 
 # defines
+#
 set $mod Mod4
 set $alt Mod1
-set $term alacritty
+set $term foot 
 
 set $ws1 1 
 
+set $left h
+set $down j
+set $up k
+set $right l
 
+#
 # display
-output eDP-1 mode --custom 1280x720@60Hz 
-#output "*" background ~/.wlprs/wallpaper stretch
+#
+output eDP-1    mode --custom 1280x720@60Hz 
+output HDMI-A-1 mode --custom 1280x720@60Hz  
+output "*" background ~/.wlprs/wallpaper stretch
 
+#
+# power / sleep / events
+#
 ## deprecated - handled by rules.d 
 ## lid closed -> default display off 
 #bindswitch --reload --locked lid:on output eDP-1 disable
@@ -20,21 +35,24 @@ output eDP-1 mode --custom 1280x720@60Hz
 
 # idle handler 
 exec swayidle -w \
-          timeout 180 'playerctl -a pause && swaylock -f' \
-          timeout 185 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-          before-sleep 'swaylock -f'
+       timeout 180 'playerctl -a pause && swaylock -f' \
+       timeout 185 'swaymsg "output * dpms off"' \
+       resume 'swaymsg "output * dpms on"' \
+       before-sleep 'swaylock -f'
 
+#
 # input 
-input type:touchpad {
-        dwt enabled
-        tap enabled
-        natural_scroll enabled
-        pointer_accel 0.3
-        accel_profile adaptive
-}
+#
+       input type:touchpad {
+         dwt enabled
+           tap enabled
+           natural_scroll enabled
+           pointer_accel 0.3
+           accel_profile adaptive
+       }
 
 input "1:1:AT_Translated_Set_2_keyboard" {
-        xkb_layout "us,de" 
+  xkb_layout "us,de" 
 }
 
 # mouse 
@@ -48,15 +66,19 @@ seat * hide_cursor 8000
 ## W-RMB -> resize
 floating_modifier $mod normal
 
+#
 # key binding
+#
 bindsym $mod+Return exec $term
 
 ## custom
+bindsym $mod+$alt+w exec ictl dmenu_wallpaper
 bindsym $mod+d exec ictl dmenu_run
 bindsym $mod+q exec ictl dmenu_exit 
 bindsym $mod+c kill
 bindsym $mod+Print exec grim - | wl-copy
 bindsym $mod+Shift+Print exec grim -g "$(slurp)" - | wl-copy
+
 
 bindsym XF86AudioRaiseVolume exec ictl vol_up 
 bindsym XF86AudioLowerVolume exec ictl vol_up 
@@ -69,6 +91,8 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
+bindsym $alt+Tab focus next
+bindsym $alt+Shift+Tab focus next
 
 ## Navigate // Workspaces 1-10 // <> 0..9 ##
 bindsym $mod+1 workspace $ws1
@@ -180,13 +204,13 @@ bindsym $mod+l exec $lock
 
 ## Resize // Enter Resize Mode // <> r ##
 mode "Resize Mode" {
-    ## Resize // Resize Window // ↑ ↓ ← → ##
-    bindsym Left resize shrink width 10px
+## Resize // Resize Window // ↑ ↓ ← → ##
+  bindsym Left resize shrink width 10px
     bindsym Down resize grow height 10px
     bindsym Up resize shrink height 10px
     bindsym Right resize grow width 10px
 
-    ## Resize // Exit Resize Mode // Escape or Enter ##
+## Resize // Exit Resize Mode // Escape or Enter ##
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
@@ -200,7 +224,9 @@ bindsym Shift+$alt+space exec makoctl dismiss --all
 ## Notifications // Show notification actions // <Alt><Shift> m ##
 bindsym $alt+Shift+m exec makoctl menu $BIN_DIR/bemenu-run.sh -l 30
 
-# wm look and feel
+#
+# look and feel
+#
 
 # TokyoNight theme
 # Property Name             Border  BG      Text    Indicator Child-border
@@ -290,7 +316,7 @@ for_window [title="(?i)$criteria"] floating enable, move absolute position 1500p
 # Waybar Tooltips don't steel focus
 no_focus [app_id="waybar"]
 for_window [app_id="waybar" floating] {
-    move position cursor
+  move position cursor
     move down 60px # adjust if some menus still don't fit
 }
 
@@ -329,5 +355,5 @@ set $criteria swayTerm
 # }
 
 exec_always waybar
-exec ~/.config/autostart/sbin/autostart_weston
+exec_always ~/.config/autostart/sbin/autostart_weston
 
