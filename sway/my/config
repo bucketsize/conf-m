@@ -2,7 +2,12 @@
 # depends
 #
 # strict:   sway mako-notifier waybar swaybg swayidle swaylock wlr-randr grim playerctl
-# optional: wl-copy xdg-desktop-portal-wlrs
+# optional: slurp wl-copy xdg-desktop-portal-wlrs
+
+#
+# env
+#
+exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 # 
 # defines
@@ -17,7 +22,10 @@ set $ws1 1
 # display
 #
 output eDP-1    mode --custom 1280x720@60Hz 
+output eDP-2    mode --custom 1280x720@60Hz 
+output HDMI-A-0 mode --custom 1280x720@60Hz  
 output HDMI-A-1 mode --custom 1280x720@60Hz  
+output HDMI-A-2 mode --custom 1280x720@60Hz  
 output "*" background ~/.wlprs/wallpaper stretch
 
 #
@@ -28,23 +36,18 @@ output "*" background ~/.wlprs/wallpaper stretch
 #bindswitch --reload --locked lid:on output eDP-1 disable
 #bindswitch --reload --locked lid:off output eDP-1 enable
 
-# idle handler 
-exec swayidle -w \
-       timeout 180 'playerctl -a pause && swaylock -f' \
-       timeout 185 'swaymsg "output * dpms off"' \
-       resume 'swaymsg "output * dpms on"' \
-       before-sleep 'swaylock -f'
+
 
 #
 # input 
 #
-       input type:touchpad {
-         dwt enabled
-           tap enabled
-           natural_scroll enabled
-           pointer_accel 0.3
-           accel_profile adaptive
-       }
+input type:touchpad {
+   dwt enabled
+   tap enabled
+   natural_scroll enabled
+   pointer_accel 0.3
+   accel_profile adaptive
+}
 
 input "1:1:AT_Translated_Set_2_keyboard" {
   xkb_layout "us,de" 
@@ -213,6 +216,7 @@ bindsym $mod+r mode "Resize Mode"
 
 ## Notifications // Dismiss notification // <Alt><Space> ##
 bindsym $alt+space exec makoctl dismiss
+
 ## Notifications // Dismiss all notifications // <Shift><Alt><Space> ##
 bindsym Shift+$alt+space exec makoctl dismiss --all
 
@@ -222,23 +226,17 @@ bindsym $alt+Shift+m exec makoctl menu $BIN_DIR/bemenu-run.sh -l 30
 #
 # look and feel
 #
+set $cl_high #009ddc
+set $cl_indi #d9d8d8
+set $cl_back #231f20
+set $cl_fore #d9d8d8
+set $cl_urge #ee2e24
 
-# TokyoNight theme
-# Property Name             Border  BG      Text    Indicator Child-border
-client.focused              #0a0b16 #2f343f #4477ff #4477ff   #4477ff
-client.focused_inactive     #2f343f #2f343f #d8dee8 #2f343f   #2f343f
-client.unfocused            #2f343f #2f343f #d8dee8 #2f343f   #2f343f
-client.urgent               #2f343f #2f343f #d8dee8 #2f343f   #2f343f
-client.placeholder          #2f343f #2f343f #d8dee8 #2f343f   #2f343f
-
-# some theme
-# class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
-client.background       #F8F8F2
+# Colors                border   bg       text     indi     childborder
+client.focused          $cl_high $cl_high $cl_fore $cl_indi $cl_high
+client.focused_inactive $cl_back $cl_back $cl_fore $cl_back $cl_back
+client.unfocused        $cl_back $cl_back $cl_fore $cl_back $cl_back
+client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
 
 gaps inner 4
 gaps outer 8 
@@ -248,7 +246,11 @@ gaps top 0
 gaps bottom 0
 gaps vertical 4
 smart_gaps on
+
+# Window borders
 default_border pixel 2
+default_floating_border normal
+hide_edge_borders smart
 
 ## window
 # app_id < swaymsg -t get_tree | jq '.' | grep "app_id" 
@@ -321,16 +323,14 @@ for_window [app_id="waybar" floating] {
 for_window [title=".*"] title_format %title゜
 
 # App Icons
-for_window [app_id="(?i)firefox"] title_format "<span foreground='#FF6611'><tt></tt></span>   %title゜"
-for_window [app_id="Alacritty"] title_format "<span foreground='#00FF00'><tt></tt></span>   %title゜"
-for_window [app_id="thunderbird"] title_format "<span foreground='#1c97f4'><tt></tt></span>   %title゜"
-for_window [app_id="chromium"] title_format "<span foreground='#2986cc'><tt></tt></span>   %title゜"
-for_window [app_id="code-oss"] title_format "<span foreground='#2487e1'><tt></tt></span>   %title゜"
-for_window [app_id="codium-url-handler"] title_format "<span foreground='#2487e1'><tt></tt></span>   %title゜"
-for_window [app_id="org.gnome.Calculator"] title_format "<tt></tt> %title゜"
+for_window [app_id="(?i)firefox"] title_format "FF - %title゜"
+for_window [app_id="Alacritty"] title_format   "Al - %title゜"
+for_window [app_id="thunderbird"] title_format "Th - %title゜"
+for_window [app_id="chromium"] title_format "Cr - %title゜"
+for_window [app_id="code-oss"] title_format "Co - %title゜"
 
 # Tag xwayland windows with [X]
-for_window [shell="xwayland"] title_format "<span>[X] %title゜</span>"
+for_window [shell="xwayland"] title_format "[X] %title゜"
 
 set $criteria swayTerm
 
@@ -350,6 +350,20 @@ set $criteria swayTerm
 # }
 
 exec foot
-exec_always waybar
-exec_always ~/.config/autostart/sbin/autostart_weston
+#exec_always waybar
+#exec_always ~/.config/autostart/sbin/autostart_weston
 
+# flatpak 
+exec /usr/libexec/xdg-desktop-portal-gtk
+exec /usr/libexec/xdg-desktop-portal-wlr
+exec /usr/libexec/xdg-desktop-portal-gnome
+
+# audio
+exec /usr/libexec/pipewire-launcher
+
+# idle handler 
+exec swayidle -w \
+       timeout 180 'playerctl -a pause && swaylock -f' \
+       timeout 185 'swaymsg "output * dpms off"' \
+       resume 'swaymsg "output * dpms on"' \
+       before-sleep 'swaylock -f'
