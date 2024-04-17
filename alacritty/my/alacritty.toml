@@ -21,7 +21,6 @@ size = 9
 [window]
 dynamic_title = true
 opacity = 0.88
-"window.decorations_theme_variant" = "dark"
 
 [window.dimensions]
 columns = 96
