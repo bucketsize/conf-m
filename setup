@@ -14,9 +14,6 @@ local function update_configs(path, subhbs)
 	Pr.pipe()
 		.add(Sh.find(path, "%.t$"))
 		.add(function(f)
-			if f then
-				local cwd = require("lfs").currentdir()
-			end
 			return f
 		end)
 		.add(Sh.read())
