@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/dunst/my", "~/.config/dunst")
+		Shell.ln("$(pwd)/dunst", "~/.config/dunst")
 	end,
 	depends = { "dunst" },
 	installer = function() end,

@@ -5,7 +5,7 @@ local Sh = require("minilib.shell")
 
 return {
 	configure = function()
-		Sh.ln("$(pwd)/mangohud/my", "~/.config/MangoHud")
+		Sh.ln("$(pwd)/mangohud", "~/.config/MangoHud")
 	end,
 	depends = {
 		"mangohud",

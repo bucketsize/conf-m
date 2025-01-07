@@ -6,8 +6,8 @@ local Shell = require("minilib.shell")
 return {
 	configure = function()
 		Shell.sh([[
-    sudo cp $(pwd)/network/my/dhcpcd.conf /etc/dhcpcd.conf
-    sudo cp $(pwd)/network/my/wpa_supplicant.conf /etc/wpa_supplicant/ 
+    sudo cp $(pwd)/network/dhcpcd.conf /etc/dhcpcd.conf
+    sudo cp $(pwd)/network/wpa_supplicant.conf /etc/wpa_supplicant/ 
     ]])
 	end,
 	dependsOn = function()

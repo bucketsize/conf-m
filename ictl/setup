@@ -7,7 +7,7 @@ return {
 	configure = function()
 		Shell.sh([[
 			[ -d ~/.config/ictl ] || mkdir -v -p ~/.config/ictl
-			[ -f ~/.config/ictl/config.json ] || cp -v $(pwd)/ictl/my/config.json ~/.config/ictl/
+			[ -f ~/.config/ictl/config.json ] || cp -v $(pwd)/ictl/config.json ~/.config/ictl/
 		]])
 	end,
 	depends = {
@@ -20,6 +20,6 @@ return {
 		"curl",
 	},
 	installer = function()
-		Shell.ln("$(pwd)/ictl/my/wallpaper-1.jpg", "~/Pictures/wallpaper-1.jpg")
+		Shell.ln("$(pwd)/ictl/wallpaper-1.jpg", "~/Pictures/wallpaper-1.jpg")
 	end,
 }

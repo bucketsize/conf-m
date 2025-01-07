@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/mpv/my", "~/.config/mpv")
+		Shell.ln("$(pwd)/mpv", "~/.config/mpv")
 	end,
 	depends = { "mpv" },
 	installer = function() end,

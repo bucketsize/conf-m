@@ -7,6 +7,6 @@ return {
 	configure = function() end,
 	depends = { "xmobar" },
 	installer = function()
-		Shell.ln("$(pwd)/xmobar/my", "~/.config/xmobar")
+		Shell.ln("$(pwd)/xmobar", "~/.config/xmobar")
 	end,
 }

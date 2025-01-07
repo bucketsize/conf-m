@@ -50,7 +50,7 @@ return {
 		"alacritty",
 	},
 	configure = function()
-		Shell.ln("$(pwd)/alacritty/my", "~/.config/alacritty")
+		Shell.ln("$(pwd)/alacritty", "~/.config/alacritty")
 	end,
 	installer = function()
 		if not Shell.file_exists("alacritty") then

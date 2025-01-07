@@ -12,7 +12,7 @@ return {
 			.add(function(x)
 				if x then
 					local _, p = Sh.split_path(x)
-					Sh.cp("$(pwd)/firefox/my/user.js", p)
+					Sh.cp("$(pwd)/firefox/user.js", p)
 				end
 			end)
 			.run()

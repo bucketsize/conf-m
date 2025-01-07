@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/lxpanel/my", "$HOME/.config/lxpanel")
+		Shell.ln("$(pwd)/lxpanel", "$HOME/.config/lxpanel")
 	end,
 	depends = { "lxpanel" },
 	installer = function() end,

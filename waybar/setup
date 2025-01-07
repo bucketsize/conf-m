@@ -8,7 +8,7 @@ return {
 		"waybar",
 	},
 	configure = function()
-		Shell.ln("$(pwd)/waybar/my", "~/.config/waybar")
+		Shell.ln("$(pwd)/waybar", "~/.config/waybar")
 	end,
 	installer = function()
 		Shell.sh([[

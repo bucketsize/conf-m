@@ -20,7 +20,7 @@ return {
 	configure = function()
 		Shell.sh([[
 		[ -d /etc/systemd/logind.conf.d ] || sudo mkdir /etc/systemd/logind.conf.d	
-		sudo cp -vf logind.d/my/*.conf /etc/systemd/logind.conf.d/
+		sudo cp -vf logind.d/*.conf /etc/systemd/logind.conf.d/
 		]])
 	end,
 	depends = {

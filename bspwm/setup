@@ -16,7 +16,7 @@ return {
 		["m360"] = { method = "github", resource = "bucketsize/m360" },
 	},
 	configure = function()
-		Shell.ln("$(pwd)/bspwm/my", "~/.config/bspwm")
+		Shell.ln("$(pwd)/bspwm", "~/.config/bspwm")
 	end,
 	install = function() end,
 }

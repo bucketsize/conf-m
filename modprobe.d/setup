@@ -7,6 +7,6 @@ return {
 	configure = function() end,
 	depends = { "modprobe" },
 	installer = function()
-		Sh.sh("sudo cp -v $(pwd)/modprobe.d/my/* /etc/modprobe.d/")
+		Sh.sh("sudo cp -v $(pwd)/modprobe.d/* /etc/modprobe.d/")
 	end,
 }

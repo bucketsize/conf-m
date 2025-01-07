@@ -6,7 +6,7 @@ local Ut = require("minilib.util")
 
 return {
 	configure = function()
-		Sh.ln("$(pwd)/triggerhappy/my", "~/.config/triggerhappy")
+		Sh.ln("$(pwd)/triggerhappy", "~/.config/triggerhappy")
 
 		if
 			Sh.path_exists("/usr/sbin/thd") -- debian non std path for exe

@@ -7,7 +7,7 @@ return {
 	configure = function()
 		Shell.sh([[
     mkdir /etc/greetd
-		sudo cp -vf greetd/my/* /etc/greetd/
+		sudo cp -vf greetd/* /etc/greetd/
     sudo useradd -M -G video greeter
     sudo chmod -R go+r /etc/greetd/
      
