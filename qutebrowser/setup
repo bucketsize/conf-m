@@ -6,7 +6,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/qutebrowser/my", "~/.config/qutebrowser")
+		Shell.ln("$(pwd)/qutebrowser", "~/.config/qutebrowser")
 	end,
 	dependsOn = function()
 		return Shell.file_exists("qutebrowser")

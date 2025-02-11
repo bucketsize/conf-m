@@ -7,8 +7,8 @@ return {
 	configure = function()
 		Shell.mkdir("~/.local/bin")
 
-		Shell.ln("$(pwd)/lspd/my/lspd-ocaml", "~/.local/bin/lspd-ocaml")
-		Shell.ln("$(pwd)/lspd/my/lspd-java", "~/.local/bin/lspd-java")
+		Shell.ln("$(pwd)/lspd/lspd-ocaml", "~/.local/bin/lspd-ocaml")
+		Shell.ln("$(pwd)/lspd/lspd-java", "~/.local/bin/lspd-java")
 	end,
 	depends = {},
 	installer = function() end,

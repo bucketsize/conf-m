@@ -6,7 +6,7 @@ local Shell = require("minilib.shell")
 return {
 	configure = function()
 		Shell.mkdir("~/.mpd")
-		Shell.ln("$(pwd)/mpd/my", "~/.config/mpd")
+		Shell.ln("$(pwd)/mpd", "~/.config/mpd")
 
 		-- going to disable automatic root start of mpd
 		Shell.sh("sudo systemctl disable mpd")

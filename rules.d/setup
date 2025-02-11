@@ -7,7 +7,7 @@ return {
 	configure = function()
 		Shell.sh([[
 		[ -d /etc/udev/rules.d ] || sudo mkdir /etc/udev/rules.d	
-		sudo cp -vf rules.d/my/* /etc/udev/rules.d/
+		sudo cp -vf rules.d/* /etc/udev/rules.d/
 		]])
 	end,
 	dependsOn = function()

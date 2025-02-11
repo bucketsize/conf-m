@@ -6,7 +6,7 @@ local Shell = require("minilib.shell")
 return {
 	configure = function()
 		Shell.sh([[
-			sudo cp -vf tlp.d/my/*.conf /etc/tlp.d/
+			sudo cp -vf tlp.d/*.conf /etc/tlp.d/
 			sudo systemctl restart tlp
 		]])
 	end,

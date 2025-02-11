@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/qtile/my", "~/.config/qtile")
+		Shell.ln("$(pwd)/qtile", "~/.config/qtile")
 	end,
 	dependsOn = function()
 		return Shell.file_exists({ "qtile", "waysel", "soso" })

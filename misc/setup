@@ -31,7 +31,7 @@ end
 
 local function setup_bins()
 	if not Sh.path_exists("~/.profile") then
-		Sh.cp("$(pwd)/misc/my/profile", "~/.profile")
+		Sh.cp("$(pwd)/misc/profile", "~/.profile")
 	end
 	Sh.append(
 		[[

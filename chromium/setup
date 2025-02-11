@@ -7,10 +7,10 @@ return {
 	depends = { "chromium" },
 	configure = function()
 		-- note; only works on arch linux
-		Shell.ln("$(pwd)/chromium/my/chromium-flags.conf", "~/.config/chromium-flags.conf")
+		Shell.ln("$(pwd)/chromium/chromium-flags.conf", "~/.config/chromium-flags.conf")
 
 		-- other distros; custom entrypoint
 		Shell.mkdir("~/.local/share/applications")
-		Shell.ln("$(pwd)/chromium/my/chromium-accel.desktop", "~/.local/share/applications/chromium-accel.desktop")
+		Shell.ln("$(pwd)/chromium/chromium-accel.desktop", "~/.local/share/applications/chromium-accel.desktop")
 	end,
 }

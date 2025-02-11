@@ -40,7 +40,7 @@ end
 
 local function setup_xmonad_config()
 	Sh.ln(build_dir, "~/.xmonad")
-	Sh.ln("$(pwd)/xmonad/my/xmonad.hs", "~/.xmonad/xmonad.hs")
+	Sh.ln("$(pwd)/xmonad/xmonad.hs", "~/.xmonad/xmonad.hs")
 	Sh.sh("xmonad --recompile")
 end
 

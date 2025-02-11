@@ -9,7 +9,7 @@ return {
 	installer = function()
 		Shell.sh([[
       sudo mkdir -p /usr/share/xsessions
-      sudo cp $(pwd)/xinit/my/*.desktop /usr/share/xsessions
+      sudo cp $(pwd)/xinit/*.desktop /usr/share/xsessions
     ]])
 	end,
 }

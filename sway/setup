@@ -8,7 +8,7 @@ return {
 		"sway",
 	},
 	configure = function()
-		Shell.ln("$(pwd)/sway/my", "~/.config/sway")
+		Shell.ln("$(pwd)/sway", "~/.config/sway")
 	end,
 	installer = function() end,
 }

@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/openbox/my", "$HOME/.config/openbox")
+		Shell.ln("$(pwd)/openbox", "$HOME/.config/openbox")
 	end,
 	dependsOn = function()
 		return Shell.file_exists({

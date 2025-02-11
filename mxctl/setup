@@ -9,7 +9,7 @@ return {
 			[ -d ~/.config/mxctl ] \
 				|| mkdir -v -p ~/.config/mxctl
 			[ -f ~/.config/mxctl/config ] \
-				|| cp -v $(pwd)/mxctl/my/config ~/.config/mxctl/
+				|| cp -v $(pwd)/mxctl/config ~/.config/mxctl/
 		]])
 	end,
 	dependsOn = function()

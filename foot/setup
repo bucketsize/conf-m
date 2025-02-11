@@ -5,7 +5,7 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/foot/my", "~/.config/foot")
+		Shell.ln("$(pwd)/foot", "~/.config/foot")
 	end,
 	depends = { "foot" },
 	installer = function() end,

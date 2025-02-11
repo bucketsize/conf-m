@@ -5,8 +5,8 @@ local Shell = require("minilib.shell")
 
 return {
 	configure = function()
-		Shell.ln("$(pwd)/qterminal.org/my", "~/.config/qterminal.org")
-		Shell.ln("$(pwd)/qterminal.org/my/Popeye.conf", "~/.config/Popeye.conf")
+		Shell.ln("$(pwd)/qterminal.org", "~/.config/qterminal.org")
+		Shell.ln("$(pwd)/qterminal.org/Popeye.conf", "~/.config/Popeye.conf")
 	end,
 	dependsOn = function()
 		return Shell.file_exists("qterminal")
