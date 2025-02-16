@@ -15,7 +15,7 @@ local distro_map = {
 		pm_pkgfile = "apt-file search '%s'",
 	},
 	["Fedora"] = {
-		pm_install = "sudo dnf install %s",
+		pm_install = "sudo dnf install -y %s",
 		pm_update = "sudo dnf update",
 		pm_search = "sudo dnf search %s",
 		pm_installed = "rpm -q '%s'",
@@ -26,14 +26,14 @@ local Cache = {
 	instance = Sh.lsb_release(),
 }
 
-function ispkginst(name)
+local function ispkginst(name)
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]
 	if pm then
 		return Sh.sh(string.format(pm.pm_installed, name))
 	end
 end
-function pkgfile(file)
+local function pkgfile(file)
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]
 	if pm then
@@ -55,7 +55,7 @@ function pkgfile(file)
 		return {}
 	end
 end
-function pkginst(pkgs)
+local function pkginst(pkgs)
 	local names
 	if type(pkgs) == "table" then
 		names = M.List.of(pkgs):join(" ")
@@ -75,7 +75,6 @@ function pkginst(pkgs)
 	print("#pkginst done", names, Ut.tos(ls))
 	return { pkg = pkgs, status = 0 }
 end
-
 local function update_configs(path, subhbs)
 	print("#update_configs:", path)
 	Pr.pipe()
@@ -128,10 +127,10 @@ local function handle_github_deps(e)
 		end)
 	return "done"
 end
-local function setup_config()
+local function setup_config(cfg)
 	print("#setup_config")
 	prepare_configs()
-	local cs = dofile(string.format([[deploy.lua]]))
+	local cs = dofile(cfg)
 	print(cs)
 	for _, e in pairs(cs) do
 		print("Try", e.path)
@@ -150,4 +149,4 @@ local function setup_config()
 	return 0
 end
 
-setup_config(args[1])
+setup_config(arg[1])
