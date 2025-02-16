@@ -5,9 +5,76 @@ local Sh = require("minilib.shell")
 local Ut = require("minilib.util")
 local Pr = require("minilib.process")
 local M = require("minilib.monad")
-local dist_task = require("dist_task")
 
-local config_group = require("config").groups
+local distro_map = {
+	["Debian"] = {
+		pm_install = "sudo apt install --no-install-recommends %s",
+		pm_update = "sudo apt update",
+		pm_search = "apt-cache search %s",
+		pm_installed = "dpkg -L | grep '^ii' | grep -P '%s' ",
+		pm_pkgfile = "apt-file search '%s'",
+	},
+	["Fedora"] = {
+		pm_install = "sudo dnf install %s",
+		pm_update = "sudo dnf update",
+		pm_search = "sudo dnf search %s",
+		pm_installed = "rpm -q '%s'",
+		pm_pkgfile = "sudo dnf search %s",
+	},
+}
+local Cache = {
+	instance = Sh.lsb_release(),
+}
+
+function ispkginst(name)
+	local inst = Cache.instance
+	local pm = distro_map[inst.distro]
+	if pm then
+		return Sh.sh(string.format(pm.pm_installed, name))
+	end
+end
+function pkgfile(file)
+	local inst = Cache.instance
+	local pm = distro_map[inst.distro]
+	if pm then
+		if type(file) == "table" then
+			file = M.List.of(file):join(" ")
+		end
+		local s, e, ls = Sh.sh(string.format(pm.pm_install, file))
+		if not s then
+			print("pkgfile failed", e)
+			return {}
+		end
+		local r = M.List.of(ls):fmap(function(l)
+			local x, y = l:match("([%w%p]+):%s+([%w%p]+)")
+			return { x, y }
+		end)
+		return r
+	else
+		print("unsupported distro", inst.distro)
+		return {}
+	end
+end
+function pkginst(pkgs)
+	local names
+	if type(pkgs) == "table" then
+		names = M.List.of(pkgs):join(" ")
+	end
+	print("#pkginst", names)
+	local inst = Cache.instance
+	local pm = distro_map[inst.distro]
+	if not pm then
+		print("unsupported distro", inst.distro)
+		return { pkg = pkgs, status = 1 }
+	end
+	local s, e, ls = Sh.sh(string.format(pm.pm_install, names))
+	if not s then
+		print("pkginst failed", e, Ut.tos(ls))
+		return { pkg = pkgs, status = 1 }
+	end
+	print("#pkginst done", names, Ut.tos(ls))
+	return { pkg = pkgs, status = 0 }
+end
 
 local function update_configs(path, subhbs)
 	print("#update_configs:", path)
@@ -28,15 +95,8 @@ local function update_configs(path, subhbs)
 		.add(Sh.write("./"))
 		.run()
 end
-local function prepare_config(name)
-	local subcfg = require("config")
-	local subhbs = {}
-	for i, v in pairs(subcfg) do
-		subhbs["{" .. i .. "}"] = v
-	end
-	update_configs(string.format("%s/", name), subhbs)
-end
 local function prepare_configs()
+	print("prepare_configs")
 	local subcfg = require("config")
 	local subhbs = {}
 	for i, v in pairs(subcfg) do
@@ -45,20 +105,10 @@ local function prepare_configs()
 	update_configs("./", subhbs)
 end
 local function handle_pkg_deps(e)
-	local pkgs = M.List
-		.of(e.depends)
-		:filter(function(v)
-			return type(v) == "string"
-		end)
-		:fmap(function(v)
-			local r = dist_task.pkgalias(v)
-			if r then
-				return r
-			else
-				return v
-			end
-		end)
-	return dist_task.pkginst(pkgs)
+	local pkgs = M.List.of(e.depends):filter(function(v)
+		return type(v) == "string"
+	end)
+	return pkginst(pkgs)
 end
 local function handle_github_deps(e)
 	M.List
@@ -78,39 +128,26 @@ local function handle_github_deps(e)
 		end)
 	return "done"
 end
-local function setup_config(name)
-	local e = dofile(string.format([[%s/setup]], name))
-	if e.depends then
-		handle_pkg_deps(e)
-		handle_github_deps(e)
-	end
-	if e.installer then
-		e.installer()
-	end
-	if e.configure then
-		e.configure()
-	end
-	print(name, "Ok")
-	return 0
-end
-local function setup_configs(name)
-	for k, v in pairs(config_group[name]) do
-		if not (v.state == "noi") then
-			setup_config(k)
+local function setup_config()
+	print("#setup_config")
+	prepare_configs()
+	local cs = dofile(string.format([[deploy.lua]]))
+	print(cs)
+	for _, e in pairs(cs) do
+		print("Try", e.path)
+		if e.depends then
+			handle_pkg_deps(e)
+			handle_github_deps(e)
 		end
+		if e.installer then
+			e.installer()
+		end
+		if e.configure then
+			e.configure()
+		end
+		print("Ok")
 	end
 	return 0
 end
 
-if arg[1] == nil then
-	print("#setup *")
-	prepare_configs()
-	setup_configs("sys")
-	setup_configs("common")
-	setup_configs("bspwm")
-	setup_configs("sway")
-else
-	print("#setup " .. arg[1])
-	prepare_config(arg[1])
-	setup_config(arg[1])
-end
+setup_config(args[1])
