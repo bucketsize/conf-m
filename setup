@@ -7,30 +7,41 @@ local Pr = require("minilib.process")
 local M = require("minilib.monad")
 
 local distro_map = {
-	["Debian"] = {
-		pm_install = "sudo apt install --no-install-recommends %s",
-		pm_update = "sudo apt update",
+	["debian"] = {
+		pm_install = "sudo apt-get install --no-install-recommends %s",
+		pm_update = "sudo apt-get update",
 		pm_search = "apt-cache search %s",
 		pm_installed = "dpkg -L | grep '^ii' | grep -P '%s' ",
 		pm_pkgfile = "apt-file search '%s'",
 	},
-	["Fedora"] = {
+	["fedora"] = {
 		pm_install = "sudo dnf install -y %s",
 		pm_update = "sudo dnf update",
 		pm_search = "sudo dnf search %s",
 		pm_installed = "rpm -q '%s'",
-		pm_pkgfile = "sudo dnf search %s",
+		pm_pkgfile = "rpm -qf '%s' --queryformat '%{NAME}\n'",
+	},
+	["arch"] = {
+		pm_install = "sudo pacman -S %s",
+		pm_update = "sudo pacman -Syu",
+		pm_search = "sudo pacman -Ss %s",
+		pm_installed = "pacman -q '%s'",
+		pm_pkgfile = "sudo pacman -q %s",
 	},
 }
+
+distro_map["ubuntu"] = distro_map["debian"]
+distro_map["centos"] = distro_map["fedora"]
+
 local Cache = {
-	instance = Sh.helper.lsb_release(),
+	instance = Sh.util.lsb_release(),
 }
 
 local function ispkginst(name)
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]
 	if pm then
-		return Sh.helper.sh(string.format(pm.pm_installed, name))
+		return Sh.util.sh(string.format(pm.pm_installed, name))
 	end
 end
 local function pkgfile(file)
@@ -40,7 +51,7 @@ local function pkgfile(file)
 		if type(file) == "table" then
 			file = M.List.of(file):join(" ")
 		end
-		local s, e, ls = Sh.helper.sh(string.format(pm.pm_install, file))
+		local s, e, ls = Sh.util.sh(string.format(pm.pm_install, file))
 		if not s then
 			print("pkgfile failed", e)
 			return {}
@@ -55,7 +66,7 @@ local function pkgfile(file)
 		return {}
 	end
 end
-local function pkginst(pkgs)
+local function pkginst(pkgs, install)
 	local names
 	if type(pkgs) == "table" then
 		names = M.List.of(pkgs):join(" ")
@@ -64,16 +75,20 @@ local function pkginst(pkgs)
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]
 	if not pm then
-		print("unsupported distro", inst.distro)
+		print("#pkginst, unsupported distro", inst.distro)
 		return { pkg = pkgs, status = 1 }
 	end
-	local s, e, ls = Sh.helper.sh(string.format(pm.pm_install, names))
+	print("#pkginst, exec!", string.format(pm.pm_install, names))
+	if not install then
+		return 1, pkgs
+	end
+	local s, e, ls = Sh.util.sh(string.format(pm.pm_install, names))
 	if not s then
-		print("pkginst failed", e, Ut.tos(ls))
-		return { pkg = pkgs, status = 1 }
+		print("#pkginst failed", e, Ut.tos(ls))
+		return 2, pkgs
 	end
 	print("#pkginst done", names, Ut.tos(ls))
-	return { pkg = pkgs, status = 0 }
+	return 0, pkgs
 end
 local function update_configs(path, subhbs)
 	print("#update_configs:", path)
@@ -104,13 +119,24 @@ local function prepare_configs()
 	update_configs("./", subhbs)
 end
 local function handle_pkg_deps(e)
-	local pkgs = M.List.of(e.depends):filter(function(v)
-		return type(v) == "string"
-	end)
-	return pkginst(pkgs)
+	return M.List
+		.of(e.depends)
+		:filter(function(v)
+			return type(v) == "string"
+		end)
+		:fmap(function(v)
+			local p, req, methods = v:match("(%a+)|(%d+)|(%a+)")
+			return { pkgname = p, required = req == 1, methods = methods }
+		end)
+		:fmap(function(pinfo)
+			if pinfo.required then -- TODO consider methods "pkg,flatpak,snap"
+				pkginst(pinfo.pkgname)
+			end
+			return 1, e
+		end)
 end
 local function handle_github_deps(e)
-	M.List
+	return M.List
 		.of(e.depends)
 		:filter(function(v)
 			if type(v) == "table" and v.method == "github" then
@@ -121,11 +147,10 @@ local function handle_github_deps(e)
 		:fmap(function(v)
 			local uri = string.format("curl -L https://raw.githubusercontent.com/%s/main/install | bash ", v.resource)
 			print("#handle_github_deps", v.resource, "<-", uri)
-			local s, er, ls = Sh.helper.sh(uri)
-			print("handle_github_deps", v, s, er, Ut.tos(ls))
-			return s, er
+			local s, er, ls = Sh.util.sh(uri)
+			print("#handle_github_deps", v, s, er, Ut.tos(ls))
+			return s, e, er
 		end)
-	return "done"
 end
 local function setup_config(cfg)
 	print("#setup_config")
@@ -133,7 +158,7 @@ local function setup_config(cfg)
 	local cs = dofile(cfg)
 	print(cs)
 	for _, e in pairs(cs) do
-		print("Try", e.path)
+		print("#setup_config", e.path)
 		if e.depends then
 			handle_pkg_deps(e)
 			handle_github_deps(e)
