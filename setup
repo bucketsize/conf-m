@@ -23,14 +23,14 @@ local distro_map = {
 	},
 }
 local Cache = {
-	instance = Sh.lsb_release(),
+	instance = Sh.helper.lsb_release(),
 }
 
 local function ispkginst(name)
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]
 	if pm then
-		return Sh.sh(string.format(pm.pm_installed, name))
+		return Sh.helper.sh(string.format(pm.pm_installed, name))
 	end
 end
 local function pkgfile(file)
@@ -40,7 +40,7 @@ local function pkgfile(file)
 		if type(file) == "table" then
 			file = M.List.of(file):join(" ")
 		end
-		local s, e, ls = Sh.sh(string.format(pm.pm_install, file))
+		local s, e, ls = Sh.helper.sh(string.format(pm.pm_install, file))
 		if not s then
 			print("pkgfile failed", e)
 			return {}
@@ -67,7 +67,7 @@ local function pkginst(pkgs)
 		print("unsupported distro", inst.distro)
 		return { pkg = pkgs, status = 1 }
 	end
-	local s, e, ls = Sh.sh(string.format(pm.pm_install, names))
+	local s, e, ls = Sh.helper.sh(string.format(pm.pm_install, names))
 	if not s then
 		print("pkginst failed", e, Ut.tos(ls))
 		return { pkg = pkgs, status = 1 }
@@ -121,7 +121,7 @@ local function handle_github_deps(e)
 		:fmap(function(v)
 			local uri = string.format("curl -L https://raw.githubusercontent.com/%s/main/install | bash ", v.resource)
 			print("#handle_github_deps", v.resource, "<-", uri)
-			local s, er, ls = Sh.sh(uri)
+			local s, er, ls = Sh.helper.sh(uri)
 			print("handle_github_deps", v, s, er, Ut.tos(ls))
 			return s, er
 		end)

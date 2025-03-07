@@ -14,11 +14,11 @@ return {
 		depends = { "chromium" },
 		configure = function()
 			-- note; only works on arch linux
-			Sh.ln("$(pwd)/chromium/chromium-flags.conf", "~/.config/chromium-flags.conf")
+			Sh.helper.ln("$(pwd)/chromium/chromium-flags.conf", "~/.config/chromium-flags.conf")
 
 			-- other distros; custom entrypoint
-			Sh.mkdir("~/.local/share/applications")
-			Sh.ln("$(pwd)/chromium/chromium-accel.desktop", "~/.local/share/applications/chromium-accel.desktop")
+			Sh.helper.mkdir("~/.local/share/applications")
+			Sh.helper.ln("$(pwd)/chromium/chromium-accel.desktop", "~/.local/share/applications/chromium-accel.desktop")
 		end,
 	},
 	{
@@ -30,7 +30,7 @@ return {
 				.add(function(x)
 					if x then
 						local _, p = Sh.split_path(x)
-						Sh.cp("$(pwd)/firefox/user.js", p)
+						Sh.helper.cp("$(pwd)/firefox/user.js", p)
 					end
 				end)
 				.run()
@@ -41,7 +41,7 @@ return {
 	{
 		path = "fontconfig",
 		configure = function()
-			Sh.ln("$(pwd)/fontconfig", "~/.config/fontconfig")
+			Sh.helper.ln("$(pwd)/fontconfig", "~/.config/fontconfig")
 		end,
 		depends = { "fc-list" },
 		installer = function() end,
@@ -51,13 +51,13 @@ return {
 		configure = function() end,
 		depends = { "fc-cache", "curl" },
 		installer = function()
-			local d = Sh.test(Home .. "/.fonts")
+			local d = Sh.helper.test(Home .. "/.fonts")
 			if d == nil or d == "file" then
-				Sh.rm(Home .. "/.fonts")
-				Sh.mkdir(Home .. "/.fonts")
+				Sh.helper.rm(Home .. "/.fonts")
+				Sh.helper.mkdir(Home .. "/.fonts")
 			end
 
-			Sh.sh([[mkdir -p /var/tmp/conf-m-cache/]])
+			Sh.helper.sh([[mkdir -p /var/tmp/conf-m-cache/]])
 
 			local fonts = {
 				-- {
@@ -92,7 +92,7 @@ return {
 			}
 			M.List.of(fonts):fmap(T.geturl):fmap(T.extract)
 
-			Sh.sh([[
+			Sh.helper.sh([[
 			cd ~/.fonts
 			rm fonts.dir fonts.scale
 			mkfontdir
@@ -106,7 +106,7 @@ return {
 	{
 		path = "foot",
 		configure = function()
-			Sh.ln("$(pwd)/foot", "~/.config/foot")
+			Sh.helper.ln("$(pwd)/foot", "~/.config/foot")
 		end,
 		depends = { "foot" },
 		installer = function() end,
@@ -114,11 +114,11 @@ return {
 	{
 		path = "gtkrc",
 		configure = function()
-			Sh.ln("$(pwd)/gtk/gtkrc-2.0", "~/.gtkrc-2.0")
+			Sh.helper.ln("$(pwd)/gtk/gtkrc-2.0", "~/.gtkrc-2.0")
 
-			Sh.mkdir("~/.config/gtk-3.0")
-			Sh.ln("$(pwd)/gtk/gtk.css", "~/.config/gtk-3.0/gtk.css")
-			Sh.ln("$(pwd)/gtk/settings.ini", "~/.config/gtk-3.0/settings.ini")
+			Sh.helper.mkdir("~/.config/gtk-3.0")
+			Sh.helper.ln("$(pwd)/gtk/gtk.css", "~/.config/gtk-3.0/gtk.css")
+			Sh.helper.ln("$(pwd)/gtk/settings.ini", "~/.config/gtk-3.0/settings.ini")
 		end,
 		depends = {},
 		installer = function() end,
@@ -126,7 +126,7 @@ return {
 	{
 		path = "ictl",
 		configure = function()
-			Sh.sh([[
+			Sh.helper.sh([[
 			[ -d ~/.config/ictl ] || mkdir -v -p ~/.config/ictl
 			[ -f ~/.config/ictl/config.json ] || cp -v $(pwd)/ictl/config.json ~/.config/ictl/
 		]])
@@ -141,7 +141,7 @@ return {
 			"curl",
 		},
 		installer = function()
-			Sh.ln("$(pwd)/ictl/wallpaper-1.jpg", "~/Pictures/wallpaper-1.jpg")
+			Sh.helper.ln("$(pwd)/ictl/wallpaper-1.jpg", "~/Pictures/wallpaper-1.jpg")
 		end,
 	},
 	{
@@ -161,7 +161,7 @@ return {
 		-- end
 
 		configure = function()
-			Sh.sh([[
+			Sh.helper.sh([[
 		[ -d /etc/systemd/logind.conf.d ] || sudo mkdir /etc/systemd/logind.conf.d	
 		sudo cp -vf logind.d/*.conf /etc/systemd/logind.conf.d/
 		]])
@@ -207,7 +207,7 @@ return {
 		installer = function()
 			local arch = Sh.arch()
 
-			Sh.exec([[
+			Sh.helper.exec([[
 			if [ -d ~/minilib ]; then
 				cd ~/minilib && git pull
 			else
@@ -215,7 +215,7 @@ return {
 			fi
 		]])
 
-			Sh.exec(string.format(
+			Sh.helper.exec(string.format(
 				[[
 		LIBDIR=/usr/lib/%s-linux-gnu
 		cd ~/minilib && luarocks make --local CRYPTO_LIBDIR=$LIBDIR OPENSSL_LIBDIR=$LIBDIR
@@ -228,7 +228,7 @@ return {
 		path = "misc",
 		configure = function()
 			local function setup_bell()
-				Sh.sh([[
+				Sh.helper.sh([[
 		pcnobell=$(grep -Po "^set bell-style none" /etc/inputrc)
 		if [ "$pcnobell" = "" ]; then
 			echo "disabling pc bell"
@@ -248,15 +248,15 @@ return {
 					["~/.local/bin"] = {},
 				}
 				for k, _ in pairs(dirs) do
-					Sh.mkdir(k)
+					Sh.helper.mkdir(k)
 				end
 			end
 
 			local function setup_bins()
 				if not Sh.path_exists("~/.profile") then
-					Sh.cp("$(pwd)/misc/profile", "~/.profile")
+					Sh.helper.cp("$(pwd)/misc/profile", "~/.profile")
 				end
-				Sh.append(
+				Sh.helper.append(
 					[[
 # conf-m/misc
 export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
@@ -277,13 +277,13 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 		configure = function() end,
 		depends = { "modprobe" },
 		installer = function()
-			Sh.sh("sudo cp -v $(pwd)/modprobe.d/* /etc/modprobe.d/")
+			Sh.helper.sh("sudo cp -v $(pwd)/modprobe.d/* /etc/modprobe.d/")
 		end,
 	},
 	{
 		path = "mxctl",
 		configure = function()
-			Sh.sh([[
+			Sh.helper.sh([[
 			[ -d ~/.config/mxctl ] \
 				|| mkdir -v -p ~/.config/mxctl
 			[ -f ~/.config/mxctl/config ] \
@@ -294,8 +294,8 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 			return Sh.file_exists({ "git", "make", "xrandr", "fzf", "wmctrl", "pactl", "feh" })
 		end,
 		installer = function()
-			Sh.github_fetch("bucketsize", "mxctl")
-			Sh.sh(string.format(
+			Sh.helper.github_fetch("bucketsize", "mxctl")
+			Sh.helper.sh(string.format(
 				[[
 			export CRYPTO_INCDIR=/usr/include	
 			LIBDIR=/usr/lib/%s-linux-gnu
@@ -310,7 +310,7 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "network",
 		configure = function()
-			Sh.sh([[
+			Sh.helper.sh([[
 		sudo cp $(pwd)/network/dhcpcd.conf /etc/dhcpcd.conf
 		sudo cp $(pwd)/network/wpa_supplicant.conf /etc/wpa_supplicant/ 
 		]])
@@ -324,13 +324,13 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "nvim",
 		configure = function()
-			Sh.mkdir("~/.config/nvim")
-			Sh.ln("$(pwd)/nvim", "~/.config/nvim")
+			Sh.helper.mkdir("~/.config/nvim")
+			Sh.helper.ln("$(pwd)/nvim", "~/.config/nvim")
 			if
-				Sh.path_exists("~/.var/app/io.neovim.nvim/config/user-dirs.dirs")
+				Sh.helper.path_exists("~/.var/app/io.neovim.nvim/config/user-dirs.dirs")
 				and not Sh.path_exists("~/.var/app/io.neovim.nvim/config/nvim/init.lua")
 			then
-				Sh.ln("~/.config/nvim", "~/.var/app/io.neovim.nvim/config/nvim")
+				Sh.helper.ln("~/.config/nvim", "~/.var/app/io.neovim.nvim/config/nvim")
 			end
 		end,
 		depends = { "nvim", "rg" },
@@ -339,7 +339,7 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "pipewire",
 		configure = function()
-			Sh.sh([[
+			Sh.helper.sh([[
 		systemctl --user daemon-reload
 		systemctl --user --now enable pipewire pipewire-pulse
 		systemctl --user --now disable pulseaudio.service pulseaudio.socket
@@ -370,7 +370,7 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 			-- 	cp -v /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.* $servd/
 			-- fi
 			-- ]]
-			Sh.sh([[
+			Sh.helper.sh([[
 			[ -d ~/.config/pipewire ] \
 				|| mkdir ~/.config/pipewire
 			[ -d ~/.config/pipewire/media-session.d ] \
@@ -381,7 +381,7 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "qt5ct",
 		configure = function()
-			Sh.ln("$(pwd)/qt5ct", "~/.config/qt5ct")
+			Sh.helper.ln("$(pwd)/qt5ct", "~/.config/qt5ct")
 		end,
 		depends = { "qt5ct" },
 		installer = function() end,
@@ -389,7 +389,7 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "rules.d",
 		configure = function()
-			Sh.sh([[
+			Sh.helper.sh([[
 		[ -d /etc/udev/rules.d ] || sudo mkdir /etc/udev/rules.d	
 		sudo cp -vf rules.d/* /etc/udev/rules.d/
 		]])
@@ -400,7 +400,7 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "sysctl.d",
 		configure = function()
-			Sh.sh([[
+			Sh.helper.sh([[
 			sudo cp -vf sysctl.d/*.conf /etc/sysctl.d/
 			sudo sysctl -p
 		]])
@@ -444,7 +444,7 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "vim",
 		configure = function()
-			Sh.ln("$(pwd)/vim/vimrc", "~/.vimrc")
+			Sh.helper.ln("$(pwd)/vim/vimrc", "~/.vimrc")
 		end,
 		depends = { "vim" },
 		installer = function() end,
@@ -455,10 +455,10 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 			"waybar",
 		},
 		configure = function()
-			Sh.ln("$(pwd)/waybar", "~/.config/waybar")
+			Sh.helper.ln("$(pwd)/waybar", "~/.config/waybar")
 		end,
 		installer = function()
-			Sh.sh([[
+			Sh.helper.sh([[
 			cp $(pwd)/waybar/bin/* ${HOME}/.local/bin/
 			]])
 		end,
@@ -466,9 +466,9 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "xresources",
 		configure = function()
-			Sh.ln("$(pwd)/Xresources", "~/.config/xresources.d")
-			Sh.ln("$(pwd)/Xresources/Xresources", "~/.Xresources")
-			Sh.sh([[
+			Sh.helper.ln("$(pwd)/Xresources", "~/.config/xresources.d")
+			Sh.helper.ln("$(pwd)/Xresources/Xresources", "~/.Xresources")
+			Sh.helper.sh([[
 			sudo cp -vf $(pwd)/Xresources/40*.conf /etc/X11/xorg.conf.d/
 		]])
 		end,
@@ -483,8 +483,8 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 	{
 		path = "mpd",
 		configure = function()
-			Sh.mkdir("~/.mpd")
-			Sh.ln("$(pwd)/mpd", "~/.config/mpd")
+			Sh.helper.mkdir("~/.mpd")
+			Sh.helper.ln("$(pwd)/mpd", "~/.config/mpd")
 
 			-- going to disable automatic root start of mpd
 			Sh.sh("sudo systemctl disable mpd")
@@ -514,16 +514,16 @@ export PATH=~/.local/bin:~/.luarocks/bin:~/.bucketsize/scripts:/usr/sbin:$PATH
 				strip ympd
 				cp -vf ympd ~/.local/bin/
 				]],
-					Sh.arch()
+					Sh.helper.arch()
 				)
-				Sh.exec(cmd)
+				Sh.helper.exec(cmd)
 			end
 		end,
 	},
 	{
 		path = "mpv",
 		configure = function()
-			Sh.ln("$(pwd)/mpv", "~/.config/mpv")
+			Sh.helper.ln("$(pwd)/mpv", "~/.config/mpv")
 		end,
 		depends = { "mpv" },
 		installer = function() end,
