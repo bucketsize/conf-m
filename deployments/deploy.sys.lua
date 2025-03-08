@@ -30,7 +30,7 @@ return {
 		]])
 		end,
 		depends = {
-			"udevadm",
+			"systemd-udev",
 		},
 		installer = function() end,
 	},
@@ -67,9 +67,9 @@ return {
 		]])
 		end,
 		depends = {
-			"pipewire",
-			"pipewire-pulse",
-			"wireplumber",
+			"pipewire|1",
+			"pipewire-pulse|1",
+			"wireplumber|1",
 		},
 		installer = function()
 			-- deprecated
@@ -106,7 +106,9 @@ return {
 		sudo cp -vf rules.d/* /etc/udev/rules.d/
 		]])
 		end,
-		depends = { "udevadm" },
+		depends = {
+			"systemd-udev",
+		},
 		installer = function() end,
 	},
 	{

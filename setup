@@ -66,29 +66,26 @@ local function pkgfile(file)
 		return {}
 	end
 end
-local function pkginst(pkgs, install)
-	local names
-	if type(pkgs) == "table" then
-		names = M.List.of(pkgs):join(" ")
-	end
-	print("#pkginst", names)
+local function pkginst(pkginfo)
+	print("#pkginst: ", Ut.tos(pkginfo))
+	local names, install, methods = pkginfo.pkgname, pkginfo.required, pkginfo.methods
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]
 	if not pm then
 		print("#pkginst, unsupported distro", inst.distro)
-		return { pkg = pkgs, status = 1 }
+		return { pkg = names, status = 1 }
 	end
 	print("#pkginst, exec!", string.format(pm.pm_install, names))
 	if not install then
-		return 1, pkgs
+		return 1, names
 	end
 	local s, e, ls = Sh.util.sh(string.format(pm.pm_install, names))
 	if not s then
 		print("#pkginst failed", e, Ut.tos(ls))
-		return 2, pkgs
+		return 2, names
 	end
 	print("#pkginst done", names, Ut.tos(ls))
-	return 0, pkgs
+	return 0, names
 end
 local function update_configs(path, subhbs)
 	print("#update_configs:", path)
@@ -122,16 +119,15 @@ local function handle_pkg_deps(e)
 	return M.List
 		.of(e.depends)
 		:filter(function(v)
-			return type(v) == "string"
+			return type(v) == "string" -- TODO: handle custom function as depends
 		end)
 		:fmap(function(v)
-			local p, req, methods = v:match("(%a+)|(%d+)|(%a+)")
-			return { pkgname = p, required = req == 1, methods = methods }
+			local p = Ut.std_split("|", v)
+			-- print("dd->", p[1], p[2], p[3], type(p[2]))
+			return { pkgname = p[1], required = (p[2] == "1"), methods = p[3] }
 		end)
 		:fmap(function(pinfo)
-			if pinfo.required then -- TODO consider methods "pkg,flatpak,snap"
-				pkginst(pinfo.pkgname)
-			end
+			pkginst(pinfo)
 			return 1, e
 		end)
 end

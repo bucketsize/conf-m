@@ -4,6 +4,7 @@ require("luarocks.loader")
 local Sh = require("minilib.shell")
 local M = require("minilib.monad")
 local T = require("task")
+local Pr = require("minilib.process")
 local Home = os.getenv("HOME")
 
 return {
@@ -27,13 +28,13 @@ return {
 				.add(Sh.echo())
 				.add(function(x)
 					if x then
-						local _, p = Sh.split_path(x)
+						local _, p = Sh.util.split_path(x)
 						Sh.util.cp("$(pwd)/firefox/user.js", p)
 					end
 				end)
 				.run()
 		end,
-		depends = { "firefox|1|pkg,flatpak" },
+		depends = { "firefox|0|pkg,flatpak" },
 		installer = function() end,
 	},
 	{
@@ -45,13 +46,13 @@ return {
 		]])
 		end,
 		depends = {
-			"xterm",
-			"xrandr",
-			"fzf",
-			"wmctrl",
-			"pactl",
-			"feh",
-			"curl",
+			"xterm|1",
+			"xrandr|1",
+			"fzf|1",
+			"wmctrl|1",
+			"pactl|1",
+			"feh|1",
+			"curl|1",
 		},
 		installer = function()
 			Sh.util.ln("$(pwd)/ictl/wallpaper-1.jpg", "~/Pictures/wallpaper-1.jpg")
@@ -60,18 +61,18 @@ return {
 	{
 		path = "m360",
 		configure = function()
-			Sh.sh([[
+			Sh.util.sh([[
 			[ -d ~/.config/m360 ] || mkdir -v -p ~/.config/m360
 			[ -f ~/.config/m360/config.json ] || cp -v $(pwd)/m360/config.json ~/.config/m360/
 		]])
 		end,
-		depends = { "python3", "pactl", "curl" },
+		depends = { "python3", "pactl|1", "curl|1" },
 		installer = function() end,
 	},
 	{
 		path = "mangohud",
 		configure = function()
-			Sh.ln("$(pwd)/mangohud", "~/.config/MangoHud")
+			Sh.util.ln("$(pwd)/mangohud", "~/.config/MangoHud")
 		end,
 		depends = {
 			"mangohud",
@@ -85,12 +86,12 @@ return {
 			Sh.util.ln("$(pwd)/nvim", "~/.config/nvim")
 			if
 				Sh.util.path_exists("~/.var/app/io.neovim.nvim/config/user-dirs.dirs")
-				and not Sh.path_exists("~/.var/app/io.neovim.nvim/config/nvim/init.lua")
+				and not Sh.util.path_exists("~/.var/app/io.neovim.nvim/config/nvim/init.lua")
 			then
 				Sh.util.ln("~/.config/nvim", "~/.var/app/io.neovim.nvim/config/nvim")
 			end
 		end,
-		depends = { "nvim", "rg" },
+		depends = { "neovim", "ripgrep" },
 		installer = function() end,
 	},
 	{
@@ -108,7 +109,7 @@ return {
 			Sh.util.ln("$(pwd)/mpd", "~/.config/mpd")
 
 			-- going to disable automatic root start of mpd
-			Sh.sh("sudo systemctl disable mpd")
+			Sh.util.sh("sudo systemctl disable mpd")
 		end,
 		depends = { "mpd", "mpc" },
 		installer = function() end,
@@ -120,7 +121,7 @@ return {
 			"mpd",
 		},
 		installer = function()
-			if not Sh.file_exists("~/.local/bin/ympd") then
+			if not Sh.util.file_exists("~/.local/bin/ympd") then
 				local cmd = string.format(
 					[[
 				if [ -d ~/ympd ]; then

@@ -2,11 +2,6 @@
 require("luarocks.loader")
 
 local Sh = require("minilib.shell")
-local Ut = require("minilib.util")
-local Pr = require("minilib.process")
-local M = require("minilib.monad")
-local T = require("task")
-local Home = os.getenv("HOME")
 
 return {
 	{
@@ -14,7 +9,7 @@ return {
 		configure = function()
 			Sh.util.ln("$(pwd)/sway", "~/.config/sway")
 		end,
-		depends = { "sway|1", "swayidle", "swaylock" },
+		depends = { "sway|1", "swaybg|1", "swayidle", "swaylock" },
 		installer = function() end,
 	},
 	{
@@ -42,7 +37,7 @@ return {
 	{
 		path = "waybar",
 		depends = {
-			"waybar",
+			"waybar|1",
 		},
 		configure = function()
 			Sh.util.ln("$(pwd)/waybar", "~/.config/waybar")
