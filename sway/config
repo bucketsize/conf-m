@@ -12,7 +12,14 @@ set $mod Mod4
 set $alt Mod1
 set $term foot 
 
-set $ws1 1 
+set $ws1 T 
+set $ws2 W 
+set $ws3 C 
+set $ws4 Steam 
+set $ws5 K 
+set $ws6 L 
+set $ws7 M 
+set $ws8 N 
 
 #
 # display
