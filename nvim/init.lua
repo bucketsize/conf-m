@@ -111,7 +111,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -284,7 +284,8 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-	'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+	-- inconsistent?
+	{ 'tpope/vim-sleuth' }, -- Detect tabstop and shiftwidth automatically
 
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
@@ -298,16 +299,61 @@ require('lazy').setup({
 	--    require('gitsigns').setup({ ... })
 	--
 	-- See `:help gitsigns` to understand what the configuration keys do
-	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
+	{
 		'lewis6991/gitsigns.nvim',
+		event = 'VimEnter',
 		opts = {
 			signs = {
-				add = { text = '+' },
-				change = { text = '~' },
-				delete = { text = '_' },
-				topdelete = { text = '‾' },
-				changedelete = { text = '~' },
+				add = { text = '▎' },
+				change = { text = '▎' },
+				delete = { text = '' },
+				topdelete = { text = '' },
+				changedelete = { text = '▎' },
+				untracked = { text = '▎' },
 			},
+			signs_staged = {
+				add = { text = '▎' },
+				change = { text = '▎' },
+				delete = { text = '' },
+				topdelete = { text = '' },
+				changedelete = { text = '▎' },
+			},
+			on_attach = function(buffer)
+				local gs = package.loaded.gitsigns
+
+				local function map(mode, l, r, desc)
+					vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+				end
+
+      -- stylua: ignore start
+      map("n", "]h", function()
+        if vim.wo.diff then
+          vim.cmd.normal({ "]c", bang = true })
+        else
+          gs.nav_hunk("next")
+        end
+      end, "Next Hunk")
+      map("n", "[h", function()
+        if vim.wo.diff then
+          vim.cmd.normal({ "[c", bang = true })
+        else
+          gs.nav_hunk("prev")
+        end
+      end, "Prev Hunk")
+      map("n", "]H", function() gs.nav_hunk("last") end, "Last Hunk")
+      map("n", "[H", function() gs.nav_hunk("first") end, "First Hunk")
+      map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+      map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+      map("n", "<leader>hS", gs.stage_buffer, "Stage Buffer")
+      map("n", "<leader>hu", gs.undo_stage_hunk, "Undo Stage Hunk")
+      map("n", "<leader>hR", gs.reset_buffer, "Reset Buffer")
+      map("n", "<leader>hp", gs.preview_hunk_inline, "Preview Hunk Inline")
+      map("n", "<leader>hb", function() gs.blame_line({ full = true }) end, "Blame Line")
+      map("n", "<leader>hB", function() gs.blame() end, "Blame Buffer")
+      map("n", "<leader>hd", gs.diffthis, "Diff This")
+      map("n", "<leader>hD", function() gs.diffthis("~") end, "Diff This ~")
+      map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
+			end,
 		},
 	},
 
@@ -461,6 +507,7 @@ require('lazy').setup({
 			vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
 			vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
 			vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+			vim.keymap.set('n', '<C-p>', builtin.find_files, { desc = '[S]earch [F]iles' })
 			vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
 			vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
 			vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -570,39 +617,39 @@ require('lazy').setup({
 					-- Jump to the definition of the word under your cursor.
 					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-t>.
-					map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+					map('gd', require('telescope.builtin').lsp_definitions, 'Goto Definition')
+
+					-- WARN: This is not Goto Definition, this is Goto Declaration.
+					--  For example, in C this would take you to the header.
+					map('gD', vim.lsp.buf.declaration, 'Goto Declaration')
 
 					-- Find references for the word under your cursor.
-					map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+					map('gr', require('telescope.builtin').lsp_references, 'Goto References')
 
 					-- Jump to the implementation of the word under your cursor.
 					--  Useful when your language has ways of declaring types without an actual implementation.
-					map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+					map('gI', require('telescope.builtin').lsp_implementations, 'Goto Implementation')
 
 					-- Jump to the type of the word under your cursor.
 					--  Useful when you're not sure what type a variable is and you want to see
 					--  the definition of its *type*, not where it was *defined*.
-					map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+					map('<leader>lD', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
 
 					-- Fuzzy find all the symbols in your current document.
 					--  Symbols are things like variables, functions, types, etc.
-					map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+					map('<leader>ls', require('telescope.builtin').lsp_document_symbols, 'Document Symbols')
 
 					-- Fuzzy find all the symbols in your current workspace.
 					--  Similar to document symbols, except searches over your entire project.
-					map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+					map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace Symbols')
 
 					-- Rename the variable under your cursor.
 					--  Most Language Servers support renaming across files, etc.
-					map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+					map('<leader>lr', vim.lsp.buf.rename, 'Rename')
 
 					-- Execute a code action, usually your cursor needs to be on top of an error
 					-- or a suggestion from your LSP for this to activate.
-					map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
-
-					-- WARN: This is not Goto Definition, this is Goto Declaration.
-					--  For example, in C this would take you to the header.
-					map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+					map('<leader>la', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
@@ -638,9 +685,9 @@ require('lazy').setup({
 					--
 					-- This may be unwanted, since they displace some of your code
 					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-						map('<leader>th', function()
+						map('<leader>lh', function()
 							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-						end, '[T]oggle Inlay [H]ints')
+						end, 'Toggle Inlay Hints')
 					end
 				end,
 			})
@@ -721,6 +768,7 @@ require('lazy').setup({
 			require('mason-lspconfig').setup {
 				handlers = {
 					function(server_name)
+						-- skip jdtls, handled by nvim-jdtls
 						if server_name == 'jdtls' then
 							return
 						end
@@ -906,7 +954,7 @@ require('lazy').setup({
 			-- Load the colorscheme here.
 			-- Like many other themes, this one has different styles, and you could load
 			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme 'tokyonight-night'
+			vim.cmd.colorscheme 'habamax'
 
 			-- You can configure highlights by doing something like:
 			vim.cmd.hi 'Comment gui=none'
@@ -1011,20 +1059,28 @@ require('lazy').setup({
 			},
 		},
 	},
-	{
-		'NeogitOrg/neogit',
-		dependencies = {
-			'nvim-lua/plenary.nvim', -- required
-			'sindrets/diffview.nvim', -- optional - Diff integration
 
-			-- Only one of these is needed.
-			'nvim-telescope/telescope.nvim', -- optional
-			'ibhagwan/fzf-lua', -- optional
-			'echasnovski/mini.pick', -- optional
-		},
-		config = true,
+	-- Slow
+	--  {
+	-- 	'NeogitOrg/neogit',
+	-- 	dependencies = {
+	-- 		'nvim-lua/plenary.nvim', -- required
+	-- 		'sindrets/diffview.nvim', -- optional - Diff integration
+	--
+	-- 		-- Only one of these is needed.
+	-- 		'nvim-telescope/telescope.nvim', -- optional
+	-- 		'ibhagwan/fzf-lua', -- optional
+	-- 		'echasnovski/mini.pick', -- optional
+	-- 	},
+	-- 	config = true,
+	-- 	keys = {
+	-- 		{ '<leader>hn', vim.cmd.Neogit, desc = 'Neogit' },
+	-- 	},
+	-- },
+	{
+		'tpope/vim-fugitive',
 		keys = {
-			{ '<leader>hn', vim.cmd.Neogit, desc = 'Neogit' },
+			{ '<leader>hf', '<cmd>Git<cr>', desc = 'Open Fugitive' },
 		},
 	},
 	{
@@ -1047,16 +1103,14 @@ require('lazy').setup({
 		-- setting the keybinding for LazyGit with 'keys' is recommended in
 		-- order to load the plugin when the command is run for the first time
 		keys = {
-			{ '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+			{ '<leader>hl', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
 		},
 	},
-	{
-		-- 'sindrets/diffview.vim',
-	},
+	{ 'sindrets/diffview.vim' },
 	{
 		'nvim-pack/nvim-spectre',
 		keys = {
-			{ '<leader>ss', vim.cmd.Spectre, desc = 'Spectre' },
+			{ '<leader>sS', vim.cmd.Spectre, desc = 'Spectre' },
 		},
 	},
 	{
@@ -1069,7 +1123,7 @@ require('lazy').setup({
 		},
 		opts = {
 			open_mapping = [[<C-t>]],
-			direction = 'horizontal',
+			direction = 'float',
 			shade_filetypes = {},
 			hide_numbers = true,
 			insert_mappings = true,
@@ -1123,6 +1177,16 @@ require('lazy').setup({
 				desc = 'Quickfix List (Trouble)',
 			},
 		},
+	},
+
+	{
+		'MeanderingProgrammer/render-markdown.nvim',
+		dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
 	},
 	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and

@@ -231,7 +231,6 @@ bindsym $alt+Shift+m exec makoctl menu $BIN_DIR/bemenu-run.sh -l 30
 bindsym $mod+Shift+r nop
 bindsym --release $mod+Shift+r exec "swaymsg reload"
 
-
 #
 # look and feel
 #
@@ -390,62 +389,3 @@ bar {
 # autostart
 # 
 
-#exec_always waybar
-
-# X11 apps
-exec xrdb -load ~/.Xresources
-
-# Auth with polkit-gnome:
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-
-# notifications
-exec mako
-
-# dbus 
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-exec hash dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP=sway
-
-# gtk / gnome
-set $gnome-schema org.gnome.desktop.interface
-
-exec_always {
-    gsettings set $gnome-schema gtk-theme 'Adwaita'
-    gsettings set $gnome-schema icon-theme 'Gnome'
-    gsettings set $gnome-schema cursor-theme 'Gnome'
-    gsettings set $gnome-schema cursor-size 24
-    gsettings set $gnome-schema font-name 'DejaVu Sans'
-    gsettings set $gnome-schema text-scaling-factor 1
-}
-
-# audio
-exec /usr/libexec/pipewire-launcher
-
-# clipboard
-exec clipman restore
-exec wl-paste -t text --watch clipman store
-
-# keyring
-exec gnome-keyring-daemon --daemonize --start --components=gpg,pkcs11,secrets,ssh
-
-# portal
-exec /usr/libexec/xdg-desktop-portal
-
-# tracker daemon for gnome apps
-exec tracker daemon -s
-
-# redshift
-# 12.9716° N, 77.5946° E
-exec wlsunset -l 12.9 -L 77.5
-
-# idle handler 
-exec swayidle -w \
-       timeout 180 'playerctl -a pause && swaylock -f' \
-       timeout 185 'swaymsg "output * dpms off"' \
-       resume 'swaymsg "output * dpms on"' \
-       before-sleep 'swaylock -f'
-
-# flatpak compat
-exec /usr/libexec/xdg-desktop-portal-gtk
-exec /usr/libexec/xdg-desktop-portal-wlr
-exec /usr/libexec/xdg-desktop-portal-gnome
