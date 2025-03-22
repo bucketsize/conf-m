@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Video
-Comment=Video
-Exec=mxctl.control setup_video 
-Type=Application

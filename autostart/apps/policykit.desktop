@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=polkit daemon
-Comment=polkit daemon usermode
-Exec=lxqt-policykit-agent
-Type=Application

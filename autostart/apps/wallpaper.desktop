@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Wallpaper
-Comment=Wallpaper
-Exec=mxctl.control applywallpaper
-Type=Application

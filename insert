@@ -37,6 +37,50 @@ local Cache = {
 	instance = Sh.util.lsb_release(),
 }
 
+local function assert_urltask(t)
+	assert(t.url, "property 'url' expected")
+	assert(t.name, "property 'name' expected")
+	assert(t.ext, "property 'ext' expected")
+	assert(t.cp, "property 'cp' expected")
+end
+local function assert_extracttask(t)
+	assert(t.name, "property 'name' expected")
+	assert(t.ext, "property 'ext' expected")
+	assert(t.cp, "property 'cp' expected")
+end
+local function geturl(t)
+	assert_urltask(t)
+
+	if Sh.util.path_exists(t.path .. "/" .. t.name) then
+		print("#geturl, cache hit", t.url, t.path, t.name)
+		return t
+	end
+	Sh.util.wget(t.url, t.path .. "/" .. t.name)
+	return t
+end
+local extmap = {
+	["zip"] = "unzip -o ",
+	["tar.gz"] = "tar --overwrite -xvzf ",
+	["tar.xz"] = "tar --overwrite -xvf ",
+	["tar.bz2"] = "tar --overwrite -xvjf ",
+}
+local function extract(t)
+	assert_extracttask(t)
+	local extcmd = extmap[t.ext]
+	Sh.util.sh(string.format(
+		[[
+          cd %s 
+          %s %s
+          cp -av %s %s
+          ]],
+		t.path,
+		extcmd,
+		t.name,
+		t.cp,
+		t.dest
+	))
+	return t
+end
 local function ispkginst(name)
 	local inst = Cache.instance
 	local pm = distro_map[inst.distro]

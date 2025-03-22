@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Power Management Daemon
-Comment=Power Management Daemon usermode
-Exec=lxqt-powermanagement
-Type=Application
