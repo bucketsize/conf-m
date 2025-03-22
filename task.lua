@@ -15,11 +15,11 @@ end
 function T.geturl(t)
 	T.assert_urltask(t)
 
-	if Sh.path_exists(t.path .. "/" .. t.name) then
+	if Sh.util.path_exists(t.path .. "/" .. t.name) then
 		print("#geturl, cache hit", t.url, t.path, t.name)
 		return t
 	end
-	Sh.wget(t.url, t.path .. "/" .. t.name)
+	Sh.util.wget(t.url, t.path .. "/" .. t.name)
 	return t
 end
 local extmap = {
@@ -31,7 +31,7 @@ local extmap = {
 function T.extract(t)
 	T.assert_extracttask(t)
 	local extcmd = extmap[t.ext]
-	Sh.sh(string.format(
+	Sh.util.sh(string.format(
 		[[
           cd %s 
           %s %s

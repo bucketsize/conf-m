@@ -138,7 +138,7 @@ return {
 				]],
 					Sh.util.arch()
 				)
-				Sh.util.exec(cmd)
+				Sh.util.sh(cmd)
 			end
 		end,
 	},

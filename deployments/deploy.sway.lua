@@ -43,9 +43,7 @@ return {
 			Sh.util.ln("$(pwd)/waybar", "~/.config/waybar")
 		end,
 		installer = function()
-			Sh.util.sh([[
-			cp $(pwd)/waybar/bin/* ${HOME}/.local/bin/
-			]])
+		)
 		end,
 	},
 }
