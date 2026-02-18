@@ -30,8 +30,13 @@ local distro_map = {
 	},
 }
 
+distro_map["debian"] = distro_map["debian"]
+distro_map["pop"] = distro_map["debian"]
 distro_map["ubuntu"] = distro_map["debian"]
 distro_map["centos"] = distro_map["fedora"]
+distro_map["garuda"] = distro_map["arch"]
+distro_map["arch"] = distro_map["arch"]
+distro_map["endeavor"] = distro_map["arch"]
 
 local Cache = {
 	instance = Sh.util.lsb_release(),
